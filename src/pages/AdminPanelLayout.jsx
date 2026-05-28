@@ -9,6 +9,7 @@ import {
   FaChartLine,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { matchPath } from "react-router-dom";
 import { SiCashapp } from "react-icons/si";
 import localforage from "localforage";
 import { PiSpinnerBallDuotone } from "react-icons/pi";
@@ -30,8 +31,14 @@ const pathKeyMap = {
   "/adminPanel/GroupCategories": "Groups",
   "/adminPanel/Members": "Members",
   "/adminPanel/FundManager": "FundManager",
+  "/adminPanel/FundManager/:managerId": "FundManager",
+  "/adminPanel/ManagerGroupsDetails/:groupID": "FundManager",
+  "/adminPanel/GroupsRound/:roundID": "FundManager",
   "/adminPanel/Auction": "Auction",
+    "/adminPanel/AuctionRound/:roundID": "Auction",
+  "/adminPanel/GroupDetails/:groupID": "Rotation",
   "/adminPanel/Rotation": "Rotation",
+  "/adminPanel/RotationRound/:roundID": "Rotation",
   "/adminPanel/Boardcast": "Boardcast",
   "/adminPanel/supportEnquiry": "SupportEnquiry",
 };
@@ -43,12 +50,12 @@ const menuItems = [
     icon: <FaChartPie />,
     to: "/dashboard",
   },
-  {
-    key: "Groups",
-    label: "Groups",
-    icon: <FaUsers />,
-    to: "/adminPanel/GroupCategories",
-  },
+  // {
+  //   key: "Groups",
+  //   label: "Groups",
+  //   icon: <FaUsers />,
+  //   to: "/adminPanel/GroupCategories",
+  // },
   {
     key: "Members",
     label: "Members",
@@ -73,8 +80,8 @@ const menuItems = [
     icon: <PiSpinnerBallDuotone />,
     to: "/adminPanel/Rotation",
   },
-  { key: "Predefined", label: "Predefined", icon: <FaListCheck /> },
-  { key: "Reports", label: "Reports", icon: <FaChartLine /> },
+  // { key: "Predefined", label: "Predefined", icon: <FaListCheck /> },
+  // { key: "Reports", label: "Reports", icon: <FaChartLine /> },
   {
     key: "Boardcast",
     label: "Boardcast",
@@ -87,7 +94,7 @@ const menuItems = [
     icon: <MdHelpOutline />,
     to: "/adminPanel/supportEnquiry",
   },
-  { key: "Settings", label: "Settings", icon: <FaCog /> },
+  // { key: "Settings", label: "Settings", icon: <FaCog /> },
   { key: "Logout", label: "Logout", icon: <FaSignOutAlt /> },
 ];
 
@@ -99,11 +106,12 @@ const LayoutDrawer = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [logoutpopup, setLogoutPopup] = useState(false);
   useEffect(() => {
     const matchedKey =
       Object.keys(pathKeyMap).find((path) =>
-        location.pathname.startsWith(path),
-      ) || "Dashboard";
+        matchPath(path, location.pathname),
+      ) || "/dashboard";
 
     setSelectedMenu(pathKeyMap[matchedKey]);
   }, [location.pathname]);
@@ -140,8 +148,7 @@ const LayoutDrawer = ({ children }) => {
 
   const handleMenuClick = async ({ key }) => {
     if (key === "Logout") {
-      await logout();
-      navigate("/administrator");
+      setLogoutPopup(true);
     } else {
       if (isMobile) setDrawerOpen(false);
     }
@@ -201,7 +208,8 @@ const LayoutDrawer = ({ children }) => {
           w-10 h-10 rounded-full flex items-center justify-center font-semibold
           border-2 border-primary
           ${avatarBgClass} ${avatarTextClass}
-        `}>
+        `}
+        >
           {user?.profileName}
         </div>
       )}
@@ -210,7 +218,8 @@ const LayoutDrawer = ({ children }) => {
         className={`
         text-sm font-semibold whitespace-nowrap
         ${textClass}
-      `}>
+      `}
+      >
         {user?.fullName}
       </span>
     </div>
@@ -223,7 +232,50 @@ const LayoutDrawer = ({ children }) => {
         minHeight: "100vh",
         fontFamily: "sans-serif",
         overflowX: "hidden",
-      }}>
+      }}
+    >
+      {logoutpopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl animate-fadeIn">
+            {/* Icon */}
+            <div className="flex justify-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <FaSignOutAlt className="text-3xl text-red-600" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h2 className="mt-4 text-center text-2xl font-bold text-gray-800">
+              Confirm Logout
+            </h2>
+
+            {/* Message */}
+            <p className="mt-2 text-center text-sm text-gray-500 leading-relaxed">
+              Are you sure you want to logout from your account?
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => setLogoutPopup(false)}
+                className="flex-1 rounded-xl border border-gray-300 bg-white py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={async () => {
+                  await logout();
+                  navigate("/administrator");
+                }}
+                className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Desktop Sider (hidden on mobile) */}
       {!isMobile && (
         <div>
@@ -231,7 +283,8 @@ const LayoutDrawer = ({ children }) => {
             collapsed={!isSidebarOpen}
             onCollapse={handleCollapse}
             width={256}
-            className="fixed bg-primary left-0 h-full">
+            className="fixed bg-primary left-0 h-full"
+          >
             <div className="flex items-center justify-between p-4 border-b border-primary">
               <Button
                 type="text"
@@ -254,7 +307,8 @@ const LayoutDrawer = ({ children }) => {
               onClick={async () => {
                 await logout();
                 navigate("/administrator");
-              }}>
+              }}
+            >
               <SiCashapp size={32} className="text-white" />
               {isSidebarOpen && (
                 <Text style={{ color: "white", fontWeight: 600, fontSize: 16 }}>
@@ -287,7 +341,8 @@ const LayoutDrawer = ({ children }) => {
             top: 0,
             left: 0,
             right: 0,
-          }}>
+          }}
+        >
           <Button
             type="text"
             onClick={() => setDrawerOpen(true)}
@@ -320,7 +375,8 @@ const LayoutDrawer = ({ children }) => {
             background: "#0154D8",
             color: "white",
           },
-        }}>
+        }}
+      >
         <div className="bg-gradient-to-b from-primary to-[#012C72]">
           {MenuNode}
 
@@ -330,7 +386,8 @@ const LayoutDrawer = ({ children }) => {
               await logout();
               setDrawerOpen(false);
               navigate("/administrator");
-            }}>
+            }}
+          >
             <SiCashapp size={48} className="text-white h-8 w-8" />
             <Text style={{ color: "white", fontWeight: "600", fontSize: 16 }}>
               <span style={{ color: "white" }}>ocial</span>
@@ -345,7 +402,8 @@ const LayoutDrawer = ({ children }) => {
         style={{
           marginLeft: !isMobile ? (isSidebarOpen ? 256 : 80) : 0,
           transition: "all 0.2s",
-        }}>
+        }}
+      >
         {/* add top padding on mobile to account for fixed mobile header */}
         <Content
           style={{
@@ -353,7 +411,8 @@ const LayoutDrawer = ({ children }) => {
             overflowY: "auto",
             paddingTop: isMobile ? 64 : 24,
           }}
-          className={`flex-1 relative p-6 transition-all duration-300`}>
+          className={`flex-1 relative p-6 transition-all duration-300`}
+        >
           {children}
         </Content>
       </Layout>

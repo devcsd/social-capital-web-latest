@@ -127,26 +127,26 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const members = [
+   const members = [
     {
       id: 1,
       name: "John",
-      image: "https://i.pravatar.cc/100?img=12",
+      image: "https://i.pinimg.com/736x/f4/99/f0/f499f06258a43294c91223088c8bf0bd.jpg",
     },
     {
       id: 2,
       name: "Sophia",
-      image: "https://i.pravatar.cc/100?img=32",
+      image: "https://i.pinimg.com/736x/a1/92/ef/a192efe6ff4e585e4ff121bd84f1e9fc.jpg",
     },
     {
       id: 3,
       name: "David",
-      image: "https://i.pravatar.cc/100?img=18",
+      image: "https://i.pinimg.com/736x/80/29/21/80292138ee8ad1173f250d6a394832db.jpg",
     },
     {
       id: 4,
       name: "Emma",
-      image: "https://i.pravatar.cc/100?img=45",
+      image: "https://i.pinimg.com/736x/4c/26/fe/4c26fe7d5c217eda24d53abdeed52d03.jpg",
     },
   ];
 

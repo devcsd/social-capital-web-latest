@@ -46,14 +46,21 @@ const RoundCard = ({ round, index }) => {
     <Card
       className="rounded-2xl relative"
       bodyStyle={{ padding: 24 }}
-      onClick={() => navigate(`/adminPanel/GroupsRound/${round.id}`)}>
+      onClick={() => navigate(`/adminPanel/GroupsRound/${round.id}`)}
+    >
       {/* Round Header */}
       <div className="flex justify-between items-center mb-4">
         <Title level={4} className="m-0">
           Round {index + 1}
         </Title>
 
-        <Tag color={isCompleted ? "default" : "blue"} className="rounded-full">
+        <Tag
+          className={`rounded-full px-4 py-1 text-sm font-semibold border-0 shadow-sm ${
+            isCompleted
+              ? "bg-green-100 text-green-700"
+              : "bg-blue-100 text-blue-700"
+          }`}
+        >
           {isCompleted ? "Completed" : "Upcoming"}
         </Tag>
       </div>
@@ -75,35 +82,61 @@ const RoundCard = ({ round, index }) => {
       </Card>
 
       {/* Winner */}
-      <div className="bg-primary p-6 rounded-xl text-white mb-4 border border-white/20">
-        <Space align="center">
-          <Avatar
-            size={48}
-            src={isCompleted ? round?.winnerImage : null}
-            className="bg-primary text-white font-semibold border border-white flex items-center content-center">
-            {isCompleted && !round?.winnerImage && round?.profileName ? (
-              round.profileName
-            ) : !isCompleted ? (
-              <TrophyOutlined className="text-2xl" />
-            ) : null}
-          </Avatar>
+      <div
+        className={`p-6 rounded-2xl mb-4 border overflow-hidden relative shadow-md ${
+          isCompleted
+            ? "bg-gradient-to-r from-emerald-500 to-green-600 border-white/20 text-white"
+            : "bg-gradient-to-r from-gray-100 to-gray-200 border-gray-300 text-gray-700"
+        }`}
+      >
+        {/* Glow Effect */}
+        {isCompleted && (
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+        )}
 
+        <div className="relative flex items-center gap-4">
+          {/* Avatar */}
+          {isCompleted ? (
+            round?.winnerImage ? (
+              <img
+                src={round.winnerImage}
+                alt="Winner"
+                className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-lg"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur border-4 border-white flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                {round?.profileName || "W"}
+              </div>
+            )
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-md">
+              <TrophyOutlined className="text-3xl text-[#11B981]" />
+            </div>
+          )}
+
+          {/* Content */}
           <div>
-            <Text className="text-white/80">Winner</Text>
-            <br />
-            <Text strong className="text-white">
+            <p
+              className={`text-sm font-medium ${
+                isCompleted ? "text-white/80" : "text-gray-500"
+              }`}
+            >
+              {isCompleted ? "Round Winner" : "Winner Status"}
+            </p>
+
+            <h3 className="text-xl font-bold mt-1">
               {isCompleted && round?.winnerName
                 ? round.winnerName
-                : "Yet to be decided"}
-            </Text>
+                : "This round is not completed "}
+            </h3>
           </div>
-        </Space>
+        </div>
       </div>
 
       {/* Settlement */}
-      <div className="bg-secondary/50 p-6 rounded-xl" bordered={false}>
+      <div className="bg-[#FFC600] p-6 rounded-xl" bordered={false}>
         <Text type="secondary">Payout Amount</Text>
-        <h1 level={5} className="m-0">
+        <h1 level={5} className="m-0 font-bold text-2xl text-black">
           {formatCurrency(round.currencyLabel, round.payoutAmount)}
         </h1>
       </div>
@@ -240,7 +273,8 @@ export default function FundManagerGroupRound() {
         onClick={() =>
           navigate(`/adminPanel/FundManager/${group.groupData.fund_manager_id}`)
         }
-        className="flex items-center gap-2 text-primary mb-4 cursor-pointer">
+        className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
+      >
         <ArrowLeftOutlined />
         <Text strong>Back to Groups</Text>
       </button>
@@ -280,25 +314,25 @@ export default function FundManagerGroupRound() {
               <Col xs={24} md={8}>
                 <Card className="rounded-xl bg-indigo-50">
                   <Text>Total Rounds</Text>
-                  <h1 level={3} className="text-primary">
+                  <h1 level={3} className="text-primary text-3xl font-bold">
                     {rounds.length}
                   </h1>
                 </Card>
               </Col>
 
               <Col xs={24} md={8}>
-                <div className="rounded-xl bg-secondary/50 text-white p-6">
+                <div className="rounded-xl bg-[#FFC600] text-white p-6">
                   <Text className="text-black">Total Fund Value</Text>
-                  <h1 level={3} className="text-black">
+                  <h1 level={3} className="text-black text-3xl font-bold">
                     {formatCurrency(group?.currencyLabel, group?.totalFund)}
                   </h1>
                 </div>
               </Col>
 
               <Col xs={24} md={8}>
-                <div className="rounded-xl bg-primary text-white p-6">
+                <div className="rounded-xl bg-[#11B981] text-white p-6">
                   <Text className="text-white">Completed Rounds</Text>
-                  <h1 level={3} className="text-white">
+                  <h1 level={3} className="text-white text-3xl font-bold">
                     {group?.completedRoundCount}
                   </h1>
                 </div>
@@ -322,13 +356,21 @@ export default function FundManagerGroupRound() {
             />
           </Col>
         ) : (
-          rounds.map((round, index) => (
-            <Col xs={24} md={12} xl={8} key={round.id}>
-              <RoundCard round={round} index={index} />
-            </Col>
-          ))
+          [...rounds]
+            .sort((a, b) => {
+              const roundA = Number(a.round.split("_")[1]);
+              const roundB = Number(b.round.split("_")[1]);
+
+              return roundA - roundB;
+            })
+            .map((round, index) => (
+              <Col xs={24} md={12} xl={8} key={round.id}>
+                <RoundCard round={round} index={index} />
+              </Col>
+            ))
         )}
       </Row>
+      {console.log("Round data", rounds)}
 
       <div className="h-[300px] mt-8">
         {loading ? (

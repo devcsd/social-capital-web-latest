@@ -44,7 +44,8 @@ const GroupHeaderSkeleton = () => (
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="bg-indigo-50 rounded-xl p-5 flex justify-between items-center">
+          className="bg-indigo-50 rounded-xl p-5 flex justify-between items-center"
+        >
           <div className="space-y-2">
             <Skeleton className="h-3 w-24" />
             <Skeleton className="h-6 w-16" />
@@ -67,7 +68,8 @@ const RoundCardSkeleton = () => (
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="flex items-center gap-3 bg-indigo-50 rounded-lg px-4 py-3">
+          className="flex items-center gap-3 bg-indigo-50 rounded-lg px-4 py-3"
+        >
           <Skeleton className="w-9 h-9 rounded-lg" />
           <div className="space-y-2">
             <Skeleton className="h-3 w-16" />
@@ -124,7 +126,8 @@ export default function GroupDetails() {
           navigate(
             `/adminPanel/${groupType == "Auction" ? "Auction" : "Rotation"}`,
           )
-        }>
+        }
+      >
         <LuArrowLeft size={18} />
         Back to {groupType} Overview
       </button>
@@ -149,6 +152,7 @@ export default function GroupDetails() {
         <>
           {/* <pre>Grousps : {JSON.stringify(group, null, 2)}</pre> */}
           {/* <pre>Rounds : {JSON.stringify(group.rounds, null, 2)}</pre> */}
+          {/* <pre>{groupID}</pre> */}
           {/* Group Header */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex items-center justify-between">
@@ -189,7 +193,8 @@ export default function GroupDetails() {
                     group?.groupData?.is_active
                       ? "bg-green-100 text-green-600"
                       : "bg-red-100 text-red-600"
-                  }`}>
+                  }`}
+                >
                   {group?.groupData?.is_active ? "Active" : "Inactive"}
                 </span>
 
@@ -275,68 +280,84 @@ export default function GroupDetails() {
             <h2 className="text-lg font-semibold mb-4">Auction Rounds</h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
-              {rounds.map((r, index) => (
-                <div
-                  key={r.round}
-                  className="bg-white rounded-2xl p-5 border shadow-sm space-y-4 hover:-translate-y-2
-    hover:shadow-xl transition-all duration-300 cursor-pointer"
-                  onClick={() => {
-                    window.location.href = `/adminPanel/${groupType}Round/${group.groupId}`;
-                  }}>
-                  {/* Header */}
-                  <div className="flex justify-between items-center ">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Round {index + 1}
-                    </h3>
-                    <span
-                      className={`px-3 py-1 text-xs rounded-full font-medium ${
-                        r.status === "completed"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}>
-                      {r.status}
-                    </span>
-                  </div>
-                  {/* Info rows */}
-                  <div className="space-y-3">
-                    <InfoRow
-                      icon={GiTrophyCup}
-                      label="Winner"
-                      value={r.winnerName ? r.winnerName : "-"}
-                    />
-                    <InfoRow
-                      icon={LuCalendarDays}
-                      label="Date"
-                      value={formatDateTimeByCurrency(
-                        r.roundCompletedDate,
-                        r.currencyLabel,
-                      )}
-                    />
-                    {groupType === "Auction" &&
-                      r.maximumBidAmount &&
-                      r.payoutAmount && (
-                        <InfoRow
-                          icon={MdGavel}
-                          label="Winning Bid"
-                          value={formatCurrency(
-                            r.currencyLabel,
-                            r.payoutAmount,
-                          )}
-                        />
-                      )}
-                  </div>
-                  {/* Settlement */}
-                  <div className="bg-yellow-400 rounded-xl px-4 py-4 flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-800">
-                      Settlement Amount
-                    </span>
-                    <div className="flex items-center gap-1 font-semibold text-gray-900">
-                      <GiMoneyStack size={16} />
-                      {formatCurrency(r.currencyLabel, r.payoutAmount)}
+              {[...rounds]
+                .sort((a, b) => {
+                  const roundA = Number(a.round.split("_")[1]);
+                  const roundB = Number(b.round.split("_")[1]);
+
+                  return roundA - roundB;
+                })
+                .map((r, index) => (
+                  <div
+                    key={r.round}
+                    className="bg-white rounded-2xl p-5 border shadow-sm space-y-4 hover:-translate-y-2
+hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    onClick={() => {
+                      window.location.href = `/adminPanel/${group.groupType}Round/${r.id}`;
+                    }}
+                  >
+                    {/* <p>{`/adminPanel/${group.groupType}Round/${r.id}`}</p> */}
+                    {/* Header */}
+                    <div className="flex justify-between items-center ">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Round {index + 1}
+                      </h3>
+
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full font-medium ${
+                          r.status === "completed"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {r.status}
+                      </span>
+                    </div>
+
+                    {/* Info rows */}
+                    <div className="space-y-3">
+                      <InfoRow
+                        icon={GiTrophyCup}
+                        label="Winner"
+                        value={r.winnerName ? r.winnerName : "-"}
+                      />
+
+                      <InfoRow
+                        icon={LuCalendarDays}
+                        label="Date"
+                        value={formatDateTimeByCurrency(
+                          r.roundCompletedDate,
+                          r.currencyLabel,
+                        )}
+                      />
+
+                      {groupType === "Auction" &&
+                        r.maximumBidAmount &&
+                        r.payoutAmount && (
+                          <InfoRow
+                            icon={MdGavel}
+                            label="Winning Bid"
+                            value={formatCurrency(
+                              r.currencyLabel,
+                              r.payoutAmount,
+                            )}
+                          />
+                        )}
+                    </div>
+
+                    {/* Settlement */}
+                    <div className="bg-yellow-400 rounded-xl px-4 py-4 flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-800">
+                        Settlement Amount
+                      </span>
+
+                      <div className="flex items-center gap-1 font-semibold text-gray-900">
+                        <GiMoneyStack size={16} />
+                        {formatCurrency(r.currencyLabel, r.payoutAmount)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </>
@@ -351,7 +372,8 @@ const StatCard = ({ title, value, iconBg, Icon }) => (
   <div className="bg-white rounded-xl p-5 border shadow-sm flex items-center gap-4">
     {/* Icon box */}
     <div
-      className={`w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center`}>
+      className={`w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center`}
+    >
       <Icon className="w-6 h-6 text-primary" />
     </div>
 

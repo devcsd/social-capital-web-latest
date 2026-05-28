@@ -19,6 +19,7 @@ import AuctionOverview from "../FundType/AuctionGroups";
 import RotationOverview from "../FundType/RotationGroups";
 import FundTypeGroupDetails from "../FundType/GroupDetails";
 import RoundAuction from "../FundType/RoundAuction";
+import RoundRotation from "../FundType/RoundRotation";
 import SupportEnquiry from "../Adminpages/SupportEnquiry";
 import { Toaster } from "react-hot-toast";
 
@@ -158,6 +159,14 @@ const AppRoute = () => (
           element={
             <ProtectedRoute>
               <RoundAuction />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminPanel/RotationRound/:roundID"
+          element={
+            <ProtectedRoute>
+              <RoundRotation />
             </ProtectedRoute>
           }
         />

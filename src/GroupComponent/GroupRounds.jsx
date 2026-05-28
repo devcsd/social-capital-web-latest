@@ -153,7 +153,7 @@ export const GroupRounds = () => {
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-primary mb-4 cursor-pointer">
         <ArrowLeftOutlined />
-       Back to Groups
+       Back to Groups 
       </button>
 
       {/* <div>

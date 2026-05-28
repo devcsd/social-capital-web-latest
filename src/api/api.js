@@ -118,7 +118,11 @@ export const getRotationGroups = async () => {
 
 //Get support_category
 export const supportCategory = async () => {
-  return apiService.get("masterType");
+  return apiService.get("masterType", {
+    headers: {
+      Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNWMwMTdjNy1jZjVmLTQ1ZmQtOTUyZi04Mjg0NDdhNzNhZDciLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlX2lkIjoxLCJpYXQiOjE3Nzk5NTA0MzB9.lnuTJtQNCgo6ikC0Od9c1b1ids8xTOvkUgJA73BW2HE`,
+    },
+  });
 };
 
 // Post SupportEnquiry

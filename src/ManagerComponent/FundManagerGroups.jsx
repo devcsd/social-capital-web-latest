@@ -31,17 +31,24 @@ const GroupCard = ({
   amount,
   groupId,
   currency,
+  groupType,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div
       onClick={() => navigate(`/adminPanel/ManagerGroupsDetails/${groupId}`)}
-      className="cursor-pointer rounded-2xl bg-white shadow-md hover:shadow-xl transition p-5">
+      className="cursor-pointer rounded-2xl bg-white shadow-md hover:shadow-xl transition p-5"
+    >
       {/* Title */}
       <div className="flex items-center justify-between">
         {" "}
-        <h3 className="text-lg font-semibold text-black mb-4">{title}</h3>
+        <div>
+          <h3 className="text-lg font-semibold text-black mb-4">{title}</h3>
+          <h5 className="text-sm text-primary bg-[#F6F5FF] p-1 px-4  rounded-2xl mb-4">
+            {groupType}
+          </h5>
+        </div>
         <span>
           <ReactCountryFlag
             svg
@@ -62,7 +69,7 @@ const GroupCard = ({
         </div>
 
         {/* Manager Earned */}
-        <div className="rounded-xl bg-secondary/50 p-4">
+        <div className="rounded-xl bg-[#FFC501] p-4">
           <p className="text-sm text-gray-600">Manager Earned</p>
           <p className="text-lg font-semibold">
             {formatCurrency(currency, earned)}
@@ -70,28 +77,40 @@ const GroupCard = ({
         </div>
 
         {/* Previous Winner */}
-        <div className="rounded-xl bg-success p-4 flex items-center gap-3">
-          {winner ? (
-            winnerImage ? (
-              <img
-                src={winnerImage}
-                alt="Winner"
-                className="w-16 h-16 rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-success flex items-center justify-center border border-white text-white text-bold">
-                {getInitials(winner)}
-              </div>
-            )
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-success flex items-center justify-center border border-white text-white">
-              <TrophyOutlined className="text-2xl" />
-            </div>
-          )}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 p-5 shadow-lg border border-emerald-400">
+          {/* Background Glow */}
+          <div className="absolute -top-6 -right-6 w-28 h-28 bg-white/10 rounded-full blur-2xl"></div>
 
-          <div>
-            <p className="text-sm text-gray-600">Previous Winner</p>
-            <p className="font-semibold text-white">{winner || "—"}</p>
+          <div className="relative flex items-center gap-4">
+            {/* Avatar */}
+            {winner ? (
+              winnerImage ? (
+                <img
+                  src={winnerImage}
+                  alt="Winner"
+                  className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-[#FFC600] backdrop-blur flex items-center justify-center  text-white text-lg font-bold shadow-md">
+                  {getInitials(winner)}
+                </div>
+              )
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border-4 border-white text-white shadow-md">
+                <TrophyOutlined className="text-3xl" />
+              </div>
+            )}
+
+            {/* Content */}
+            <div className="flex-1">
+              <p className="text-sm text-emerald-100 font-medium tracking-wide uppercase">
+                Previous Winner
+              </p>
+
+              <h3 className="text-xl font-bold text-white mt-1">
+                {winner || "No Completed Round"}
+              </h3>
+            </div>
           </div>
         </div>
 
@@ -106,7 +125,8 @@ const GroupCard = ({
         {/* Button */}
         <button
           className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
-          onClick={() => navigate(`/adminPanel/ManagerGroups/${groupId}`)}>
+          onClick={() => navigate(`/adminPanel/ManagerGroups/${groupId}`)}
+        >
           View Rounds
         </button>
       </div>
@@ -184,7 +204,8 @@ export default function FundManagerGroups() {
       {/* Back */}
       <button
         onClick={() => navigate("/adminPanel/FundManager")}
-        className="flex items-center gap-2 text-primary mb-4 cursor-pointer">
+        className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
+      >
         <ArrowLeftOutlined />
         <Text strong>Back to Fund Managers</Text>
       </button>
@@ -196,7 +217,8 @@ export default function FundManagerGroups() {
         <Card
           style={{ borderRadius: 20 }}
           className="mb-8"
-          bodyStyle={{ padding: 24 }}>
+          bodyStyle={{ padding: 24 }}
+        >
           <div className="flex flex-col lg:flex-row justify-between gap-6">
             <div className="flex items-center gap-4">
               <Avatar
@@ -208,7 +230,8 @@ export default function FundManagerGroups() {
                     : "#3f51b5",
                   fontSize: 22,
                   fontWeight: 600,
-                }}>
+                }}
+              >
                 {!managerInfo.fundManagerProfileImage &&
                   getInitials(managerInfo.fundManagerName)}
               </Avatar>
@@ -268,6 +291,7 @@ export default function FundManagerGroups() {
                     ? new Date(group.upcomingRoundDate).toLocaleDateString()
                     : "Not Scheduled"
                 }
+                groupType={group.groupType}
                 earned={group.managerEarningAmount}
                 winner={group.previousRoundWinnerName}
                 winnerImage={group.previousRoundWinnerImage}
