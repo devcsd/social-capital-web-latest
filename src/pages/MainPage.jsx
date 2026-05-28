@@ -1,0 +1,32 @@
+import Header from "../components/Header";
+import HeroSection from "../components/HeroSection";
+import HowItWorksSection from "../components/WorkWithUsSection";
+import BenefitHighlightSection from "../components/Benifit";
+import DevelopmentSection from "../components/DevelopmentSection";
+import Platform from "../components/platform";
+import PayoutModels from "../components/CommunityFundPlatform";
+import TrustAndSafetySection from "../components/SocialCapitalChartSection";
+import Services from "../components/Services";
+import Footer from "../components/Footer";
+import Chatbot from "../components/Chatbot";
+import "../index.css";
+
+function Main() {
+  return (
+    <div className="min-h-screen bg-primary overflow-x-auto scrollbar-hide">
+      <Header />
+      <HeroSection />
+      <HowItWorksSection />
+      <BenefitHighlightSection />
+      <DevelopmentSection />
+      <Platform />
+      <PayoutModels />
+      <TrustAndSafetySection />
+      <Services />
+      <Footer />
+      <Chatbot />
+    </div>
+  );
+}
+
+export default Main;

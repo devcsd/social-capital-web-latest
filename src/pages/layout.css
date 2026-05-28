@@ -1,0 +1,42 @@
+/* -------------------- Menu Styles -------------------- */
+
+/* Default unselected menu items */
+.custom-menu .ant-menu-item {
+  color: white !important; /* white text */
+  font-size: 18px;
+}
+
+/* Unselected menu item links */
+.custom-menu .ant-menu-item a {
+  color: white !important;
+  font-size: 18px;
+}
+
+/* Selected menu item */
+.custom-menu .ant-menu-item-selected {
+  background-color: #ffc404 !important; /* Tailwind ffc404 */
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Selected menu item link text */
+.custom-menu .ant-menu-item-selected a {
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Hover effect on menu items */
+.custom-menu .ant-menu-item:hover {
+  background-color: #ffc404 !important; /* subtle secondary hover */
+  color: white !important;
+}
+
+/* Hide scrollbar but keep scrolling */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
