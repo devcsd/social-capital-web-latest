@@ -16,7 +16,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#0b0e1c] py-16 px-8">
+    <footer className="bg-[#0b0e1c] py-4 px-8">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
@@ -37,7 +37,8 @@ const Footer = () => {
                 href="https://www.facebook.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full">
+                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
+              >
                 <FaFacebookF className="h-5 w-5" />
               </a>
 
@@ -45,7 +46,8 @@ const Footer = () => {
                 href="https://www.instagram.com/socialcapital.app?igsh=Z3Zqc3pyeGtpZTJi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full">
+                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
+              >
                 <FaInstagram className="h-5 w-5" />
               </a>
 
@@ -53,7 +55,8 @@ const Footer = () => {
                 href="https://x.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full">
+                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
+              >
                 <FaXTwitter className="h-5 w-5" />
               </a>
             </div>
@@ -79,7 +82,8 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href="/"
-                    className="text-gray-300 hover:text-secondary transition-colors duration-300 font-inter text-sm">
+                    className="text-gray-300 hover:text-secondary transition-colors duration-300 font-inter text-sm"
+                  >
                     {info}
                   </a>
                 </li>
@@ -121,6 +125,17 @@ const Footer = () => {
 
             <ContactPopup />
           </div>
+        </div>
+      </div>
+      <div className="mt-16 mb-0">
+        {/* Bottom Bar */}
+        <div className="text-center">
+          <p className="text-gray-400 text-sm font-inter">
+            Designed and Developed by{" "}
+            <a href="https://www.cloudspacedesign.com/" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium">
+              CloudSpaceDesign.com
+            </a>
+          </p>
         </div>
       </div>
     </footer>

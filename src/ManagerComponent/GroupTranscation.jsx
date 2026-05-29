@@ -402,7 +402,7 @@ export default function GroupTranscation() {
             <div className="lg:col-span-2 rounded-xl bg-white p-6 shadow-sm mb-5">
               <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <h2 className="text-lg font-semibold">Transaction Details</h2>
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   <input
                     type="text"
                     placeholder="Search transactions..."
@@ -411,7 +411,7 @@ export default function GroupTranscation() {
                   <button className="rounded-lg border px-4 py-2 text-sm">
                     Filter
                   </button>
-                </div>
+                </div> */}
               </div>
 
               {/* Table */}
@@ -424,7 +424,7 @@ export default function GroupTranscation() {
                       <th className="px-4 py-3">Amount</th>
                       <th className="px-4 py-3">Date</th>
                       <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Actions</th>
+                      {/* <th className="px-4 py-3">Actions</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -469,11 +469,11 @@ export default function GroupTranscation() {
                             </span>
                           </td>
 
-                          <td className="px-4 py-3">
+                          {/* <td className="px-4 py-3">
                             <button className="rounded-lg bg-primary px-4 py-2 text-xs text-white hover:bg-indigo-700">
                               View Details
                             </button>
-                          </td>
+                          </td> */}
                         </tr>
                       ))
                     ) : (

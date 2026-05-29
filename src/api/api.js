@@ -58,6 +58,11 @@ export const getAllGroupCategoriesData = async () => {
   return apiService.get("admin/getAllGroupData");
 };
 
+// Get All Groups
+export const getAllGroups = async () => {
+  return apiService.get("group");
+};
+
 // Get Groups by Group Type ID
 export const getGroupByTypeId = async (typeId) => {
   return apiService.get(`admin/getGroupByTypeId/${typeId}`);
@@ -120,7 +125,7 @@ export const getRotationGroups = async () => {
 export const supportCategory = async () => {
   return apiService.get("masterType", {
     headers: {
-      Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNWMwMTdjNy1jZjVmLTQ1ZmQtOTUyZi04Mjg0NDdhNzNhZDciLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlX2lkIjoxLCJpYXQiOjE3Nzk5NTA0MzB9.lnuTJtQNCgo6ikC0Od9c1b1ids8xTOvkUgJA73BW2HE`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNWMwMTdjNy1jZjVmLTQ1ZmQtOTUyZi04Mjg0NDdhNzNhZDciLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlX2lkIjoxLCJpYXQiOjE3ODAwMzM4MTl9.QXX2bRb_9nj7GweYYdGtwgXoZ-xe2zD1E0Srr6-6AEw`,
     },
   });
 };

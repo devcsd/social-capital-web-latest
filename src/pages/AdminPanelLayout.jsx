@@ -50,12 +50,12 @@ const menuItems = [
     icon: <FaChartPie />,
     to: "/dashboard",
   },
-  // {
-  //   key: "Groups",
-  //   label: "Groups",
-  //   icon: <FaUsers />,
-  //   to: "/adminPanel/GroupCategories",
-  // },
+  {
+    key: "Groups",
+    label: "Groups",
+    icon: <FaUsers />,
+    to: "/adminPanel/GroupCategories",
+  },
   {
     key: "Members",
     label: "Members",

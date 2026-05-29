@@ -19,7 +19,8 @@ const FundCard = ({ fund }) => {
     <div className="bg-highlight backdrop-blur-sm rounded-2xl p-4 w-[230px] sm:w-[240px] flex-shrink-0 border border-highlight hover:border-secondary/30 transition-all duration-300 hover:scale-105 snap-start">
       <div className="flex items-center gap-3 mb-3">
         <div
-          className={`w-10 h-10 rounded-full ${fund.iconBg} flex items-center justify-center text-white`}>
+          className={`w-10 h-10 rounded-full ${fund.iconBg} flex items-center justify-center text-white`}
+        >
           <Icon className="text-lg" />
         </div>
         <h3 className="text-white font-semibold text-xl font-inter">
@@ -36,7 +37,8 @@ const FundCard = ({ fund }) => {
 /** Reusable Store Button */
 const StoreButton = ({ icon, label, bg, text, hover }) => (
   <button
-    className={`group flex items-center px-6 py-2 rounded-[15px] font-inter font-semibold transition-all ${bg} ${text} ${hover}`}>
+    className={`group flex items-center px-6 py-2 rounded-[15px] font-inter font-semibold transition-all ${bg} ${text} ${hover}`}
+  >
     <span className="mr-2 group-hover:scale-110 transition-transform duration-200">
       {icon}
     </span>
@@ -127,26 +129,30 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-   const members = [
+  const members = [
     {
       id: 1,
       name: "John",
-      image: "https://i.pinimg.com/736x/f4/99/f0/f499f06258a43294c91223088c8bf0bd.jpg",
+      image:
+        "https://i.pinimg.com/736x/f4/99/f0/f499f06258a43294c91223088c8bf0bd.jpg",
     },
     {
       id: 2,
       name: "Sophia",
-      image: "https://i.pinimg.com/736x/a1/92/ef/a192efe6ff4e585e4ff121bd84f1e9fc.jpg",
+      image:
+        "https://i.pinimg.com/736x/a1/92/ef/a192efe6ff4e585e4ff121bd84f1e9fc.jpg",
     },
     {
       id: 3,
       name: "David",
-      image: "https://i.pinimg.com/736x/80/29/21/80292138ee8ad1173f250d6a394832db.jpg",
+      image:
+        "https://i.pinimg.com/736x/80/29/21/80292138ee8ad1173f250d6a394832db.jpg",
     },
     {
       id: 4,
       name: "Emma",
-      image: "https://i.pinimg.com/736x/4c/26/fe/4c26fe7d5c217eda24d53abdeed52d03.jpg",
+      image:
+        "https://i.pinimg.com/736x/4c/26/fe/4c26fe7d5c217eda24d53abdeed52d03.jpg",
     },
   ];
 
@@ -207,7 +213,7 @@ const HeroSection = () => {
           </div>
 
           {/* --- Right Column --- */}
-          <div className="relative flex justify-center">
+          <div className="relative flex justify-center ">
             {/* Map Image + Overlays */}
             <div className="relative">
               {/* Map */}
@@ -226,7 +232,8 @@ const HeroSection = () => {
                   style={{
                     top: country.top,
                     left: country.left,
-                  }}>
+                  }}
+                >
                   {/* Ping Animation */}
                   {/* <span
                     className={`absolute inline-flex h-5 w-5 rounded-full ${country.color} opacity-40 animate-ping`}></span> */}
@@ -241,7 +248,8 @@ const HeroSection = () => {
                       <div className="bg-[#111827]/95 backdrop-blur-xl border border-white/10 rounded-2xl px-4 py-3 shadow-2xl min-w-[170px]">
                         <div className="flex items-center gap-2 mb-2">
                           <div
-                            className={`w-3 h-3 rounded-full ${country.color}`}></div>
+                            className={`w-3 h-3 rounded-full ${country.color}`}
+                          ></div>
 
                           <h4 className="text-white font-semibold text-sm">
                             {country.name}
@@ -265,7 +273,7 @@ const HeroSection = () => {
               ))}
 
               {/* Growth Tag */}
-              <div className="absolute top-4 right-4 z-30 bg-primary/90 backdrop-blur-md rounded-xl p-3 border border-secondary/20 hover:scale-105 transition-transform shadow-lg">
+              <div className="hidden lg:block absolute top-4 right-4 z-30 bg-primary/90 backdrop-blur-md rounded-xl p-3 border border-secondary/20 hover:scale-105 transition-transform shadow-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-white font-inter">
                     ACTIVE GROUPS
@@ -307,7 +315,7 @@ const HeroSection = () => {
               </div> */}
 
               {/* Floating Money Bag Bubble */}
-              <div className="absolute -bottom-8 left-8 z-20">
+              <div className="hidden lg:block absolute -bottom-8 left-8 z-20">
                 <div className="w-28 sm:w-32 h-28 sm:h-32 rounded-full border border-secondary/30 bg-primary/80 backdrop-blur-sm flex flex-col items-center justify-center hover:scale-105 transition-transform text-white text-xs text-center font-inter">
                   <p>Explore and grow</p>
                   <p>together with</p>
@@ -319,28 +327,28 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 mt-4">
           {/* Avatar Stack */}
-          <div className="flex -space-x-4">
+          <div className="flex -space-x-3">
             {members.map((member) => (
               <img
                 key={member.id}
                 src={member.image}
                 alt={member.name}
-                className="w-12 h-12 rounded-full border-4 border-[#1E40FF] object-cover shadow-lg hover:-translate-y-1 transition-all duration-300"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-4 border-[#1E40FF] object-cover shadow-lg hover:-translate-y-1 transition-all duration-300"
               />
             ))}
 
             {/* Extra Count */}
-            <div className="w-12 h-12 rounded-full border-4 border-[#1E40FF] bg-gradient-to-br from-secondary to-yellow-400 flex items-center justify-center text-xs font-bold text-black shadow-lg">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-4 border-[#1E40FF] bg-gradient-to-br from-secondary to-yellow-400 flex items-center justify-center text-[10px] sm:text-xs font-bold text-black shadow-lg">
               +9K
             </div>
           </div>
 
           {/* Text */}
-          <p className="text-white text-lg md:text-xl font-semibold">
+          <p className="text-center sm:text-left text-sm sm:text-lg md:text-xl font-semibold text-white">
             12,400+ members{" "}
-            <span className="text-white/70 font-medium">
+            <span className="block sm:inline text-white/70 font-medium">
               across India, USA, China, Australia & UK
             </span>
           </p>

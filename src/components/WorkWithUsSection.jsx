@@ -75,7 +75,8 @@ const steps = [
         ].map((item) => (
           <span
             key={item}
-            className="px-4 py-2 rounded-full border border-white/10 text-white/70 text-xs font-medium">
+            className="px-4 py-2 rounded-full border border-white/10 text-white/70 text-xs font-medium"
+          >
             {item}
           </span>
         ))}
@@ -99,16 +100,17 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="overflow-hidden bg-primary lg:min-h-screen flex items-center">
+    <section className="overflow-hidden bg-primary py-16 lg:min-h-screen flex items-center">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Top Section */}
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
+<div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">
           {/* Left */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            viewport={{ once: true }}>
+            viewport={{ once: true }}
+          >
             <div className="inline-flex items-center gap-2 border border-white/15 rounded-full px-5 py-2 mb-8 bg-white/[0.03]">
               <span className="w-2 h-2 rounded-full bg-[#FFC72C]" />
               <span className="text-[#FFC72C] uppercase tracking-[0.25em] text-xs font-semibold">
@@ -116,7 +118,7 @@ export default function HowItWorksSection() {
               </span>
             </div>
 
-            <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight max-w-3xl">
+     <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight lg:leading-[0.95] tracking-tight max-w-3xl">
               Three steps from{" "}
               <span className="text-[#FFC72C]">invite to payout.</span>
             </h2>
@@ -128,8 +130,9 @@ export default function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             viewport={{ once: true }}
-            className="lg:pl-20 lg:pt-8">
-            <p className="text-white/75 text-2xl leading-relaxed">
+  className="lg:pl-20 lg:pt-8 mt-4 lg:mt-0"
+          >
+         <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed">
               Social Capital handles the coordination. You and your people
               decide the currency, cadence, members, and payout model. Money
               moves between you — we never touch it.
@@ -138,7 +141,7 @@ export default function HowItWorksSection() {
         </div>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mt-20">
+   <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mt-12 lg:mt-20">
           {steps.map((step, index) => {
             const Icon = step.icon;
 
@@ -152,9 +155,10 @@ export default function HowItWorksSection() {
                   delay: index * 0.1,
                 }}
                 viewport={{ once: true }}
-                className="rounded-[36px] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-9 min-h-[520px] flex flex-col">
+              className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 lg:p-9 min-h-auto lg:min-h-[520px] flex flex-col"
+              >
                 {/* Icon */}
-                <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center">
+      <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 flex items-center justify-center">
                   <Icon className="w-7 h-7 text-[#FFC72C]" />
                 </div>
 
@@ -172,12 +176,12 @@ export default function HowItWorksSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="mt-6 text-white text-4xl leading-[1.05] font-bold whitespace-pre-line">
+             <h3 className="mt-6 text-white text-2xl sm:text-3xl lg:text-4xl leading-tight font-bold whitespace-pre-line">
                   {step.title}
                 </h3>
 
                 {/* Description */}
-                <p className="mt-6 text-white/70 text-xl leading-relaxed">
+          <p className="mt-4 lg:mt-6 text-white/70 text-base sm:text-lg lg:text-xl leading-relaxed">
                   {step.description}
                 </p>
 

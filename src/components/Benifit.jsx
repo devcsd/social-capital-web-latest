@@ -33,7 +33,8 @@ const BenefitHighlightSection = () => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 2500, disableOnInteraction: false }}
           loop
-          className="pb-10">
+          className="pb-10"
+        >
           {benefits.map((benefit, index) => (
             <SwiperSlide key={index}>
               <motion.div
@@ -41,7 +42,8 @@ const BenefitHighlightSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="flex flex-col h-full rounded-2xl overflow-hidden shadow-lg border border-highlight hover:shadow-2xl bg-highlight group transition-all duration-300">
+                className="flex flex-col h-full rounded-2xl overflow-hidden shadow-lg border border-highlight hover:shadow-2xl bg-highlight group transition-all duration-300"
+              >
                 {/* Image */}
                 <div className="relative h-64 sm:h-72 w-full overflow-hidden">
                   <img
@@ -65,17 +67,6 @@ const BenefitHighlightSection = () => {
           ))}
         </Swiper>
       </div>
-
-      {/* Swiper Pagination Styling */}
-      <style jsx global>{`
-        .swiper-pagination-bullet {
-          background-color: rgba(255, 255, 255, 0.4) !important;
-          opacity: 1;
-        }
-        .swiper-pagination-bullet-active {
-          background-color: #ffffff !important;
-        }
-      `}</style>
     </section>
   );
 };

@@ -139,7 +139,7 @@ export default function RoundRotation() {
   }));
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
+    <div className="p-6 min-h-screen">
       {/* Back */}
       <button
         className="flex items-center text-sm text-indigo-600 mb-5"

@@ -385,7 +385,7 @@ const Chatbot = () => {
                 placeholder="Ask Kubera something..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyPress}
+                // onKeyDown={handleKeyPress}
               />
             </div>
           </motion.div>
