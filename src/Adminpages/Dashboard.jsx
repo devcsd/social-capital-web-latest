@@ -1,191 +1,194 @@
-import React, { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
+import React from "react";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
+  FiUsers,
+  FiLayers,
+  FiDollarSign,
+  FiAlertCircle,
+  FiSend,
+  FiMapPin,
+} from "react-icons/fi";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
   Tooltip,
-  Legend,
-} from "chart.js";
-import { FaUserAlt, FaHandHoldingUsd } from "react-icons/fa";
-import { FaUserGroup } from "react-icons/fa6";
-import { useAuth } from "../Auth/AuthContext";
+  CartesianGrid,
+} from "recharts";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
-const primary = "#0152d3";
-const secondary = "#ffc404";
-function Counter({ end, duration = 2000, prefix = "", suffix = "" }) {
-  const [count, setCount] = useState(0);
+const fundData = [
+  { name: "Education", value: 35 },
+  { name: "Gold", value: 25 },
+  { name: "Wedding", value: 20 },
+  { name: "Home", value: 15 },
+  { name: "Custom", value: 5 },
+];
 
-  useEffect(() => {
-    let start = 0;
-    let endValue =
-      typeof end === "number"
-        ? end
-        : parseInt(end.toString().replace(/\D/g, ""));
-    let stepTime = Math.abs(Math.floor(duration / endValue));
+const txnData = [
+  { day: "1", amount: 120 },
+  { day: "2", amount: 240 },
+  { day: "3", amount: 180 },
+  { day: "4", amount: 320 },
+  { day: "5", amount: 260 },
+  { day: "6", amount: 420 },
+  { day: "7", amount: 380 },
+  { day: "8", amount: 290 },
+  { day: "9", amount: 310 },
+  { day: "10", amount: 450 },
+  { day: "11", amount: 390 },
+  { day: "12", amount: 280 },
+  { day: "13", amount: 340 },
+  { day: "14", amount: 500 },
+  { day: "15", amount: 470 },
+  { day: "16", amount: 420 },
+  { day: "17", amount: 360 },
+  { day: "18", amount: 410 },
+  { day: "19", amount: 530 },
+  { day: "20", amount: 480 },
+  { day: "21", amount: 450 },
+  { day: "22", amount: 390 },
+  { day: "23", amount: 520 },
+  { day: "24", amount: 610 },
+  { day: "25", amount: 570 },
+  { day: "26", amount: 490 },
+  { day: "27", amount: 430 },
+  { day: "28", amount: 540 },
+  { day: "29", amount: 620 },
+  { day: "30", amount: 700 },
+];
 
-    let timer = setInterval(() => {
-      start += 1;
-      setCount(start);
-      if (start === endValue) clearInterval(timer);
-    }, stepTime);
+const colors = ["#2563EB", "#0EA5E9", "#22C55E", "#F59E0B", "#A855F7"];
 
-    return () => clearInterval(timer);
-  }, [end, duration]);
+const kpis = [
+  { title: "Total Members", value: "15,284", icon: FiUsers },
+  { title: "Fund Managers", value: "124", icon: FiUsers },
+  { title: "Active Groups", value: "532", icon: FiLayers },
+  { title: "Total Fund Value", value: "₹4.2 Cr", icon: FiDollarSign },
+  { title: "Pending Txns", value: "1,248", icon: FiAlertCircle },
+  { title: "Group Requests", value: "22", icon: FiSend },
+];
 
+export default function Dashboard() {
   return (
-    <h3 className="text-5xl font-extrabold text-white tracking-wide">
-      {prefix}
-      {count.toLocaleString("en-IN")}
-      {suffix}
-    </h3>
-  );
-}
-
-const Dashboard = () => {
-  const lineChartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    datasets: [
-      {
-        label: "Collections",
-        data: [100, 200, 150, 300, 250, 450],
-        borderColor: primary,
-        backgroundColor: "rgba(53,41,177,0.15)",
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: "Payouts",
-        data: [80, 160, 120, 250, 200, 400],
-        borderColor: secondary,
-        backgroundColor: "rgba(255,196,4,0.15)",
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
-
-  const lineChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-        labels: { color: primary, font: { weight: "bold" } },
-      },
-      tooltip: {
-        backgroundColor: primary,
-        titleColor: "secondary",
-        bodyColor: "#fff",
-      },
-    },
-    scales: {
-      x: { ticks: { color: primary }, grid: { display: false } },
-      y: {
-        ticks: { color: primary },
-        grid: { color: "rgba(53,41,177,0.1)" },
-      },
-    },
-  };
-
-  const { user } = useAuth();
-
-  return (
-    <div className="p-6 bg-gradient-to-br min-h-screen">
-      {/* Topbar */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-extrabold text-primary">📊 Dashboard</h2>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-gradient-to-r from-primary to-primary text-white p-6 rounded-xl shadow-lg flex flex-col justify-between hover:scale-105 transition">
-          <div className="flex items-center justify-between">
-            <FaUserGroup size={50} className="opacity-80" />
-            <Counter end={12} duration={800} />
-          </div>
-          <p className="text-lg mt-2 font-medium">Active Groups</p>
-        </div>
-
-        <div className="bg-gradient-to-r from-secondary to-[#f7b500] text-white p-6 rounded-xl shadow-lg flex flex-col justify-between hover:scale-105 transition">
-          <div className="flex items-center justify-between">
-            <FaUserAlt size={50} className="opacity-80" />
-            <Counter end={248} duration={800} />
-          </div>
-          <p className="text-lg mt-2 font-medium">Users</p>
-        </div>
-
-        <div className="bg-gradient-to-r from-primary to-secondary text-white p-6 rounded-xl shadow-lg flex flex-col justify-between hover:scale-105 transition">
-          <div className="flex items-center justify-between">
-            <FaHandHoldingUsd size={50} className="opacity-80" />
-            <h3 className="text-4xl font-extrabold">₹ 5,40,000</h3>
-          </div>
-          <p className="text-lg mt-2 font-medium">Monthly Collections</p>
+    <div className="min-h-screen">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-800">
+            Social Capital Dashboard
+          </h1>
+          <p className="text-slate-500 mt-1">
+            Monitor groups, members, transactions and fund performance.
+          </p>
         </div>
       </div>
 
-      {/* Charts & Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Line Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-          <h2 className="text-xl font-bold mb-4 text-primary">
-            📈 Collections vs Payouts
-          </h2>
-          <Line data={lineChartData} options={lineChartOptions} />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 mb-6">
+        {kpis.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.title} className="bg-white rounded-2xl p-5 shadow-sm">
+              <div className="flex justify-between items-center">
+                <Icon className="text-blue-600 text-2xl" />
+              </div>
+              <h3 className="text-slate-500 text-sm mt-4">{item.title}</h3>
+              <p className="text-2xl font-bold text-slate-800">{item.value}</p>
+            </div>
+          );
+        })}
+      </div>
+
+
+        <div className="lg:col-span-7 bg-white rounded-2xl p-5 shadow-sm mb-10">
+          <h2 className="font-semibold text-lg mb-4">Transaction Overview</h2>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={txnData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="amount" fill="#2563EB" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        {/* Recent Activity */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-          <h2 className="text-xl font-bold mb-4 text-primary">
-            ⚡ Recent Activity
+      <div className="grid lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-4 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Group Status</h2>
+          <div className="space-y-3">
+            <div className="flex justify-between"><span>Active</span><b>532</b></div>
+            <div className="flex justify-between"><span>Pending</span><b>44</b></div>
+            <div className="flex justify-between"><span>Completed</span><b>182</b></div>
+            <div className="flex justify-between"><span>Paused</span><b>18</b></div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Auction Overview</h2>
+          <div className="space-y-2">
+            <p>Active Auctions: 58</p>
+            <p>Live Rounds: 12</p>
+            <p>Today's Winners: 8</p>
+            <p>Dividend Paid: ₹2.4L</p>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Rotation Overview</h2>
+          <div className="space-y-2">
+            <p>Active Groups: 74</p>
+            <p>Today's Winners: 11</p>
+            <p>Settlements: ₹5.8L</p>
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Pending Actions</h2>
+          <div className="space-y-3">
+            <div>22 Group Requests</div>
+            <div>18 Paused Groups</div>
+            <div>57 Pending Settlements</div>
+            <div>124 Pending Transactions</div>
+            <div>9 New Enquiries</div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-7 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Recent Activities</h2>
+          <div className="space-y-4">
+            <div>10:20 AM - Ravi paid ₹5,000</div>
+            <div>10:15 AM - Auction Winner Selected</div>
+            <div>10:05 AM - New Group Request</div>
+            <div>09:55 AM - Settlement Completed</div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-6 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4">Top Fund Managers</h2>
+          <div className="space-y-3">
+            <div className="border rounded-xl p-3">Raj Kumar - 22 Groups - ₹1.25L Earnings</div>
+            <div className="border rounded-xl p-3">Arun - 18 Groups - ₹95K Earnings</div>
+            <div className="border rounded-xl p-3">Priya - 15 Groups - ₹88K Earnings</div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-6 bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-semibold mb-4 flex items-center gap-2">
+            <FiMapPin /> Location Analytics
           </h2>
-          <ul className="space-y-4 text-gray-700 max-h-72 overflow-y-auto border-l-2 border-primary pl-4">
-            <li>
-              <span className="bg-secondary text-white px-2 py-1 rounded-md">
-                Member #245
-              </span>{" "}
-              made a payment <span className="text-gray-500">· 2h ago</span>
-            </li>
-            <li>
-              Auction conducted for{" "}
-              <span className="bg-primary text-white px-2 py-1 rounded-md">
-                Group C
-              </span>{" "}
-              <span className="text-gray-500">· 5h ago</span>
-            </li>
-            <li>
-              <span className="bg-secondary text-white px-2 py-1 rounded-md">
-                Group D
-              </span>{" "}
-              created <span className="text-gray-500">· 1d ago</span>
-            </li>
-            <li>
-              <span className="bg-primary text-white px-2 py-1 rounded-md">
-                Group B
-              </span>{" "}
-              chit updated <span className="text-gray-500">· 2d ago</span>
-            </li>
-            <li>
-              Chit amount recorded for{" "}
-              <span className="bg-secondary text-white px-2 py-1 rounded-md">
-                Group A
-              </span>{" "}
-              <span className="text-gray-500">· 3d ago</span>
-            </li>
-          </ul>
+          <div className="space-y-3">
+            <div>Chennai - 523 Members</div>
+            <div>Coimbatore - 384 Members</div>
+            <div>Madurai - 221 Members</div>
+            <div>Trichy - 198 Members</div>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

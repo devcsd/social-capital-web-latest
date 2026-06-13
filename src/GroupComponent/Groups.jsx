@@ -16,7 +16,8 @@ import { useAuth } from "../Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { GiDiamondRing, GiHeartEarrings, GiMagicHat } from "react-icons/gi";
 import { LuHouse, LuBriefcaseBusiness } from "react-icons/lu";
-import { MdOutlineSavings } from "react-icons/md";
+import { MdOutlineSavings, MdArrowForward } from "react-icons/md";
+import { FaUsers, FaUserTie, FaTrophy } from "react-icons/fa";
 import { getAllGroupCategoriesData } from "../api/api";
 import ReactCountryFlag from "react-country-flag";
 
@@ -190,6 +191,7 @@ const Groups = () => {
     city: "",
     groupType: "",
     currencies: [],
+    TxnType: "",
   });
 
   const { user } = useAuth();
@@ -250,6 +252,9 @@ const Groups = () => {
   const currencies = [
     ...new Set(groups.map((g) => g.currency).filter(Boolean)),
   ];
+  const txnTypes = [
+    ...new Set(groups.map((g) => g.fundDistributionType).filter(Boolean)),
+  ];
 
   /* ── Filter logic ── */
   const filteredGroups = groups.filter((group) => {
@@ -264,11 +269,18 @@ const Groups = () => {
       group.city?.toLowerCase().includes(filters.city.toLowerCase());
     const typeMatch =
       !filters.groupType || group.groupType === filters.groupType;
+    const txnTypeMatch =
+      !filters.TxnType || group.fundDistributionType === filters.TxnType;
     const currencyMatch =
       filters.currencies.length === 0 ||
       filters.currencies.includes(group.currency);
     return (
-      countryMatch && stateMatch && cityMatch && typeMatch && currencyMatch
+      countryMatch &&
+      stateMatch &&
+      cityMatch &&
+      typeMatch &&
+      txnTypeMatch &&
+      currencyMatch
     );
   });
 
@@ -285,6 +297,12 @@ const Groups = () => {
     setCurrentPage(1);
   };
 
+  const filteredTotalGroups = filteredGroups.length;
+
+  const filteredTotalFundAmount = filteredGroups.reduce(
+    (sum, group) => sum + (group.totalFundAmount || 0),
+    0,
+  );
   /* ── Chart data ── */
   const chartLabels = filteredGroups.map((g) => g.groupName);
   const chartFunds = filteredGroups.map((g) => g.totalFundAmount ?? 0);
@@ -345,7 +363,8 @@ const Groups = () => {
               Filter Groups
             </h3>
             <p className="text-sm text-gray-500">
-              Search and filter groups by location and type to find specific segments.
+              Search and filter groups by location and type to find specific
+              segments.
             </p>
           </div>
 
@@ -357,6 +376,7 @@ const Groups = () => {
                 city: "",
                 groupType: "",
                 currencies: [],
+                TxnType: "",
               })
             }
             className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
@@ -460,26 +480,82 @@ const Groups = () => {
               </select>
             </div>
           </div>
+
+
+          {/* Txn Type */}
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              Transaction Type
+            </label>
+            <div className="relative">
+              <FiLayers className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <select
+                value={filters.TxnType}
+                onChange={(e) =>
+                  handleFilterChange({
+                    ...filters,
+                    TxnType: e.target.value,
+                  })
+                }
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white"
+              >
+                <option value="">All Transaction Types</option>
+                {txnTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+           {/* Currencies Type */}
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              Currencies
+            </label>
+            <div className="relative">
+              <FiLayers className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <select
+                value={filters.currencies}
+                onChange={(e) =>
+                  handleFilterChange({
+                    ...filters,
+                    currencies: e.target.value,
+                  })
+                }
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white"
+              >
+                <option value="">All Currencies</option>
+                {currencies.map((currency) => (
+                  <option key={currency} value={currency}>
+                    {currency}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
+      {/* <pre>{JSON.stringify(groups, null, 2)}</pre> */}
 
       {/* ── KPI Strip ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <StatCard
           label="Total Groups"
-          value={totalGroups}
+          value={filteredTotalGroups}
           accent="text-primary"
         />
         <StatCard
           label="Total Fund"
-          value={`${fmtINR(totalFundAmount)}`}
+          value={`${fmtINR(filteredTotalFundAmount)}`}
           accent="text-emerald-600"
         />
-        <StatCard
+        {/* <StatCard
           label="Showing"
           value={`${filteredGroups.length} groups`}
           accent="text-gray-700"
-        />
+        /> */}
         <StatCard
           label="Page"
           value={`${currentPage} / ${totalPages || 1}`}
@@ -577,7 +653,29 @@ const GroupCard = ({ group, onClick }) => {
       >
         {label}
       </span>
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] uppercase tracking-wide text-gray-400">
+          Flow
+        </span>
 
+        <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
+          {group.fundDistributionType === "Member → Fund Manager → Winner" ? (
+            <>
+              <FaUsers className="text-[11px] text-gray-500" />
+              <MdArrowForward className="text-[12px] text-gray-400" />
+              <FaUserTie className="text-[11px] text-blue-600" />
+              <MdArrowForward className="text-[12px] text-gray-400" />
+              <FaTrophy className="text-[11px] text-yellow-500" />
+            </>
+          ) : (
+            <>
+              <FaUsers className="text-[11px] text-gray-500" />
+              <MdArrowForward className="text-[12px] text-gray-400" />
+              <FaTrophy className="text-[11px] text-yellow-500" />
+            </>
+          )}
+        </div>
+      </div>
       {/* Stats grid */}
       <div className="grid grid-cols-3 gap-2 text-center">
         <div className="bg-gray-50 rounded-lg p-2">
