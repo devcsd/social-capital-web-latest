@@ -76,7 +76,7 @@ const fadeUp = {
 
 export default function TrustAndSafetySection() {
   return (
-    <section className="relative w-full overflow-hidden py-14 md:py-20 px-4 sm:px-6 lg:px-10 xl:px-16">
+    <section className="relative w-full overflow-hidden py-14 md:py-20 px-4 sm:px-6 lg:px-10 xl:px-16" id="trust">
       <div className="max-w-[1500px] mx-auto">
         <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-10">
           {/* LEFT */}

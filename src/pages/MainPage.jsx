@@ -9,11 +9,12 @@ import TrustAndSafetySection from "../components/SocialCapitalChartSection";
 import Services from "../components/Services";
 import Footer from "../components/Footer";
 import Chatbot from "../components/Chatbot";
+import Globalsection from "../components/Global"
 import "../index.css";
 
 function Main() {
   return (
-    <div className="min-h-screen bg-primary overflow-x-auto scrollbar-hide">
+    <div className="min-h-screen bg-primary scrollbar-hide">
       <Header />
       <HeroSection />
       <HowItWorksSection />
@@ -21,6 +22,7 @@ function Main() {
       <DevelopmentSection />
       <Platform />
       <PayoutModels />
+      <Globalsection/>
       <TrustAndSafetySection />
       <Services />
       <Footer />

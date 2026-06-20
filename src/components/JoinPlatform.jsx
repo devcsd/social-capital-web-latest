@@ -4,7 +4,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { createSignUp } from "../api/api";
 import toast from "react-hot-toast";
 
-export default function JoinPlatformPopup() {
+export default function JoinPlatformPopup({buttonName}) {
   const [open, setOpen] = useState(false);
 
   const [form, setForm] = useState({
@@ -108,7 +108,7 @@ export default function JoinPlatformPopup() {
       <button
         onClick={() => setOpen(true)}
         className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-semibold rounded-lg hover:brightness-110 transition text-sm sm:text-base">
-        Join Our Platform
+        {buttonName}
       </button>
 
       {open && (

@@ -44,3 +44,7 @@ body {
 .swiper-pagination-bullet-active {
   background-color: #ffffff !important;
 }
+
+html{
+  scroll-behavior: smooth;
+}

@@ -18,7 +18,8 @@ const Header = () => {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled ? "bg-primary shadow-lg" : "bg-transparent"
-      }`}>
+      }`}
+    >
       <div className="container mx-auto flex items-center justify-between px-4 lg:px-8 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -28,6 +29,29 @@ const Header = () => {
             <span className="text-secondary">Capital</span>
           </span>
         </div>
+
+        <nav className="hidden md:flex items-center gap-8">
+          <a
+            href="#how-it-works"
+            className="text-gray-300 hover:text-secondary transition-colors duration-300"
+          >
+            How it works
+          </a>
+
+          <a
+            href="#community"
+            className="text-gray-300 hover:text-secondary transition-colors duration-300"
+          >
+            Community
+          </a>
+
+          <a
+            href="#trust"
+            className="text-gray-300 hover:text-secondary transition-colors duration-300"
+          >
+            Trust & safety
+          </a>
+        </nav>
 
         {/* App Buttons */}
         {/* <div className="hidden lg:flex items-center gap-4">
@@ -47,7 +71,7 @@ const Header = () => {
           />
         </div> */}
 
-        <JoinPlatformPopup />
+        <JoinPlatformPopup  buttonName="Join Platform"/>
       </div>
     </header>
   );
@@ -56,7 +80,8 @@ const Header = () => {
 /** Reusable Store Button */
 const StoreButton = ({ icon, label, bg, text, hover }) => (
   <button
-    className={`group flex items-center px-6 py-2 rounded-[15px] font-inter font-semibold transition-all ${bg} ${text} ${hover}`}>
+    className={`group flex items-center px-6 py-2 rounded-[15px] font-inter font-semibold transition-all ${bg} ${text} ${hover}`}
+  >
     <span className="mr-2 group-hover:scale-110 transition-transform duration-200">
       {icon}
     </span>

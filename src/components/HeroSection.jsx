@@ -1,371 +1,254 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
+import PhoneMockup from "./PhoneMockup";
 import {
-  FaApple,
-  FaGooglePlay,
-  FaWallet,
-  FaMoneyBillWave,
-} from "react-icons/fa";
-import { TbMoneybag } from "react-icons/tb";
-import { HiOutlineUsers } from "react-icons/hi2";
-import Map from "../images/Map.svg";
-import { FundPurpose } from "../data/FundPurpose";
+  Users,
+  ShieldCheck,
+  TrendingUp,
+  Target,
+  Link2,
+  Home,
+  Bell,
+  User,
+  Wallet,LockIcon
+} from "lucide-react";
+import JoinPlatformPopup from "../components/JoinPlatform";
 
-// --- Fund Card Component ---
-const FundCard = ({ fund }) => {
-  const Icon = fund.icon;
-  return (
-    <div className="bg-highlight backdrop-blur-sm rounded-2xl p-4 w-[230px] sm:w-[240px] flex-shrink-0 border border-highlight hover:border-secondary/30 transition-all duration-300 hover:scale-105 snap-start">
-      <div className="flex items-center gap-3 mb-3">
-        <div
-          className={`w-10 h-10 rounded-full ${fund.iconBg} flex items-center justify-center text-white`}
-        >
-          <Icon className="text-lg" />
-        </div>
-        <h3 className="text-white font-semibold text-xl font-inter">
-          {fund.name}
-        </h3>
-      </div>
-      <p className="text-gray-400 text-sm font-inter leading-relaxed">
-        {fund.description}
-      </p>
-    </div>
-  );
-};
-
-/** Reusable Store Button */
-const StoreButton = ({ icon, label, bg, text, hover }) => (
-  <button
-    className={`group flex items-center px-6 py-2 rounded-[15px] font-inter font-semibold transition-all ${bg} ${text} ${hover}`}
-  >
-    <span className="mr-2 group-hover:scale-110 transition-transform duration-200">
-      {icon}
-    </span>
-    {label}
-  </button>
-);
-
-// --- Hero Section ---
 const HeroSection = () => {
-  const scrollRef = useRef(null);
-  const currentIndexRef = useRef(0);
-  const [activeCountry, setActiveCountry] = useState(0);
-
-  const countries = [
-    {
-      id: 1,
-      name: "India",
-      members: "4,200+ Members",
-      currency: "₹ INR",
-      top: "70%",
-      left: "80%",
-      color: "bg-orange-400",
-    },
-    {
-      id: 2,
-      name: "USA",
-      members: "3,100+ Members",
-      currency: "$ USD",
-      top: "70%",
-      left: "20%",
-      color: "bg-blue-400",
-    },
-    {
-      id: 3,
-      name: "China",
-      members: "2,000+ Members",
-      currency: "¥ CNY",
-      top: "40%",
-      left: "74%",
-      color: "bg-red-500",
-    },
-    {
-      id: 4,
-      name: "Australia",
-      members: "1,500+ Members",
-      currency: "$ AUD",
-      top: "100%",
-      left: "85%",
-      color: "bg-green-400",
-    },
-    {
-      id: 5,
-      name: "UK",
-      members: "1,600+ Members",
-      currency: "£ GBP",
-      top: "40%",
-      left: "40%",
-      color: "bg-purple-400",
-    },
-  ];
+  const [pulse, setPulse] = useState(0);
 
   useEffect(() => {
-    // Stop auto loop if only one country
-    if (countries.length <= 1) return;
+    const timer = setInterval(() => {
+      setPulse((p) => (p + 1) % 5);
+    }, 1800);
 
-    const interval = setInterval(() => {
-      setActiveCountry((prev) => (prev + 1) % countries.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [countries.length]);
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const cardWidth = 250 + 16;
-    const totalCards = FundPurpose.length;
-
-    const scrollNext = () => {
-      currentIndexRef.current = (currentIndexRef.current + 1) % totalCards;
-      container.scrollTo({
-        left: currentIndexRef.current * cardWidth,
-        behavior: "smooth",
-      });
-    };
-
-    const interval = setInterval(scrollNext, 2000); // slower for smooth UX
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
-  const members = [
+  const people = [
+    { label: "African man", top: "6%", left: "18%" },
+    { label: "South Indian woman", top: "4%", left: "62%" },
+    { label: "Middle Eastern man", top: "22%", left: "88%" },
+    { label: "Asian woman", top: "52%", left: "90%" },
+    { label: "Latina woman", top: "42%", left: "8%" },
+  ];
+
+  const features = [
     {
-      id: 1,
-      name: "John",
-      image:
-        "https://i.pinimg.com/736x/f4/99/f0/f499f06258a43294c91223088c8bf0bd.jpg",
+      icon: Users,
+      title: "Group Savings",
+      desc: "Save as a team and reach goals together.",
+      bg: "bg-blue-500/20",
+      color: "text-blue-400",
     },
     {
-      id: 2,
-      name: "Sophia",
-      image:
-        "https://i.pinimg.com/736x/a1/92/ef/a192efe6ff4e585e4ff121bd84f1e9fc.jpg",
+      icon: ShieldCheck,
+      title: "Trust & Security",
+      desc: "Private groups, your money never held by us.",
+      bg: "bg-purple-500/20",
+      color: "text-purple-400",
     },
     {
-      id: 3,
-      name: "David",
-      image:
-        "https://i.pinimg.com/736x/80/29/21/80292138ee8ad1173f250d6a394832db.jpg",
-    },
-    {
-      id: 4,
-      name: "Emma",
-      image:
-        "https://i.pinimg.com/736x/4c/26/fe/4c26fe7d5c217eda24d53abdeed52d03.jpg",
+      icon: TrendingUp,
+      title: "Growth Tracking",
+      desc: "Track progress and celebrate every milestone.",
+      bg: "bg-orange-500/20",
+      color: "text-orange-400",
     },
   ];
 
+  const bottomFeatures = [
+    {
+      icon: Target,
+      title: "Build financial discipline",
+      desc: "Stay consistent and take control.",
+    },
+    {
+      icon: Link2,
+      title: "Achieve goals faster",
+      desc: "Pool resources and make big things happen.",
+    },
+    {
+      icon: Users,
+      title: "Stay accountable with your group",
+      desc: "Support, encourage, and celebrate together.",
+    },
+  ];
+
+  const avatars = [
+    "https://i.pravatar.cc/48?img=1",
+    "https://i.pravatar.cc/48?img=5",
+    "https://i.pravatar.cc/48?img=12",
+    "https://i.pravatar.cc/48?img=20",
+  ];
+
   return (
-    <section className="bg-primary pt-24 pb-16 lg:min-h-screen flex items-center">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
-          {/* --- Left Column --- */}
-          <div className="space-y-8 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:scale-[1.02] transition-all duration-300">
-              {/* Floating Icon */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-secondary/30 blur-xl rounded-full"></div>
+    <section className="relative overflow-hidden bg-primary py-20">
+      {/* Glow */}
+      <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-purple-700/20 blur-3xl" />
 
-                <div className="relative flex items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-yellow-400 shadow-lg py-0 px-2">
-                  <p className="text-black text-sm"> New</p>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-col">
-                <h2 className="text-md md:text-md font-semibold text-white">
-                  Built with your community, by design
-                </h2>
-              </div>
-            </div>
-
-            <h1 className="text-6xl md:text-5xl xl:text-8xl font-bold text-white font-inter">
-              Save together. <br />
-              Take turns.
+      {/* Main Container */}
+      <div className="relative z-10 mx-auto max-w-[1600px] px-6 lg:px-10">
+        <div className="flex flex-col items-center gap-16 lg:flex-row">
+          {/* LEFT */}
+          <div className="flex-1">
+            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+              Social
               <br />
-              <span className="text-secondary">Move faster.</span>
+              <span className="bg-gradient-to-r from-blue-500 to-secondary bg-clip-text text-transparent">
+                Capital
+              </span>
             </h1>
-            <p className="text-2xl text-[#C1CEF6] font-inter text-justify">
-              Social Capital is a modern app for group savings with the people
-              you trust. Form a circle, contribute each cycle, and one member
-              receives the full pool — settle however your group prefers, from
-              UPI to Zelle to cash.
+
+            <p className="mt-4 text-2xl font-bold text-white md:text-3xl">
+              <span className="text-blue-400">Save</span> Together.
+              <span className="text-yellow-400"> Grow</span> Together.
             </p>
 
-            {/* App Buttons */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-              <StoreButton
-                icon={<FaApple className="text-2xl" />}
-                label="App Store"
-                bg="bg-black"
-                hover="hover:bg-white hover:text-black"
-                text="text-white"
-              />
-              <StoreButton
-                icon={<FaGooglePlay className="text-2xl" />}
-                label="Google Play"
-                bg="bg-secondary"
-                hover="hover:bg-white hover:text-black"
-                text="text-black"
-              />
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/80">
+              Create groups, track savings, and reach your goals faster with
+              your people.
+            </p>
+
+            {/* Features */}
+            <div className="mt-10 flex flex-col gap-4">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md"
+                  >
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl ${feature.bg}`}
+                    >
+                      <Icon size={20} className={feature.color} />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-white">
+                        {feature.title}
+                      </h3>
+
+                      <p className="text-sm text-white/60">{feature.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            <div className="mt-10 flex flex-wrap items-center gap-5">
+              <JoinPlatformPopup buttonName="Get Started Free →" />
+              <span className="text-sm text-white/60">
+               <div className="flex items-center gap-2"> <LockIcon/> <span>Secure. Trusted. Community Driven.</span></div>
+              </span>
             </div>
           </div>
 
-          {/* --- Right Column --- */}
-          <div className="relative flex justify-center ">
-            {/* Map Image + Overlays */}
-            <div className="relative">
-              {/* Map */}
-              <img
-                src={Map}
-                alt="Global Community Map"
-                className="h-80 sm:h-96 lg:h-[480px] w-auto z-10 rounded-xl"
-              />
-
-              {/* Country Dots */}
-              {/* Country Dots */}
-              {countries.map((country, index) => (
-                <div
-                  key={country.id}
-                  className="absolute"
-                  style={{
-                    top: country.top,
-                    left: country.left,
-                  }}
-                >
-                  {/* Ping Animation */}
-                  {/* <span
-                    className={`absolute inline-flex h-5 w-5 rounded-full ${country.color} opacity-40 animate-ping`}></span> */}
-
-                  {/* Dot */}
-                  {/* <div
-                    className={`relative w-4 h-4 rounded-full border-2 border-white shadow-lg ${country.color}`}></div> */}
-
-                  {/* Auto Changing Tooltip */}
-                  {activeCountry === index && (
-                    <div className="absolute bottom-7 left-1/2 -translate-x-1/2 animate-in fade-in zoom-in-95 duration-500">
-                      <div className="bg-[#111827]/95 backdrop-blur-xl border border-white/10 rounded-2xl px-4 py-3 shadow-2xl min-w-[170px]">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div
-                            className={`w-3 h-3 rounded-full ${country.color}`}
-                          ></div>
-
-                          <h4 className="text-white font-semibold text-sm">
-                            {country.name}
-                          </h4>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-xs text-white/70">
-                            <HiOutlineUsers className="text-sm text-white" />
-                            <span>{country.members}</span>
-                          </div>
-
-                          <div className="flex items-center gap-2 text-xs text-secondary font-medium">
-                            <FaMoneyBillWave className="text-sm" />
-                            <span>{country.currency}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {/* Growth Tag */}
-              <div className="hidden lg:block absolute top-4 right-4 z-30 bg-primary/90 backdrop-blur-md rounded-xl p-3 border border-secondary/20 hover:scale-105 transition-transform shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-white font-inter">
-                    ACTIVE GROUPS
-                  </span>
-
-                  <span className="bg-secondary ml-1 text-gray-900 text-xs font-bold rounded-full px-2 py-0.5 font-inter">
-                    1,240
-                  </span>
+          {/* RIGHT */}
+          <div className="relative flex min-h-[650px] flex-1 items-center justify-center">
+            {/* Floating People */}
+            {people.map((person, index) => (
+              <div
+                key={index}
+                className={`absolute flex flex-col items-center gap-2 transition-all duration-500 ${
+                  pulse === index ? "opacity-100" : "opacity-50"
+                }`}
+                style={{
+                  top: person.top,
+                  left: person.left,
+                }}
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-blue-400 bg-white/5">
+                  <div className="h-8 w-8 rounded-full bg-blue-400/30" />
                 </div>
 
-                <div>+184 this month</div>
+                <span className="max-w-[70px] text-center text-[10px] text-white/80">
+                  {person.label}
+                </span>
               </div>
+            ))}
 
-              {/* Social Capital Card */}
-              {/* <div className="absolute bottom-8 left-4 z-30 bg-gradient-to-r from-primary/90 to-primary/80 backdrop-blur-md rounded-xl p-4 border border-secondary/20 hover:scale-105 transition-transform shadow-lg">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex space-x-1">
-                    <div className="w-3.5 h-3.5 rounded-full bg-red-500"></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-yellow-500 -ml-1"></div>
-                  </div>
+            {/* Phone */}
+            <PhoneMockup />
 
-                  <div className="w-3.5 h-3.5 rounded-full bg-white/80"></div>
-                </div>
-
-                <div className="text-center mb-3">
-                  <p className="text-sm text-white font-semibold font-inter tracking-wide">
-                    Social Capital Pass
-                  </p>
-
-                  <p className="text-xs text-secondary font-inter">
-                    Platinum Tier
-                  </p>
-                </div>
-
-                <div className="flex justify-between text-xs text-white font-inter">
-                  <span>James Williams</span>
-                  <span>Valid: 12/25</span>
-                </div>
-              </div> */}
-
-              {/* Floating Money Bag Bubble */}
-              <div className="hidden lg:block absolute -bottom-8 left-8 z-20">
-                <div className="w-28 sm:w-32 h-28 sm:h-32 rounded-full border border-secondary/30 bg-primary/80 backdrop-blur-sm flex flex-col items-center justify-center hover:scale-105 transition-transform text-white text-xs text-center font-inter">
-                  <p>Explore and grow</p>
-                  <p>together with</p>
-                  <p>Social Capital</p>
-                  <TbMoneybag className="h-4 w-4 mt-1 text-secondary" />
-                </div>
+            {/* Left Floating Card */}
+            <div className="absolute bottom-[12%] left-0 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-md">
+              <div className="flex items-center gap-2">
+                <Users size={16} />
+                <span>Friends saving together</span>
               </div>
+            </div>
+
+            {/* Right Floating Card */}
+            <div className="absolute bottom-[12%] right-0 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-md">
+              <div className="flex items-center gap-2">
+                <Wallet size={16} />
+                <span>Family reaching a goal</span>
+              </div>
+            </div>
+
+            {/* Growth Icon */}
+            <div className="absolute right-[5%] top-[10%] flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-400 text-xl shadow-lg shadow-yellow-400/30">
+              <TrendingUp size={24} className="text-black" />
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 mt-4">
-          {/* Avatar Stack */}
-          <div className="flex -space-x-3">
-            {members.map((member) => (
+        {/* Stronger Together */}
+        <div className="mt-20 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md lg:p-12">
+          <h2 className="text-center text-3xl font-bold text-white">
+            Stronger Together. Better Future.
+          </h2>
+
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {bottomFeatures.map((item, index) => {
+              const Icon = item.icon;
+
+              return (
+                <div key={index} className="flex gap-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                    <Icon size={20} className="text-blue-400" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-white">{item.title}</h3>
+
+                    <p className="mt-1 text-sm text-white/60">{item.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Avatar Strip */}
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="flex">
+            {avatars.map((avatar, index) => (
               <img
-                key={member.id}
-                src={member.image}
-                alt={member.name}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-4 border-[#1E40FF] object-cover shadow-lg hover:-translate-y-1 transition-all duration-300"
+                key={index}
+                src={avatar}
+                alt=""
+                className={`h-11 w-11 rounded-full border-[3px] border-blue-600 object-cover ${
+                  index !== 0 ? "-ml-3" : ""
+                }`}
               />
             ))}
 
-            {/* Extra Count */}
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-4 border-[#1E40FF] bg-gradient-to-br from-secondary to-yellow-400 flex items-center justify-center text-[10px] sm:text-xs font-bold text-black shadow-lg">
+            <div className="-ml-3 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-blue-600 bg-gradient-to-br from-yellow-400 to-orange-500 text-[10px] font-bold text-black">
               +9K
             </div>
           </div>
 
-          {/* Text */}
-          <p className="text-center sm:text-left text-sm sm:text-lg md:text-xl font-semibold text-white">
-            12,400+ members{" "}
-            <span className="block sm:inline text-white/70 font-medium">
+          <p className="font-semibold text-white">
+            12,400+ members
+            <span className="ml-2 font-normal text-white/60">
               across India, USA, China, Australia & UK
             </span>
           </p>
         </div>
-        {/* --- Fund Purpose Cards --- */}
-        {/* <div className="mt-14">
-          <div
-            ref={scrollRef}
-            className="overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-hide px-2"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            <div className="flex gap-4 min-w-full">
-              {FundPurpose.map((fund, i) => (
-                <FundCard key={i} fund={fund} />
-              ))}
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   );
