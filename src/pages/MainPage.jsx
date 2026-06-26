@@ -14,11 +14,11 @@ import "../index.css";
 
 function Main() {
   return (
-    <div className="min-h-screen bg-primary scrollbar-hide">
+    <div className="min-h-screen bg-[#1a237e] scrollbar-hide">
       <Header />
       <HeroSection />
       <HowItWorksSection />
-      <BenefitHighlightSection />
+      {/* <BenefitHighlightSection /> */}
       <DevelopmentSection />
       <Platform />
       <PayoutModels />

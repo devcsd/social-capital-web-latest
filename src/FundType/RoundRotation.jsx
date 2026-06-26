@@ -185,7 +185,7 @@ export default function RoundRotation() {
           />
 
           <SummaryItem
-            label="Fund Value"
+            label="Group Value"
             value={`${currencySymbol} ${totalFundValue ?? 0}`}
           />
 
@@ -220,7 +220,7 @@ export default function RoundRotation() {
             />
 
             <Stat
-              label="Fund Value"
+              label="Group Value"
               value={`${currencySymbol} ${totalFundValue}`}
               color="text-indigo-600"
             />

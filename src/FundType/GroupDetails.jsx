@@ -161,7 +161,7 @@ export default function GroupDetails() {
                 {group?.admin?.profileImage ? (
                   <img
                     src={group.admin.profileImage}
-                    alt="Fund Manager"
+                    alt="Group Manager"
                     className="w-12 h-12 rounded-full object-cover border"
                   />
                 ) : (
@@ -248,7 +248,7 @@ export default function GroupDetails() {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <StatCard
-              title="Total Fund Value"
+              title="Total Group Value"
               value={formatCurrency(group?.currencyLabel, group?.totalFund)}
               iconBg="bg-primary/10"
               Icon={GiTakeMyMoney}

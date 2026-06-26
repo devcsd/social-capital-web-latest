@@ -100,7 +100,7 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="overflow-hidden bg-primary py-16 lg:min-h-screen flex items-center" id="how-it-works">
+    <section className="overflow-hidden bg-[#1a237e] py-16 lg:min-h-screen flex items-center" id="how-it-works">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Top Section */}
 <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">
@@ -132,7 +132,7 @@ export default function HowItWorksSection() {
             viewport={{ once: true }}
   className="lg:pl-20 lg:pt-8 mt-4 lg:mt-0"
           >
-         <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed">
+         <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-justify max-w-[1000px]">
               Social Capital handles the coordination. You and your people
               decide the currency, cadence, members, and payout model. Money
               moves between you — we never touch it.

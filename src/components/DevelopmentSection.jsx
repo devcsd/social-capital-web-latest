@@ -39,11 +39,11 @@ const DevelopmentSection = () => {
   };
 
   return (
-    <section className="relative w-full bg-primary py-24 px-6 sm:px-8 overflow-hidden">
+    <section className="relative w-full bg-[#1a237e] py-24 px-6 sm:px-8 overflow-hidden">
       {/* Section Header */}
       <div className="text-center mb-16 relative z-20 px-4">
         <h2 className="text-2xl lg:text-3xl font-bold font-inter text-white">
-          Your Fund's Journey –{" "}
+          Your Group's Journey –{" "}
           <span className="text-secondary">From Idea to Impact</span>
         </h2>
         <p className="text-white text-base sm:text-lg lg:text-xl mt-4 max-w-2xl mx-auto font-inter">
@@ -74,7 +74,7 @@ const DevelopmentSection = () => {
                   {desc}
                 </p>
               </div>
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary border-2 border-secondary/30 flex items-center justify-center">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#1a237e] border-2 border-secondary/30 flex items-center justify-center">
                 <span className="text-secondary text-xl sm:text-2xl">
                   {icon}
                 </span>
@@ -155,7 +155,7 @@ const DevelopmentSection = () => {
         <div className="flex flex-col gap-12 sm:gap-16 text-left order-3">
           {rightSteps.map(({ title, desc, icon }) => (
             <div key={title} className="flex items-center gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary border-2 border-secondary/30 flex items-center justify-center">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#1a237e] border-2 border-secondary/30 flex items-center justify-center">
                 <span className="text-secondary text-xl sm:text-2xl">
                   {icon}
                 </span>

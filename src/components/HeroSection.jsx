@@ -6,10 +6,8 @@ import {
   TrendingUp,
   Target,
   Link2,
-  Home,
-  Bell,
-  User,
-  Wallet,LockIcon
+  Wallet,
+  LockIcon,
 } from "lucide-react";
 import JoinPlatformPopup from "../components/JoinPlatform";
 
@@ -20,16 +18,50 @@ const HeroSection = () => {
     const timer = setInterval(() => {
       setPulse((p) => (p + 1) % 5);
     }, 1800);
-
     return () => clearInterval(timer);
   }, []);
 
   const people = [
-    { label: "African man", top: "6%", left: "18%" },
-    { label: "South Indian woman", top: "4%", left: "62%" },
-    { label: "Middle Eastern man", top: "22%", left: "88%" },
-    { label: "Asian woman", top: "52%", left: "90%" },
-    { label: "Latina woman", top: "42%", left: "8%" },
+    {
+      label: "African man",
+      top: "-5%",
+      left: "25%",
+      img: "https://i.pravatar.cc/96?img=12",
+      delay: "0s",
+      duration: "3s",
+    },
+    {
+      label: "South Indian woman",
+      top: "-5%",
+      left: "62%",
+      img: "https://i.pravatar.cc/96?img=47",
+      delay: "0.3s",
+      duration: "3.4s",
+    },
+    {
+      label: "Middle Eastern man",
+      top: "5%",
+      left: "80%",
+      img: "https://i.pravatar.cc/96?img=33",
+      delay: "0.6s",
+      duration: "3.8s",
+    },
+    {
+      label: "Asian woman",
+      top: "30%",
+      left: "90%",
+      img: "https://i.pravatar.cc/96?img=44",
+      delay: "0.9s",
+      duration: "4.2s",
+    },
+    {
+      label: "Latina woman",
+      top: "20%",
+      left: "-5%",
+      img: "https://i.pravatar.cc/96?img=25",
+      delay: "1.2s",
+      duration: "3.6s",
+    },
   ];
 
   const features = [
@@ -37,22 +69,22 @@ const HeroSection = () => {
       icon: Users,
       title: "Group Savings",
       desc: "Save as a team and reach goals together.",
-      bg: "bg-blue-500/20",
-      color: "text-blue-400",
+      bg: "bg-blue-500/60",
+      color: "text-blue-700",
     },
     {
       icon: ShieldCheck,
       title: "Trust & Security",
       desc: "Private groups, your money never held by us.",
-      bg: "bg-purple-500/20",
-      color: "text-purple-400",
+      bg: "bg-purple-500/60",
+      color: "text-purple-700",
     },
     {
       icon: TrendingUp,
       title: "Growth Tracking",
       desc: "Track progress and celebrate every milestone.",
-      bg: "bg-orange-500/20",
-      color: "text-orange-400",
+      bg: "bg-orange-500/60",
+      color: "text-orange-700",
     },
   ];
 
@@ -74,27 +106,31 @@ const HeroSection = () => {
     },
   ];
 
-  const avatars = [
-    "https://i.pravatar.cc/48?img=1",
-    "https://i.pravatar.cc/48?img=5",
-    "https://i.pravatar.cc/48?img=12",
-    "https://i.pravatar.cc/48?img=20",
-  ];
-
   return (
-    <section className="relative overflow-hidden bg-primary py-20">
+    <section
+      className="relative overflow-hidden py-20 bg-[#1a237e]"
+      // style={{
+      //   background:
+      //     "linear-gradient(135deg, #1565C0 0%, #1a237e 45%, #311b92 100%)",
+      // }}
+    >
       {/* Glow */}
-      <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-purple-700/20 blur-3xl" />
+      <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-indigo-700/30 blur-3xl" />
 
       {/* Main Container */}
-      <div className="relative z-10 mx-auto max-w-[1600px] px-6 lg:px-10">
-        <div className="flex flex-col items-center gap-16 lg:flex-row">
+      <div className="relative z-10 mx-auto max-w-[1250px] px-6 lg:px-10">
+        <div className="flex flex-col items-center lg:flex-row">
           {/* LEFT */}
           <div className="flex-1">
-            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-9xl">
               Social
               <br />
-              <span className="bg-gradient-to-r from-blue-500 to-secondary bg-clip-text text-transparent">
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: "linear-gradient(90deg, #1565C0, #ffc404)",
+                }}
+              >
                 Capital
               </span>
             </h1>
@@ -113,24 +149,21 @@ const HeroSection = () => {
             <div className="mt-10 flex flex-col gap-4">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
-
                 return (
                   <div
                     key={index}
-                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md"
+                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/50 bg-white/30 p-4 backdrop-blur-md"
                   >
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-xl ${feature.bg}`}
                     >
                       <Icon size={20} className={feature.color} />
                     </div>
-
                     <div>
                       <h3 className="font-semibold text-white">
                         {feature.title}
                       </h3>
-
-                      <p className="text-sm text-white/60">{feature.desc}</p>
+                      <p className="text-sm text-white/70">{feature.desc}</p>
                     </div>
                   </div>
                 );
@@ -141,63 +174,101 @@ const HeroSection = () => {
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <JoinPlatformPopup buttonName="Get Started Free →" />
               <span className="text-sm text-white/60">
-               <div className="flex items-center gap-2"> <LockIcon/> <span>Secure. Trusted. Community Driven.</span></div>
+                <div className="flex items-center gap-2">
+                  <LockIcon />
+                  <span>Secure. Trusted. Community Driven.</span>
+                </div>
               </span>
             </div>
           </div>
 
           {/* RIGHT */}
-          <div className="relative flex min-h-[650px] flex-1 items-center justify-center">
-            {/* Floating People */}
+          <div className="relative flex min-h-[650px] flex-1 items-center justify-center ">
+            {/* Floating People — real avatars with bounce */}
             {people.map((person, index) => (
               <div
                 key={index}
-                className={`absolute flex flex-col items-center gap-2 transition-all duration-500 ${
-                  pulse === index ? "opacity-100" : "opacity-50"
-                }`}
+                className={`float-bounce absolute flex flex-col items-center gap-2 transition-opacity duration-500  z-50`}
                 style={{
                   top: person.top,
                   left: person.left,
+                  animationDelay: person.delay,
+                  animationDuration: person.duration,
                 }}
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-blue-400 bg-white/5">
-                  <div className="h-8 w-8 rounded-full bg-blue-400/30" />
+                <div
+                  className="h-20 w-20 rounded-full border-2 border-dashed border-white/40 p-[3px]"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    backdropFilter: "blur(6px)",
+                  }}
+                >
+                  <img
+                    src={person.img}
+                    alt={person.label}
+                    className="h-full w-full rounded-full object-cover"
+                  />
                 </div>
-
-                <span className="max-w-[70px] text-center text-[10px] text-white/80">
+                {/* <span className="max-w-[70px] text-center text-[10px] font-medium leading-tight text-white/75">
                   {person.label}
-                </span>
+                </span> */}
               </div>
             ))}
 
-            {/* Phone */}
-            <PhoneMockup />
-
-            {/* Left Floating Card */}
-            <div className="absolute bottom-[12%] left-0 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-md">
-              <div className="flex items-center gap-2">
-                <Users size={16} />
-                <span>Friends saving together</span>
-              </div>
+            {/* Badge — Shield Check / Trust */}
+            <div
+              className="badge-pop absolute flex h-14 w-14 items-center justify-center  z-50 rounded-2xl"
+              style={{
+                top: "5%",
+                left: "15%",
+                background: "rgba(99,102,241,0.9)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+                animationDuration: "2.8s",
+                animationDelay: "0.2s",
+              }}
+            >
+              <ShieldCheck size={22} className="text-white" />
             </div>
 
-            {/* Right Floating Card */}
-            <div className="absolute bottom-[12%] right-0 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-md">
-              <div className="flex items-center gap-2">
-                <Wallet size={16} />
-                <span>Family reaching a goal</span>
-              </div>
+            {/* Badge — Users / Group */}
+            <div
+              className="badge-pop absolute flex h-14 w-14 items-center justify-center rounded-2xl"
+              style={{
+                top: "45%",
+                left: "-5%",
+                background: "rgba(59,130,246,0.9)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+                animationDuration: "3.2s",
+                animationDelay: "0.8s",
+              }}
+            >
+              <Users size={22} className="text-white" />
             </div>
 
-            {/* Growth Icon */}
-            <div className="absolute right-[5%] top-[10%] flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-400 text-xl shadow-lg shadow-yellow-400/30">
+            {/* Badge — TrendingUp / Growth */}
+            <div
+              className="badge-pop absolute flex h-12 w-12 items-center justify-center rounded-xl"
+              style={{
+                top: "20%",
+                right: "4%",
+                background: "#f59e0b",
+                boxShadow: "0 4px 20px rgba(245,158,11,0.45)",
+                animationDuration: "2.5s",
+                animationDelay: "1.4s",
+              }}
+            >
               <TrendingUp size={24} className="text-black" />
             </div>
+            
+            {/* Phone */}
+            <PhoneMockup />
           </div>
         </div>
 
         {/* Stronger Together */}
-        <div className="mt-20 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md lg:p-12">
+        <div className="mt-20 rounded-3xl border border-white/20 bg-white/20 p-8 backdrop-blur-md lg:p-12">
           <h2 className="text-center text-3xl font-bold text-white">
             Stronger Together. Better Future.
           </h2>
@@ -205,49 +276,19 @@ const HeroSection = () => {
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {bottomFeatures.map((item, index) => {
               const Icon = item.icon;
-
               return (
                 <div key={index} className="flex gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
                     <Icon size={20} className="text-blue-400" />
                   </div>
-
                   <div>
                     <h3 className="font-semibold text-white">{item.title}</h3>
-
                     <p className="mt-1 text-sm text-white/60">{item.desc}</p>
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
-
-        {/* Avatar Strip */}
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <div className="flex">
-            {avatars.map((avatar, index) => (
-              <img
-                key={index}
-                src={avatar}
-                alt=""
-                className={`h-11 w-11 rounded-full border-[3px] border-blue-600 object-cover ${
-                  index !== 0 ? "-ml-3" : ""
-                }`}
-              />
-            ))}
-
-            <div className="-ml-3 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-blue-600 bg-gradient-to-br from-yellow-400 to-orange-500 text-[10px] font-bold text-black">
-              +9K
-            </div>
-          </div>
-
-          <p className="font-semibold text-white">
-            12,400+ members
-            <span className="ml-2 font-normal text-white/60">
-              across India, USA, China, Australia & UK
-            </span>
-          </p>
         </div>
       </div>
     </section>

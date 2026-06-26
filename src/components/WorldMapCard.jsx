@@ -1,273 +1,347 @@
 import { useState, useEffect } from "react";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
 
-const geoUrl =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const W = 900, H = 500;
 
-const countries = [
+const COUNTRIES = [
   {
-    code: "US",
-    name: "USA",
-    currency: "$",
-    coordinates: [-100, 38],
+    code: "US", name: "USA", currency: "$",
+    x: 185, y: 200,
     center: { letter: "L", color: "#f4b321" },
     members: [
-    //   { letter: "A", color: "#f4b321" },
-    //   { letter: "P", color: "#2ec27e" },
-    //   { letter: "R", color: "#c678dd" },
-    //   { letter: "N", color: "#5b7cfa" },
-    //   { letter: "V", color: "#ef476f" },
+      { letter: "A", color: "#f4b321" },
+      { letter: "P", color: "#2ec27e" },
+      { letter: "R", color: "#c678dd" },
+      { letter: "N", color: "#5b7cfa" },
+      { letter: "V", color: "#ef476f" },
     ],
   },
-
   {
-    code: "GB",
-    name: "UK",
-    currency: "£",
-    coordinates: [-2, 55],
+    code: "GB", name: "UK", currency: "£",
+    x: 415, y: 120,
     center: { letter: "L", color: "#45b7ff" },
     members: [
-    //   { letter: "S", color: "#45b7ff" },
-    //   { letter: "M", color: "#f4b321" },
-    //   { letter: "D", color: "#8b5cf6" },
+      { letter: "S", color: "#45b7ff" },
+      { letter: "M", color: "#f4b321" },
+      { letter: "D", color: "#8b5cf6" },
     ],
   },
-
   {
-    code: "IN",
-    name: "India",
-    currency: "₹",
-    coordinates: [80, 22],
+    code: "IN", name: "India", currency: "₹",
+    x: 617, y: 230,
     center: { letter: "L", color: "#f4b321" },
     members: [
-    //   { letter: "K", color: "#eab308" },
-    //   { letter: "M", color: "#c084fc" },
-    //   { letter: "J", color: "#2ec27e" },
-    //   { letter: "I", color: "#5b7cfa" },
-    //   { letter: "T", color: "#14b8a6" },
-    //   { letter: "C", color: "#ef476f" },
-    //   { letter: "R", color: "#f87171" },
-    //   { letter: "S", color: "#0ea5e9" },
+      { letter: "K", color: "#eab308" },
+      { letter: "M", color: "#c084fc" },
+      { letter: "J", color: "#2ec27e" },
+      { letter: "I", color: "#5b7cfa" },
+      { letter: "T", color: "#14b8a6" },
+      { letter: "C", color: "#ef476f" },
+      { letter: "R", color: "#f87171" },
+      { letter: "S", color: "#0ea5e9" },
     ],
   },
-
   {
-    code: "AE",
-    name: "Dubai",
-    currency: "AED",
-    coordinates: [55, 25],
+    code: "AE", name: "Dubai", currency: "AED",
+    x: 535, y: 275,
     center: { letter: "D", color: "#8b5cf6" },
     members: [
-    //   { letter: "A", color: "#f4b321" },
-    //   { letter: "S", color: "#45b7ff" },
-    //   { letter: "M", color: "#f4b321" },
+      { letter: "A", color: "#f4b321" },
+      { letter: "S", color: "#45b7ff" },
+      { letter: "M", color: "#f4b321" },
     ],
   },
-
   {
-    code: "AU",
-    name: "Australia",
-    currency: "A$",
-    coordinates: [135, -25],
+    code: "AU", name: "Australia", currency: "A$",
+    x: 745, y: 345,
     center: { letter: "B", color: "#2ec27e" },
     members: [
-    //   { letter: "I", color: "#8b5cf6" },
-    //   { letter: "Q", color: "#c084fc" },
+      { letter: "I", color: "#8b5cf6" },
+      { letter: "Q", color: "#c084fc" },
     ],
   },
 ];
 
-export default function WorldMapCard() {
-  const [selected, setSelected] = useState(countries[2]);
+// ── Mercator projection matching the marker coordinates ──────────────────────
+function project(lon, lat) {
+  const x = ((lon + 180) / 360) * W;
+  const latRad = (lat * Math.PI) / 180;
+  const mercN = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+  const y = H / 2 - ((W * mercN) / (2 * Math.PI)) * 0.72;
+  return [x, y];
+}
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSelected((prev) => {
-        const current = countries.findIndex(
-          (c) => c.code === prev.code
+// ── Correct topojson delta-decode ────────────────────────────────────────────
+function decodeTopojson(world) {
+  const { arcs, transform, objects } = world;
+  const [sx, sy] = transform.scale;
+  const [tx, ty] = transform.translate;
+
+  function decodeArc(arcIdx) {
+    const reversed = arcIdx < 0;
+    const raw = arcs[reversed ? ~arcIdx : arcIdx];
+    let ax = 0, ay = 0;
+    const pts = raw.map(([dx, dy]) => {
+      ax += dx; ay += dy;
+      return [ax * sx + tx, ay * sy + ty];
+    });
+    return reversed ? pts.reverse() : pts;
+  }
+
+  function ringToPath(arcRefs) {
+    const pts = arcRefs.flatMap((ref) => decodeArc(ref));
+    if (!pts.length) return "";
+    const [[lx, ly], ...rest] = pts;
+    const [px0, py0] = project(lx, ly);
+    let d = `M${px0.toFixed(1)},${py0.toFixed(1)}`;
+    for (const [lon, lat] of rest) {
+      const [px, py] = project(lon, lat);
+      d += `L${px.toFixed(1)},${py.toFixed(1)}`;
+    }
+    return d + "Z";
+  }
+
+  function geomToPaths(geom) {
+    if (geom.type === "Polygon") {
+      return [geom.arcs.map(ringToPath).join("")].filter(Boolean);
+    }
+    if (geom.type === "MultiPolygon") {
+      return geom.arcs.map((poly) => poly.map(ringToPath).join("")).filter(Boolean);
+    }
+    return [];
+  }
+
+  return objects.countries.geometries.flatMap(geomToPaths);
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+function DashedLines({ selected }) {
+  return (
+    <g>
+      {COUNTRIES.filter((c) => c.code !== selected.code).map((c) => {
+        const mx = (selected.x + c.x) / 2;
+        const my = Math.min(selected.y, c.y) - 70;
+        return (
+          <path
+            key={c.code}
+            d={`M${selected.x},${selected.y} Q${mx},${my} ${c.x},${c.y}`}
+            fill="none"
+            stroke="#f4b321"
+            strokeWidth="1.5"
+            strokeDasharray="6,5"
+            opacity="0.65"
+          />
         );
+      })}
+    </g>
+  );
+}
 
-        return countries[
-          (current + 1) % countries.length
-        ];
+function CountryMarker({ country, active, onClick }) {
+  const { x, y, center, members, name, currency } = country;
+  const memberRadius = active ? 46 : 36;
+  const centerR      = active ? 30 : 22;
+  const memberR      = active ? 16 : 13;
+  const labelY       = active ? -92 : -78;
+
+  return (
+    <g transform={`translate(${x},${y})`} style={{ cursor: "pointer" }} onClick={onClick}>
+      {active && (
+        <>
+          <circle r={56} fill="rgba(255,255,255,0.07)" />
+          <circle r={76} fill="rgba(255,255,255,0.035)" />
+        </>
+      )}
+
+      {members.map((m, i) => {
+        const angle = (i / members.length) * Math.PI * 2 - Math.PI / 2;
+        const mx = Math.cos(angle) * memberRadius;
+        const my = Math.sin(angle) * memberRadius;
+        return (
+          <g key={i} transform={`translate(${mx},${my})`}>
+            <circle r={memberR} fill={m.color} stroke="white" strokeWidth="2" />
+            <text
+              textAnchor="middle"
+              dy={memberR * 0.42}
+              fill="white"
+              fontSize={active ? 15 : 12}
+              fontWeight="700"
+              fontFamily="system-ui,sans-serif"
+            >
+              {m.letter}
+            </text>
+          </g>
+        );
+      })}
+
+      <circle r={centerR} fill={center.color} stroke="white" strokeWidth="3.5" />
+      <text
+        textAnchor="middle"
+        dy={centerR * 0.42}
+        fill="white"
+        fontSize={active ? 30 : 22}
+        fontWeight="700"
+        fontFamily="system-ui,sans-serif"
+      >
+        {center.letter}
+      </text>
+
+      <foreignObject x="-52" y={labelY} width="104" height="34">
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            background: active ? "#f4b321" : "#0d1d67",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: 10,
+            padding: "4px 10px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 5,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span style={{ fontSize: 12, fontWeight: 600, color: active ? "#000" : "#fff", fontFamily: "system-ui,sans-serif" }}>
+            {name}
+          </span>
+          <span style={{ fontSize: 11, color: active ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.5)", fontFamily: "system-ui,sans-serif" }}>
+            {currency}
+          </span>
+        </div>
+      </foreignObject>
+    </g>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+export default function WorldMapCard() {
+  const [selected, setSelected]   = useState(COUNTRIES.find((c) => c.code === "IN"));
+  const [mapPaths, setMapPaths]   = useState([]);
+  const [mapReady, setMapReady]   = useState(false);
+
+  // Auto-rotate
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSelected((prev) => {
+        const idx = COUNTRIES.findIndex((c) => c.code === prev.code);
+        return COUNTRIES[(idx + 1) % COUNTRIES.length];
       });
     }, 5000);
+    return () => clearInterval(id);
+  }, []);
 
-    return () => clearInterval(interval);
+  // Load & decode world map
+  useEffect(() => {
+    fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+      .then((r) => r.json())
+      .then((world) => {
+        setMapPaths(decodeTopojson(world));
+        setMapReady(true);
+      })
+      .catch(() => setMapReady(true));
   }, []);
 
   return (
-    <div className="relative h-[750px] w-full overflow-hidden rounded-[32px] bg-[#071759]">
-          <div
-  key={selected.code}
-  className="absolute right-5 top-8 z-50 -translate-x-1/2"
->
-  <div className="flex items-center gap-3 rounded-2xl bg-[#f4b321] px-5 py-3">
-    <span className="text-lg font-semibold text-black">
-      {selected.name}
-    </span>
+    <div style={{
+      position: "relative",
+      width: "100%",
+      height: 500,
+      background: "#071759",
+      borderRadius: 24,
+      overflow: "hidden",
+      fontFamily: "system-ui,sans-serif",
+    }}>
 
-    <span className="rounded-lg bg-black/10 px-2 py-1 text-sm font-bold text-black">
-      {selected.currency}
-    </span>
-  </div>
-</div>
-      <ComposableMap
-        projection="geoEqualEarth"
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-      >
-      
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                style={{
-                  default: {
-                    fill: "rgba(255,255,255,.15)",
-                    stroke: "rgba(255,255,255,.08)",
-                    strokeWidth: 0.4,
-                  },
-                  hover: {
-                    fill: "rgba(255,255,255,.18)",
-                  },
-                  pressed: {
-                    fill: "rgba(255,255,255,.18)",
-                  },
-                }}
-              />
-            ))
-          }
-        </Geographies>
-
-   
-
-        {countries.map((country) => {
-          const active =
-            selected.code === country.code;
-
-          return (
-            <Marker
-              key={country.code}
-              coordinates={country.coordinates}
+      {/* ── Top-right: Any Currency ── */}
+      <div style={{
+        position: "absolute", top: 16, right: 16, zIndex: 50,
+        display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8,
+      }}>
+        <span style={{
+          fontSize: 11, fontWeight: 600, letterSpacing: "0.12em",
+          color: "rgba(255,255,255,0.45)", textTransform: "uppercase",
+        }}>
+          Any Currency
+        </span>
+        <div style={{ display: "flex", gap: 6 }}>
+          {COUNTRIES.map((c) => (
+            <button
+              key={c.code}
+              onClick={() => setSelected(c)}
+              style={{
+                background: selected.code === c.code ? "#f4b321" : "#0d1d67",
+                border: `1px solid ${selected.code === c.code ? "#f4b321" : "rgba(255,255,255,0.12)"}`,
+                borderRadius: 10,
+                padding: "6px 12px",
+                fontSize: 13,
+                fontWeight: 600,
+                color: selected.code === c.code ? "#000" : "#fff",
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
             >
-              <g
-                style={{ cursor: "pointer" }}
-                onClick={() => setSelected(country)}
-              >
-                {/* Country Label */}
+              {c.currency}
+            </button>
+          ))}
+        </div>
+      </div>
 
-                <foreignObject
-                  x="-40"
-                  y="-95"
-                  width="120"
-                  height="40"
-                >
-                  <div className="rounded-xl border border-white/10 bg-[#0d1d67] px-3 py-1 text-white">
-                    <span className="font-semibold">
-                      {country.name}
-                    </span>
+      {/* ── Bottom-left: Live In ── */}
+      <div style={{
+        position: "absolute", bottom: 16, left: 16, zIndex: 50,
+        background: "#0d1d67",
+        border: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 14, padding: "10px 16px",
+        display: "flex", flexDirection: "column", gap: 2,
+      }}>
+        <span style={{
+          fontSize: 10, fontWeight: 600, letterSpacing: "0.1em",
+          color: "rgba(255,255,255,0.4)", textTransform: "uppercase",
+        }}>
+          Live in
+        </span>
+        <span style={{ fontSize: 15, fontWeight: 600, color: "white" }}>
+          {selected.name}
+        </span>
+      </div>
 
-                    <span className="ml-2 opacity-70">
-                      {country.currency}
-                    </span>
-                  </div>
-                </foreignObject>
+      {/* ── SVG canvas ── */}
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+      >
+        <defs>
+          <pattern id="dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.15)" />
+          </pattern>
+        </defs>
 
-                {/* Active Glow */}
+        {/* Dot grid */}
+        <rect width={W} height={H} fill="url(#dots)" />
 
-                {active && (
-                  <>
-                    <circle
-                      r="55"
-                      fill="rgba(255,255,255,.08)"
-                    />
+        {/* Country shapes */}
+        {mapPaths.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="rgba(120,150,255,0.13)"
+            stroke="rgba(180,200,255,0.18)"
+            strokeWidth="0.5"
+          />
+        ))}
 
-                    <circle
-                      r="75"
-                      fill="rgba(255,255,255,.04)"
-                    />
-                  </>
-                )}
+        {/* Connecting arcs */}
+        <DashedLines selected={selected} />
 
-                {/* Small Members */}
-
-                {country.members.map(
-                  (member, index) => {
-                    const angle =
-                      (index /
-                        country.members.length) *
-                      Math.PI *
-                      2;
-
-                    const radius = active
-                      ? 45
-                      : 35;
-
-                    const x =
-                      Math.cos(angle) * radius;
-
-                    const y =
-                      Math.sin(angle) * radius;
-
-                    return (
-                      <g
-                        key={index}
-                        transform={`translate(${x},${y})`}
-                      >
-                        <circle
-                          r={active ? 16 : 14}
-                          fill={member.color}
-                          stroke="white"
-                          strokeWidth="2"
-                        />
-
-                        <text
-                          textAnchor="middle"
-                          dy="6"
-                          fill="white"
-                          fontSize="18"
-                          fontWeight="700"
-                        >
-                          {member.letter}
-                        </text>
-                      </g>
-                    );
-                  }
-                )}
-
-                {/* Center Bubble */}
-
-                <circle
-                  r={active ? 32 : 24}
-                  fill={country.center.color}
-                  stroke="white"
-                  strokeWidth="4"
-                />
-
-                <text
-                  textAnchor="middle"
-                  dy="10"
-                  fill="white"
-                  fontSize={active ? 34 : 24}
-                  fontWeight="700"
-                >
-                  {country.center.letter}
-                </text>
-              </g>
-            </Marker>
-          );
-        })}
-      </ComposableMap>
+        {/* Markers */}
+        {COUNTRIES.map((country) => (
+          <CountryMarker
+            key={country.code}
+            country={country}
+            active={selected.code === country.code}
+            onClick={() => setSelected(country)}
+          />
+        ))}
+      </svg>
     </div>
   );
 }

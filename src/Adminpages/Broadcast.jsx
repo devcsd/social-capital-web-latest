@@ -238,7 +238,7 @@ export default function BroadcastStyled() {
                     value="ALL_FUND_MANAGERS"
                     checked={audience === "ALL_FUND_MANAGERS"}
                     onChange={(e) => handleAudienceChange(e.target.value)}>
-                    All Fund Managers
+                    All Group Managers
                   </Radio>
 
                   <Radio

@@ -70,7 +70,7 @@ const RoundCard = ({ round, index }) => {
         <Space>
           <CalendarOutlined className="text-primary" />
           <div>
-            <Text type="secondary">Fund Date</Text>
+            <Text type="secondary">Group Date</Text>
             <br />
             <Text strong>
               {round.date
@@ -322,7 +322,7 @@ export default function FundManagerGroupRound() {
 
               <Col xs={24} md={8}>
                 <div className="rounded-xl bg-[#FFC600] text-white p-6">
-                  <Text className="text-black">Total Fund Value</Text>
+                  <Text className="text-black">Total Group Value</Text>
                   <h1 level={3} className="text-black text-3xl font-bold">
                     {formatCurrency(group?.currencyLabel, group?.totalFund)}
                   </h1>

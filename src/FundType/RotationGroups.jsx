@@ -66,7 +66,7 @@ const Card = ({ group }) => {
       </div>
 
       <div className="bg-yellow-400 rounded-xl px-4 py-3 flex justify-between font-semibold">
-        <span>Total Fund Value</span>
+        <span>Total Group Value</span>
         {formatCurrency(group?.currency, group?.totalFundAmount)}
       </div>
     </div>

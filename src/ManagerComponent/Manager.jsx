@@ -135,10 +135,10 @@ export default function ManagerDetails() {
         {/* Title */}
         <div>
           <h1 className="text-2xl font-semibold text-primary">
-            Fund Managers Overview
+            Group Managers Overview
           </h1>
           <p className="text-sm text-slate-500">
-            Manage and monitor all fund managers
+            Manage and monitor all Group managers
           </p>
         </div>
 
@@ -204,7 +204,7 @@ export default function ManagerDetails() {
 
         {/* Empty State */}
         {!loading && currentData.length === 0 && (
-          <EmptyState message="No fund managers available yet" />
+          <EmptyState message="No Group managers available yet" />
         )}
         {!loading &&
           currentData.map((fm) => {

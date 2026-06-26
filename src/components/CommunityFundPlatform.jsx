@@ -66,7 +66,7 @@ export default function PayoutModels() {
           </div>
 
           <div className="flex justify-start lg:justify-end">
-            <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-[500px] pt-2 lg:pt-6">
+            <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-[900px] pt-2 lg:pt-6 text-justify">
               Three payout models, one platform. Pick what fits your group's
               culture — from simple rotation to competitive bidding.
             </p>

@@ -7,7 +7,7 @@ import EarlyAccessPopup from "../components/EarlyAcess";
 
 const Platform = () => {
   return (
-    <section className="relative w-full bg-primary py-16 px-6 sm:py-20 sm:px-8">
+    <section className="relative w-full bg-[#1a237e] py-16 px-6 sm:py-20 sm:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Dark translucent card */}
         <div className="bg-highlight backdrop-blur-sm border border-highlight rounded-3xl p-6 sm:p-10 lg:p-16">
@@ -38,7 +38,7 @@ const Platform = () => {
                   Google Play
                 </button>
 
-                <EarlyAccessPopup />
+                {/* <EarlyAccessPopup /> */}
               </div>
             </div>
 

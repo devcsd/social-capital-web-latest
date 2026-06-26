@@ -36,24 +36,24 @@ export const phoneScreens = [
 export const leftSteps = [
   {
     title: "Plan Your Purpose",
-    desc: "Define your fund's goal, purpose, and who can join.",
+    desc: "Define your group's goal, purpose, and who can join.",
     icon: <GiBrain />,
   },
   {
-    title: "Pick Your Fund Type",
+    title: "Pick Your Group Type",
     desc: "Choose between Lottery, Auction, or Pre-defined contribution models.",
     icon: <LuPuzzle />,
   },
   {
     title: "Grow Together",
-    desc: "Kickstart your fund and watch your social capital grow together.",
+    desc: "Kickstart your Group and watch your social capital grow together.",
     icon: <FaChartLine />,
   },
 ];
 
 export const rightSteps = [
   {
-    title: "Refine Your Fund",
+    title: "Refine Your Group",
     desc: "Fine-tune settings, rules, and participation flow.",
     icon: <FaTools />,
   },
@@ -64,7 +64,7 @@ export const rightSteps = [
   },
   {
     title: "Go Live",
-    desc: "Launch your fund and start building social capital.",
+    desc: "Launch your Group and start building social capital.",
     icon: <FaRocket />,
   },
 ];

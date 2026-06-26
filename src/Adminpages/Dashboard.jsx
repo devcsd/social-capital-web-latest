@@ -65,9 +65,9 @@ const colors = ["#2563EB", "#0EA5E9", "#22C55E", "#F59E0B", "#A855F7"];
 
 const kpis = [
   { title: "Total Members", value: "15,284", icon: FiUsers },
-  { title: "Fund Managers", value: "124", icon: FiUsers },
+  { title: "Group Managers", value: "124", icon: FiUsers },
   { title: "Active Groups", value: "532", icon: FiLayers },
-  { title: "Total Fund Value", value: "₹4.2 Cr", icon: FiDollarSign },
+  { title: "Total Group Value", value: "₹4.2 Cr", icon: FiDollarSign },
   { title: "Pending Txns", value: "1,248", icon: FiAlertCircle },
   { title: "Group Requests", value: "22", icon: FiSend },
 ];
@@ -81,7 +81,7 @@ export default function Dashboard() {
             Social Capital Dashboard
           </h1>
           <p className="text-slate-500 mt-1">
-            Monitor groups, members, transactions and fund performance.
+            Monitor groups, members, transactions performance.
           </p>
         </div>
       </div>
@@ -169,7 +169,7 @@ export default function Dashboard() {
         </div>
 
         <div className="lg:col-span-6 bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-semibold mb-4">Top Fund Managers</h2>
+          <h2 className="font-semibold mb-4">Top Group Managers</h2>
           <div className="space-y-3">
             <div className="border rounded-xl p-3">Raj Kumar - 22 Groups - ₹1.25L Earnings</div>
             <div className="border rounded-xl p-3">Arun - 18 Groups - ₹95K Earnings</div>

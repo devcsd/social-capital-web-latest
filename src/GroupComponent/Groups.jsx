@@ -325,7 +325,7 @@ const Groups = () => {
     labels: chartLabels.length ? chartLabels : ["No Data"],
     datasets: [
       {
-        label: "Fund Amount",
+        label: "Group Amount",
         data: chartLabels.length ? chartFunds : [0],
         borderColor: "#6366f1",
         backgroundColor: "rgba(99,102,241,0.08)",
@@ -605,7 +605,7 @@ const Groups = () => {
         <ChartCard title="Members per Group">
           <Doughnut data={donutData} options={chartOpts()} />
         </ChartCard>
-        <ChartCard title="Fund Amount Trend">
+        <ChartCard title="Group Amount Trend">
           <Line data={lineData} options={chartOpts()} />
         </ChartCard>
       </div>
@@ -659,7 +659,7 @@ const GroupCard = ({ group, onClick }) => {
         </span>
 
         <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
-          {group.fundDistributionType === "Member → Fund Manager → Winner" ? (
+          {group.fundDistributionType === "Member → Group Manager → Winner" ? (
             <>
               <FaUsers className="text-[11px] text-gray-500" />
               <MdArrowForward className="text-[12px] text-gray-400" />

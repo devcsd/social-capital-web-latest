@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-primary shadow-lg" : "bg-transparent"
+        isScrolled ? "bg-[#1a237e] shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-4 lg:px-8 py-4">
@@ -71,7 +71,8 @@ const Header = () => {
           />
         </div> */}
 
-        <JoinPlatformPopup  buttonName="Join Platform"/>
+        {/* <JoinPlatformPopup  buttonName="Join Platform"/> */}
+        <></>
       </div>
     </header>
   );

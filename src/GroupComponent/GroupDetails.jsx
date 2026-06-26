@@ -167,12 +167,12 @@ export const GroupDetails = () => {
           </p>
 
           <p className="bg-gray-100 px-3 py-1 rounded-md shadow-sm">
-            💰 Fund Amount:{" "}
+            💰 Group Amount:{" "}
             <span className="font-semibold">
               {selectedCategory?.data?.totalFundAmount ? (
                 selectedCategory.data.totalFundAmount.toLocaleString("en-IN")
               ) : (
-                <span className="text-gray-400 italic">No fund data</span>
+                <span className="text-gray-400 italic">No Group data</span>
               )}
             </span>
           </p>
@@ -245,7 +245,7 @@ export const GroupDetails = () => {
                   </div>
                   <div className="bg-[#F6F5FF] p-2 rounded-lg border border-gray-100">
                     <span className="font-semibold text-primary">
-                      Fund Type:
+                      Group Type:
                     </span>{" "}
                     {fund.groupType}
                   </div>
@@ -258,7 +258,7 @@ export const GroupDetails = () => {
                       Transaction:
                     </span>{" "}
                     {fund.fundDistributionType ===
-                    "Member → Fund Manager → Winner"
+                    "Member → Group Manager → Winner"
                       ? "Member → Manager → Winner"
                       : "Member → Winner"}
                   </div>
@@ -282,7 +282,7 @@ export const GroupDetails = () => {
           })}
         </div>
       ) : (
-        <EmptyState message="Oops! No groups are created by this fund type." />
+        <EmptyState message="Oops! No groups are created by this Group type." />
       )}
 
       {/* Modal popup (renders once) */}

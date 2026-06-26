@@ -128,7 +128,7 @@ export default function EmailOtpLogin() {
 
   return (
     <section>
-      <section className="bg-primary min-h-screen flex items-center justify-center px-4 py-16">
+      <section className="bg-[#1a237e] min-h-screen flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-6xl bg-gray-900/40 backdrop-blur-xl border border-gray-700/30 shadow-2xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
           {/* Left Panel - Image */}
           <div

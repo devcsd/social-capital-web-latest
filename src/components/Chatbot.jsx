@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRobot } from "react-icons/fa";
-import KuberaBot from "../images/kuberabot.png";
+import KuberaBot from "../images/coin.svg";
 
 /* ---------- SOCIAL CAPITAL - COMPLETE FAQ DATASET ---------- */
 const FAQS = [
   {
     question: "What is Social Capital?",
     answer:
-      "Social Capital is a digital community savings platform that enables people to join or create chit fund groups. Members contribute regularly and receive pooled funds based on auction, rotation, or predefined schedules.",
+      "Social Capital is a digital community savings platform that enables people to join or create chit groups. Members contribute regularly and receive pooled funds based on auction, rotation, or predefined schedules.",
     keywords: [
       "social capital",
-      "chit fund",
+      "chit",
       "community savings",
       "digital app",
     ],
@@ -19,14 +19,14 @@ const FAQS = [
   {
     question: "Hi",
     answer:
-      "Hi! I'm Kubera, your Social Capital assistant. Ask me anything about chit fund groups, auctions, or payouts!",
+      "Hi! I'm Kubera, your Social Capital assistant. Ask me anything about chit groups, auctions, or payouts!",
     keywords: ["hi", "hello", "hey"],
   },
   {
-    question: "How does a chit fund work in Social Capital?",
+    question: "How does a chit work in Social Capital?",
     answer:
       "Members contribute a fixed amount each month. One member receives the total collected fund through an auction or rotation draw. This continues until every member has received their turn.",
-    keywords: ["how it works", "chit fund", "monthly contribution", "cycle"],
+    keywords: ["how it works", "chit", "monthly contribution", "cycle"],
   },
   {
     question: "What are the fund types available in Social Capital?",
@@ -89,7 +89,7 @@ const FAQS = [
     keywords: ["multiple groups", "join", "dashboard", "participate"],
   },
   {
-    question: "How do I create a chit fund group?",
+    question: "How do I create a chit group?",
     answer:
       "Verified users can create new groups by choosing a fund type, mechanism (auction, rotation, or predefined), chit amount, and duration from the admin dashboard.",
     keywords: ["create group", "start", "new group", "admin"],
@@ -139,7 +139,7 @@ const FAQS = [
   {
     question: "Is Social Capital legal and compliant?",
     answer:
-      "Yes. Social Capital operates under the regulations of India’s Chit Funds Act and digital financial compliance standards.",
+      "Yes. Social Capital operates under the regulations of India’s chits Act and digital financial compliance standards.",
     keywords: ["legal", "law", "regulation", "compliance"],
   },
   {
@@ -149,9 +149,9 @@ const FAQS = [
     keywords: ["benefits", "advantages", "why use", "features"],
   },
   {
-    question: "Can chit funds be used for emergencies or business?",
+    question: "Can chits be used for emergencies or business?",
     answer:
-      "Yes. Many members use their chit fund winnings for emergencies, weddings, education, or starting a business.",
+      "Yes. Many members use their chit winnings for emergencies, weddings, education, or starting a business.",
     keywords: ["emergency", "business", "wedding", "loan"],
   },
   {
@@ -220,7 +220,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "👋 Hello! I'm Kubera — your Social Capital assistant. Ask me anything about chit funds, auctions, or payouts!",
+      text: "👋 Hello! I'm Kubera — your Social Capital assistant. Ask me anything about chits, auctions, or payouts!",
     },
   ]);
   const [input, setInput] = useState("");
