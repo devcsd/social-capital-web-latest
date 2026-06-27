@@ -74,8 +74,11 @@ export const getGroupDataById = async (groupId) => {
 };
 
 //Get member Data by page id
-export const getAllMemberPageId = async (pageId) => {
-  return apiService.get(`admin/getAllMemberData/${pageId}`);
+export const getAllMemberPageId = async (pageId, filters = {}) => {
+  return apiService.post(`admin/getAllMemberData`, {
+    filters,
+    page: pageId,
+  });
 };
 
 // post group pause/resume activity
