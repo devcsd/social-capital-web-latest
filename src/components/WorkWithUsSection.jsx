@@ -100,7 +100,7 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="overflow-hidden bg-[#1a237e] py-16 lg:min-h-screen flex items-center" id="how-it-works">
+    <section className="overflow-hidden py-16 lg:min-h-screen flex items-center" id="how-it-works">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Top Section */}
 <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">

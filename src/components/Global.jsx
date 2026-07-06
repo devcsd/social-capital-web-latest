@@ -39,7 +39,7 @@ export default function App() {
   const [selectedCountry, setSelectedCountry] = useState(countries[1]);
 
   return (
-    <div className="min-h-screen bg-[#1a237e] text-white overflow-hidden" id="community">
+    <div className="min-h-screen text-white overflow-hidden" id="community">
       <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-10">
         <span className="mb-6 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs tracking-[0.3em] text-white/80">
           GLOBAL COMMUNITY

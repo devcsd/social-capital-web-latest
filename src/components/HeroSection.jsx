@@ -108,7 +108,7 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative overflow-hidden py-20 bg-[#1a237e]"
+      className="relative overflow-hidden py-20"
       // style={{
       //   background:
       //     "linear-gradient(135deg, #1565C0 0%, #1a237e 45%, #311b92 100%)",
@@ -118,7 +118,7 @@ const HeroSection = () => {
       <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-indigo-700/30 blur-3xl" />
 
       {/* Main Container */}
-      <div className="relative z-10 mx-auto max-w-[1250px] px-6 lg:px-10">
+      <div className="relative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
         <div className="flex flex-col items-center lg:flex-row">
           {/* LEFT */}
           <div className="flex-1">
@@ -152,12 +152,12 @@ const HeroSection = () => {
                 return (
                   <div
                     key={index}
-                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/50 bg-white/30 p-4 backdrop-blur-md"
+                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/90 bg-white/5 p-4 backdrop-blur-md"
                   >
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-xl ${feature.bg}`}
                     >
-                      <Icon size={20} className={feature.color} />
+                      <Icon size={20} className="text-white" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-white">
@@ -261,14 +261,14 @@ const HeroSection = () => {
             >
               <TrendingUp size={24} className="text-black" />
             </div>
-            
+
             {/* Phone */}
             <PhoneMockup />
           </div>
         </div>
 
         {/* Stronger Together */}
-        <div className="mt-20 rounded-3xl border border-white/20 bg-white/20 p-8 backdrop-blur-md lg:p-12">
+        <div className="mt-20 rounded-3xl border border-white/90 bg-white/5 p-4 backdrop-blur-md">
           <h2 className="text-center text-3xl font-bold text-white">
             Stronger Together. Better Future.
           </h2>
@@ -277,10 +277,14 @@ const HeroSection = () => {
             {bottomFeatures.map((item, index) => {
               const Icon = item.icon;
               return (
-                <div key={index} className="flex gap-4">
+                <div
+                  key={index}
+                  className="flex gap-4 border-l border-white/10 pl-4"
+                >
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
                     <Icon size={20} className="text-blue-400" />
                   </div>
+
                   <div>
                     <h3 className="font-semibold text-white">{item.title}</h3>
                     <p className="mt-1 text-sm text-white/60">{item.desc}</p>

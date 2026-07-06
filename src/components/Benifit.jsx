@@ -9,7 +9,7 @@ import { benefits } from "../data/Benifitdata";
 
 const BenefitHighlightSection = () => {
   return (
-    <section className="bg-primary py-16 px-4 sm:px-8 lg:py-20">
+    <section className=" py-16 px-4 sm:px-8 lg:py-20">
       <div className="max-w-6xl mx-auto text-center">
         {/* Header */}
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white font-inter mb-4">

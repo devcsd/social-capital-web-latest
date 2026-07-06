@@ -39,7 +39,7 @@ const DevelopmentSection = () => {
   };
 
   return (
-    <section className="relative w-full bg-[#1a237e] py-24 px-6 sm:px-8 overflow-hidden">
+    <section className="relative w-full py-24 px-6 sm:px-8 overflow-hidden">
       {/* Section Header */}
       <div className="text-center mb-16 relative z-20 px-4">
         <h2 className="text-2xl lg:text-3xl font-bold font-inter text-white">
