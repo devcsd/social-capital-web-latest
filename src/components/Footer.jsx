@@ -6,84 +6,44 @@ import { SiCashapp } from "react-icons/si";
 import ContactPopup from "./contact";
 
 const Footer = () => {
-  // Links data
-
-  const informationData = [
-    "Terms",
-    "Disclosures",
-    "Disclosures",
-    "Latest News",
-  ];
+  const informationData = ["Terms", "Disclosures", "Disclosures", "Latest News"];
 
   return (
-    <footer className="bg-[#0b0e1c] py-4 px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Left Column - Branding */}
+    <footer className="border-t border-white/10 bg-[linear-gradient(180deg,rgba(6,12,35,0.98),rgba(8,15,45,1))] px-4 py-10 sm:px-6 md:px-10 lg:px-12">
+      <div className="mx-auto max-w-7xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_20px_80px_rgba(4,10,40,0.22)] backdrop-blur-xl sm:p-8 lg:p-10">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           <div className="space-y-8">
-            {/* Logo */}
             <div className="flex items-center gap-2">
-              <SiCashapp className="text-white h-8 w-8" />
-              <span className="ml-[-5px] font-semibold tracking-wide font-inter">
+              <SiCashapp className="h-8 w-8 text-white" />
+              <span className="ml-[-5px] font-inter text-lg font-semibold tracking-wide">
                 <span className="text-white">ocial</span>
-                <span className="text-secondary">Capital</span>
+                <span className="text-[#ffc72c]">Capital</span>
               </span>
             </div>
 
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-6">
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
-              >
+            <div className="flex items-center gap-4">
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/[0.05] p-2 text-white transition hover:bg-white/10 hover:text-[#ffc72c]">
                 <FaFacebookF className="h-5 w-5" />
               </a>
-
-              <a
-                href="https://www.instagram.com/socialcapital.app?igsh=Z3Zqc3pyeGtpZTJi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
-              >
+              <a href="https://www.instagram.com/socialcapital.app?igsh=Z3Zqc3pyeGtpZTJi" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/[0.05] p-2 text-white transition hover:bg-white/10 hover:text-[#ffc72c]">
                 <FaInstagram className="h-5 w-5" />
               </a>
-
-              <a
-                href="https://x.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-secondary transition-colors duration-300 p-2 hover:bg-white/10 rounded-full"
-              >
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/[0.05] p-2 text-white transition hover:bg-white/10 hover:text-[#ffc72c]">
                 <FaXTwitter className="h-5 w-5" />
               </a>
             </div>
 
-            {/* Copyright */}
             <div className="space-y-2">
-              <p className="text-white font-inter text-sm">
-                {new Date().getFullYear()} Copyright | Social Capital
-              </p>
-              {/* <p className="text-white font-inter text-sm">
-                Distributed by ThemeWagon
-              </p> */}
+              <p className="font-inter text-sm text-white/80">{new Date().getFullYear()} Copyright | Social Capital</p>
             </div>
           </div>
 
-          {/* Column 3 - Information */}
           <div className="space-y-8">
-            <h3 className="text-white font-bold text-lg font-inter">
-              Information
-            </h3>
+            <h3 className="font-inter text-lg font-semibold text-white">Information</h3>
             <ul className="space-y-3">
               {informationData.map((info, index) => (
                 <li key={index}>
-                  <a
-                    href="/"
-                    className="text-gray-300 hover:text-secondary transition-colors duration-300 font-inter text-sm"
-                  >
+                  <a href="/" className="font-inter text-sm text-white/70 transition hover:text-[#ffc72c]">
                     {info}
                   </a>
                 </li>
@@ -91,52 +51,41 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4 - Subscribe */}
           <div className="space-y-8">
-            <h3 className="text-white font-bold text-lg font-inter">
-              Stay Updated
-            </h3>
-            <p className="text-gray-300 font-inter text-sm leading-relaxed">
-              Sign up to receive news, announcements, and insights directly to
-              your email.
+            <h3 className="font-inter text-lg font-semibold text-white">Stay Updated</h3>
+            <p className="font-inter text-sm leading-7 text-white/70">
+              Sign up to receive news, announcements, and insights directly to your email.
             </p>
 
-            {/* Email Input */}
             <div className="relative">
               <input
                 type="email"
                 placeholder="Enter Email"
-                className="w-full bg-black/30 border border-gray-600/50 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-400 font-inter text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300"
+                className="w-full rounded-[18px] border border-white/10 bg-black/25 px-4 py-3 pr-12 text-sm text-white placeholder:text-white/40 focus:border-[#ffc72c] focus:outline-none focus:ring-1 focus:ring-[#ffc72c]"
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:scale-110 transition-transform duration-300">
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#ffc72c] transition hover:scale-110">
                 <FaPaperPlane className="h-4 w-4" />
               </button>
             </div>
           </div>
-          {/* Column 5- Contactus */}
-          <div className="space-y-8">
-            <h3 className="text-white font-bold text-lg font-inter">
-              Get in Touch
-            </h3>
-            <p className="text-gray-300 font-inter text-sm leading-relaxed">
-              Whether you have a question or want to collaborate, our team is
-              here to support you.
-            </p>
 
+          <div className="space-y-8">
+            <h3 className="font-inter text-lg font-semibold text-white">Get in Touch</h3>
+            <p className="font-inter text-sm leading-7 text-white/70">
+              Whether you have a question or want to collaborate, our team is here to support you.
+            </p>
             <ContactPopup />
           </div>
         </div>
       </div>
-      <div className="mt-16 mb-0">
-        {/* Bottom Bar */}
-        <div className="text-center">
-          <p className="text-gray-400 text-sm font-inter">
-            Designed and Developed by{" "}
-            <a href="https://www.cloudspacedesign.com/" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium">
-              CloudSpaceDesign.com
-            </a>
-          </p>
-        </div>
+
+      <div className="mx-auto mt-8 max-w-7xl text-center">
+        <p className="font-inter text-sm text-white/60">
+          Designed and Developed by{" "}
+          <a href="https://www.cloudspacedesign.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-[#ffc72c]">
+            CloudSpaceDesign.com
+          </a>
+        </p>
       </div>
     </footer>
   );

@@ -12,8 +12,8 @@ const steps = [
     description:
       "Choose members you trust — family, classmates, colleagues. Pick your group's currency, cadence, and payout model.",
     extra: (
-      <div className="mt-8 border border-white/10 rounded-2xl p-5 bg-white/[0.03]">
-        <div className="space-y-4 text-sm">
+      <div className="mt-8 rounded-[20px] border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
+        <div className="space-y-3 text-sm">
           <div className="flex items-center justify-between">
             <span className="tracking-[0.2em] uppercase text-white/50 text-xs">
               Currency
@@ -75,13 +75,12 @@ const steps = [
         ].map((item) => (
           <span
             key={item}
-            className="px-4 py-2 rounded-full border border-white/10 text-white/70 text-xs font-medium"
-          >
+            className="px-3 py-1.5 rounded-full border border-white/10 text-white/70 text-[11px] font-medium">
             {item}
           </span>
         ))}
 
-        <span className="px-4 py-2 rounded-full bg-[#FFC72C] text-black text-xs font-bold">
+        <span className="px-3 py-1.5 rounded-full bg-[#FFC72C] text-black text-[11px] font-bold">
           Cash
         </span>
       </div>
@@ -100,17 +99,18 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="overflow-hidden py-16 lg:min-h-screen flex items-center" id="how-it-works">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section
+      className="overflow-hidden py-20 lg:min-h-screen flex items-center"
+      id="how-it-works">
+      <div className="mx-auto max-w-[1240px] px-6 xl:px-0">
         {/* Top Section */}
-<div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">
           {/* Left */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-          >
+            viewport={{ once: true }}>
             <div className="inline-flex items-center gap-2 border border-white/15 rounded-full px-5 py-2 mb-8 bg-white/[0.03]">
               <span className="w-2 h-2 rounded-full bg-[#FFC72C]" />
               <span className="text-[#FFC72C] uppercase tracking-[0.25em] text-xs font-semibold">
@@ -118,7 +118,7 @@ export default function HowItWorksSection() {
               </span>
             </div>
 
-     <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight lg:leading-[0.95] tracking-tight max-w-3xl">
+            <h2 className="text-white text-2xl sm:text-4xl md:text-5xl lg:text-[62px] leading-[74px] font-[650]  lg:leading-[0.95]  max-w-3xl">
               Three steps from{" "}
               <span className="text-[#FFC72C]">invite to payout.</span>
             </h2>
@@ -130,9 +130,8 @@ export default function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             viewport={{ once: true }}
-  className="lg:pl-20 lg:pt-8 mt-4 lg:mt-0"
-          >
-         <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-justify max-w-[1000px]">
+            className="lg:pl-20 lg:pt-8 mt-4 lg:mt-0">
+            <p className="text-white/75 text-base sm:text-lg md:text-xl lg:text-[17px] leading-[34px]  max-w-[380px]   text-justify py-10">
               Social Capital handles the coordination. You and your people
               decide the currency, cadence, members, and payout model. Money
               moves between you — we never touch it.
@@ -141,7 +140,7 @@ export default function HowItWorksSection() {
         </div>
 
         {/* Cards */}
-   <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mt-12 lg:mt-20">
+        <div className="mt-20 grid gap-6 xl:grid-cols-3">
           {steps.map((step, index) => {
             const Icon = step.icon;
 
@@ -155,38 +154,53 @@ export default function HowItWorksSection() {
                   delay: index * 0.1,
                 }}
                 viewport={{ once: true }}
-              className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 lg:p-9 min-h-auto lg:min-h-[520px] flex flex-col"
-              >
+                className="
+    flex
+    flex-col
+    h-[500px]
+    rounded-[30px]
+    border
+    border-white/[0.08]
+    bg-white/[0.04]
+    backdrop-blur-2xl
+    p-7
+    shadow-[0_20px_80px_rgba(0,0,0,0.18)]
+    transition-all
+    duration-500
+    hover:-translate-y-2
+    hover:border-white/20
+    hover:bg-white/[0.06]
+  ">
                 {/* Icon */}
-      <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 flex items-center justify-center">
-                  <Icon className="w-7 h-7 text-[#FFC72C]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06]">
+                  <Icon className="w-5 h-5 text-[#FFC72C]" />
                 </div>
 
                 {/* Label */}
-                <div className="mt-8 flex items-center gap-3">
-                  <span className="text-[#FFC72C] text-sm tracking-[0.3em] font-semibold">
+                <div className="mt-6 flex items-center gap-2">
+                  <span className="text-[#FFC72C] text-[11px] tracking-[0.35em] uppercase font-semibold">
                     {step.id}
                   </span>
 
                   <span className="w-1 h-1 rounded-full bg-[#FFC72C]" />
 
-                  <span className="text-[#FFC72C] text-sm tracking-[0.3em] font-semibold">
+                  <span className="text-[#FFC72C] text-[11px] tracking-[0.35em] uppercase font-semibold">
                     {step.label}
                   </span>
                 </div>
 
                 {/* Title */}
-             <h3 className="mt-6 text-white text-2xl sm:text-3xl lg:text-4xl leading-tight font-bold whitespace-pre-line">
+                <h3 className="mt-5 whitespace-pre-line text-[26px] leading-[31px] font-semibold tracking-[-0.02em] text-white">
                   {step.title}
                 </h3>
 
                 {/* Description */}
-          <p className="mt-4 lg:mt-6 text-white/70 text-base sm:text-lg lg:text-xl leading-relaxed">
+                <p className="mt-4 text-[16px] leading-7 text-white/65">
                   {step.description}
                 </p>
 
                 {/* Extra Content */}
-                {step.extra && <div className="mt-auto pt-8">{step.extra}</div>}
+                {step.extra && <div className="mt-auto pt-6">{step.extra}</div>}
               </motion.div>
             );
           })}

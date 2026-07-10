@@ -1,6 +1,63 @@
+/* =========================================================
+   FONT IMPORTS — must precede all other statements
+   Inter / Inter Tight (display) / JetBrains Mono (labels)
+   ========================================================= */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* =========================================================
+   DESIGN TOKENS
+   Mirrors the reference design language (Project B) so every
+   component can consume the same values via CSS variables,
+   independent of whichever Tailwind utility is used alongside.
+   ========================================================= */
+:root {
+  /* Core brand */
+  --sc-blue-900: #0a1f6b;
+  --sc-blue-700: #1b3fc4;
+  --sc-blue-600: #1e4fe5;
+  --sc-blue-500: #4072ff;
+  --sc-blue-100: #e6ecff;
+
+  --sc-gold-600: #e8a90b;
+  --sc-gold-500: #ffc72c;
+  --sc-gold-300: #ffe089;
+
+  /* Surfaces */
+  --sc-ink-900: #0b1233;
+  --sc-ink-800: #111a44;
+  --sc-ink-700: #1a2560;
+  --sc-line: rgba(255, 255, 255, 0.08);
+  --sc-line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Text on blue */
+  --sc-text: #ffffff;
+  --sc-text-dim: rgba(255, 255, 255, 0.72);
+  --sc-text-mute: rgba(255, 255, 255, 0.55);
+
+  /* Status */
+  --sc-green: #34d399;
+  --sc-pink: #f472b6;
+  --sc-violet: #a78bfa;
+
+  /* Radius scale */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  /* Shadow */
+  --shadow-card:
+    0 20px 50px -20px rgba(4, 10, 40, 0.6),
+    0 2px 0 rgba(255, 255, 255, 0.04) inset;
+
+  /* Font families */
+  --ff-display: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ff-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+}
 
 body {
   font-family:
@@ -9,6 +66,15 @@ body {
   color: white;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--ff-display);
+  letter-spacing: -0.02em;
 }
 
 @layer utilities {
@@ -25,6 +91,14 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
+}
+
+.font-display {
+  font-family: var(--ff-display);
+}
+
+.font-mono-sc {
+  font-family: var(--ff-mono);
 }
 
 /* Hide scrollbar */
@@ -45,10 +119,9 @@ body {
   background-color: #ffffff !important;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
-
 
 .badge-pop {
   animation: floatBounce 4s ease-in-out infinite;
@@ -56,16 +129,81 @@ html{
 
 @keyframes floatBounce {
   0%,
- 100% {
+  100% {
     transform: translateY(0);
   }
- 25% {
+  25% {
     transform: translateY(-10px);
   }
- 50% {
+  50% {
     transform: translateY(2px);
   }
- 75% {
+  75% {
     transform: translateY(-5px);
   }
+}
+
+/* =========================================================
+   SHARED UTILITY CLASSES
+   Reusable primitives that later phases will apply to specific
+   components. Defining them here (globally) keeps every section
+   drawing from one source of truth, matching the reference's
+   token-driven approach. Not yet applied to any component.
+   ========================================================= */
+
+/* Uniform section vertical rhythm (reference: 120px desktop / 80px mobile) */
+.section-pad {
+  padding: 120px 0;
+}
+@media (max-width: 900px) {
+  .section-pad {
+    padding: 80px 0;
+  }
+}
+
+/* Reusable dark gradient card surface */
+.card-sc {
+  background: linear-gradient(180deg, var(--sc-ink-800), var(--sc-ink-900));
+  border: 1px solid var(--sc-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Thin gradient divider line */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+}
+
+/* Eyebrow / pill label (gold dot + uppercase mono text) */
+.eyebrow-sc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sc-gold-300);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 199, 44, 0.1);
+  border: 1px solid rgba(255, 199, 44, 0.25);
+}
+.eyebrow-sc .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sc-gold-500);
+  box-shadow: 0 0 10px var(--sc-gold-500);
+}
+
+.accent-gold {
+  color: var(--sc-gold-500);
 }

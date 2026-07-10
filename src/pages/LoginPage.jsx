@@ -128,7 +128,7 @@ export default function EmailOtpLogin() {
 
   return (
     <section>
-      <section className="bg-[#1a237e] min-h-screen flex items-center justify-center px-4 py-16">
+      <section className="bg-[#2032fc] min-h-screen flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-6xl bg-gray-900/40 backdrop-blur-xl border border-gray-700/30 shadow-2xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
           {/* Left Panel - Image */}
           <div
@@ -142,14 +142,16 @@ export default function EmailOtpLogin() {
             onSubmit={otpSent ? handleLogin : handleGetOtp}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full p-8 md:p-12 space-y-6">
+            className="w-full p-8 md:p-12 space-y-6 bg-[#0b19b9]">
             <h2 className="text-2xl font-bold text-center text-white">
               {otpSent ? "Enter 4-digit OTP" : "Login to Social Capital"}
             </h2>
 
             {/* Email */}
             <div>
-              <label className="block text-sm text-gray-200">Email</label>
+              <label className="block text-sm pl-2 pb-2 text-gray-200">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -215,8 +217,8 @@ export default function EmailOtpLogin() {
                   {loading
                     ? "Please wait..."
                     : otpSent
-                    ? "OTP Sent"
-                    : "Get OTP"}
+                      ? "OTP Sent"
+                      : "Get OTP"}
                 </motion.button>
               )}
 

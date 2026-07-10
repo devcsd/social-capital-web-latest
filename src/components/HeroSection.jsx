@@ -64,6 +64,60 @@ const HeroSection = () => {
     },
   ];
 
+  const arcItems = [
+    {
+      type: "profile",
+      angle: 205,
+      radius: 290,
+      img: "https://i.pravatar.cc/96?img=25",
+    },
+    {
+      type: "badge",
+      angle: 155,
+      radius: 255,
+      icon: ShieldCheck,
+      bg: "bg-indigo-500",
+    },
+    {
+      type: "profile",
+      angle: 125,
+      radius: 295,
+      img: "https://i.pravatar.cc/96?img=12",
+    },
+    {
+      type: "profile",
+      angle: 90,
+      radius: 320,
+      img: "https://i.pravatar.cc/96?img=47",
+    },
+    {
+      type: "profile",
+      angle: 55,
+      radius: 295,
+      img: "https://i.pravatar.cc/96?img=33",
+    },
+    {
+      type: "badge",
+      angle: 25,
+      radius: 255,
+      icon: TrendingUp,
+      bg: "bg-amber-400",
+    },
+    {
+      type: "profile",
+      angle: -5,
+      radius: 290,
+      img: "https://i.pravatar.cc/96?img=44",
+    },
+    {
+      type: "badge",
+      angle: 180,
+      radius: 230,
+      icon: Users,
+      bg: "bg-blue-500",
+    },
+  ];
+
   const features = [
     {
       icon: Users,
@@ -108,12 +162,25 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative overflow-hidden py-20"
-      // style={{
-      //   background:
-      //     "linear-gradient(135deg, #1565C0 0%, #1a237e 45%, #311b92 100%)",
-      // }}
-    >
+      className="relative overflow-hidden py-11"
+      style={{
+        background: `
+      radial-gradient(circle at 52% 42%, rgba(139,92,246,0.35) 0%, rgba(139,92,246,0.18) 22%, transparent 48%),
+
+      radial-gradient(circle at 50% 100%, rgba(37,99,235,0.45) 0%, transparent 30%),
+
+      linear-gradient(
+        90deg,
+        #2342B8 0%,
+        #2E53D4 20%,
+        #4A4DDD 45%,
+        #6C3FDD 60%,
+        #A33FB7 78%,
+        #E25573 92%,
+        #F97A38 100%
+      )
+    `,
+      }}>
       {/* Glow */}
       <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-indigo-700/30 blur-3xl" />
 
@@ -121,16 +188,16 @@ const HeroSection = () => {
       <div className="relative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
         <div className="flex flex-col items-center lg:flex-row">
           {/* LEFT */}
-          <div className="flex-1">
-            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-9xl">
+          <div className="flex-1 pt-10">
+            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-9xl ">
               Social
               <br />
               <span
                 className="bg-clip-text text-transparent"
                 style={{
-                  backgroundImage: "linear-gradient(90deg, #1565C0, #ffc404)",
-                }}
-              >
+                  backgroundImage:
+                    "linear-gradient(90deg, #5B7CFF 0%, #7C72FF 30%, #A96CFF 60%, #FF7B93 100%)",
+                }}>
                 Capital
               </span>
             </h1>
@@ -152,11 +219,45 @@ const HeroSection = () => {
                 return (
                   <div
                     key={index}
-                    className="flex max-w-md items-center gap-4 rounded-2xl border border-white/90 bg-white/5 p-4 backdrop-blur-md"
-                  >
+                    className="
+group
+relative
+flex
+max-w-md
+items-center
+gap-5
+overflow-hidden
+rounded-2xl
+border
+border-white/15
+bg-white/10
+px-5
+py-2
+backdrop-blur-2xl
+shadow-[0_8px_32px_rgba(0,0,0,0.25)]
+transition-all
+duration-500
+hover:-translate-y-1
+hover:border-white/30
+hover:bg-white/15
+hover:shadow-[0_20px_60px_rgba(99,102,241,0.35)]
+">
                     <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-xl ${feature.bg}`}
-                    >
+                      className={`
+  relative
+  flex
+  h-12
+  w-12
+  items-center
+  justify-center
+  rounded-2xl
+  ${feature.bg}
+  shadow-lg
+  transition-transform
+  duration-300
+  group-hover:scale-110
+`}>
+                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
                       <Icon size={20} className="text-white" />
                     </div>
                     <div>
@@ -172,7 +273,28 @@ const HeroSection = () => {
 
             {/* CTA */}
             <div className="mt-10 flex flex-wrap items-center gap-5">
-              <JoinPlatformPopup buttonName="Get Started Free →" />
+              <div className="relative inline-block group">
+                <div
+                  className="
+absolute
+-inset-1
+rounded-2xl
+bg-gradient-to-r
+from-yellow-400
+via-orange-400
+to-orange-500
+opacity-60
+blur-xl
+transition
+duration-500
+group-hover:opacity-100
+"
+                />
+
+                <div className="relative">
+                  <JoinPlatformPopup buttonName="Get Started Free →" />
+                </div>
+              </div>
               <span className="text-sm text-white/60">
                 <div className="flex items-center gap-2">
                   <LockIcon />
@@ -194,15 +316,13 @@ const HeroSection = () => {
                   left: person.left,
                   animationDelay: person.delay,
                   animationDuration: person.duration,
-                }}
-              >
+                }}>
                 <div
                   className="h-20 w-20 rounded-full border-2 border-dashed border-white/40 p-[3px]"
                   style={{
                     background: "rgba(255,255,255,0.08)",
                     backdropFilter: "blur(6px)",
-                  }}
-                >
+                  }}>
                   <img
                     src={person.img}
                     alt={person.label}
@@ -226,8 +346,7 @@ const HeroSection = () => {
                 border: "1px solid rgba(255,255,255,0.25)",
                 animationDuration: "2.8s",
                 animationDelay: "0.2s",
-              }}
-            >
+              }}>
               <ShieldCheck size={22} className="text-white" />
             </div>
 
@@ -242,8 +361,7 @@ const HeroSection = () => {
                 border: "1px solid rgba(255,255,255,0.25)",
                 animationDuration: "3.2s",
                 animationDelay: "0.8s",
-              }}
-            >
+              }}>
               <Users size={22} className="text-white" />
             </div>
 
@@ -257,8 +375,7 @@ const HeroSection = () => {
                 boxShadow: "0 4px 20px rgba(245,158,11,0.45)",
                 animationDuration: "2.5s",
                 animationDelay: "1.4s",
-              }}
-            >
+              }}>
               <TrendingUp size={24} className="text-black" />
             </div>
 
@@ -268,7 +385,17 @@ const HeroSection = () => {
         </div>
 
         {/* Stronger Together */}
-        <div className="mt-20 rounded-3xl border border-white/90 bg-white/5 p-4 backdrop-blur-md">
+        <div
+          className="
+    mt-20
+    rounded-[32px]
+    border border-white/15
+    bg-white/10
+    px-12
+    py-8
+    backdrop-blur-2xl
+    shadow-[0_20px_60px_rgba(0,0,0,0.2)]
+  ">
           <h2 className="text-center text-3xl font-bold text-white">
             Stronger Together. Better Future.
           </h2>
@@ -279,10 +406,30 @@ const HeroSection = () => {
               return (
                 <div
                   key={index}
-                  className="flex gap-4 border-l border-white/10 pl-4"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                    <Icon size={20} className="text-blue-400" />
+                  className="flex gap-4 border-l border-white/10 pl-4">
+                  <div
+                    className="
+    flex
+    h-14
+    w-14
+    items-center
+    justify-center
+    rounded-2xl
+    border
+    border-white/15
+    bg-white/5
+    backdrop-blur-xl
+    shadow-[0_8px_25px_rgba(255,193,7,0.12)]
+    transition-all
+    duration-300
+    hover:bg-white/10
+    hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)]
+  ">
+                    <Icon
+                      size={24}
+                      className="text-[#FFC107]"
+                      strokeWidth={2.2}
+                    />
                   </div>
 
                   <div>
