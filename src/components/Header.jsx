@@ -21,18 +21,17 @@ const Header = () => {
     <header
       className={`sticky top-0 z-50 transition-all duration-500 '}
       }`}>
-      <div className="container mx-auto ">
+      <div className="w-full">
         <div
           className={`
-            flex items-center justify-around
-            
+            flex items-center justify-around            
             border border-white/10
-            bg-[rgba(30,79,229,0.72)]
+            bg-primary
             backdrop-blur-xl
             shadow-sc-card
             transition-all duration-500
-            px-6 lg:px-8
-            ${isScrolled ? "h-[72px]" : "h-[78px]"}
+            px-6 lg:px-8 w-full
+            ${isScrolled ? "h-[72px] w-100%" : "h-[78px] w-100%"}
           `}>
           {/* ---------------- Logo ---------------- */}
 
