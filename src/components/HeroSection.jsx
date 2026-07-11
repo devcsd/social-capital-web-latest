@@ -23,100 +23,100 @@ const HeroSection = () => {
 
   const people = [
     {
-      label: "African man",
+      label: "South Indian Man",
       top: "-5%",
       left: "25%",
-      img: "https://i.pravatar.cc/96?img=12",
+      img: "/human1.jpg",
       delay: "0s",
       duration: "3s",
     },
     {
-      label: "South Indian woman",
+      label: "South Indian Woman",
       top: "-5%",
       left: "62%",
-      img: "https://i.pravatar.cc/96?img=47",
+      img: "/human2.jpg",
       delay: "0.3s",
       duration: "3.4s",
     },
     {
-      label: "Middle Eastern man",
+      label: "South Indian Man",
       top: "5%",
       left: "80%",
-      img: "https://i.pravatar.cc/96?img=33",
+      img: "/human3.jpg",
       delay: "0.6s",
       duration: "3.8s",
     },
     {
-      label: "Asian woman",
+      label: "South Indian Woman",
       top: "30%",
       left: "90%",
-      img: "https://i.pravatar.cc/96?img=44",
+      img: "/human4.jpg",
       delay: "0.9s",
       duration: "4.2s",
     },
     {
-      label: "Latina woman",
+      label: "South Indian Professional",
       top: "20%",
       left: "-5%",
-      img: "https://i.pravatar.cc/96?img=25",
+      img: "/human5.webp", // Reuse if you have only 4 images
       delay: "1.2s",
       duration: "3.6s",
     },
   ];
 
-  const arcItems = [
-    {
-      type: "profile",
-      angle: 205,
-      radius: 290,
-      img: "https://i.pravatar.cc/96?img=25",
-    },
-    {
-      type: "badge",
-      angle: 155,
-      radius: 255,
-      icon: ShieldCheck,
-      bg: "bg-indigo-500",
-    },
-    {
-      type: "profile",
-      angle: 125,
-      radius: 295,
-      img: "https://i.pravatar.cc/96?img=12",
-    },
-    {
-      type: "profile",
-      angle: 90,
-      radius: 320,
-      img: "https://i.pravatar.cc/96?img=47",
-    },
-    {
-      type: "profile",
-      angle: 55,
-      radius: 295,
-      img: "https://i.pravatar.cc/96?img=33",
-    },
-    {
-      type: "badge",
-      angle: 25,
-      radius: 255,
-      icon: TrendingUp,
-      bg: "bg-amber-400",
-    },
-    {
-      type: "profile",
-      angle: -5,
-      radius: 290,
-      img: "https://i.pravatar.cc/96?img=44",
-    },
-    {
-      type: "badge",
-      angle: 180,
-      radius: 230,
-      icon: Users,
-      bg: "bg-blue-500",
-    },
-  ];
+  // const arcItems = [
+  //   {
+  //     type: "profile",
+  //     angle: 205,
+  //     radius: 290,
+  //     img: "/human1.avif",
+  //   },
+  //   {
+  //     type: "badge",
+  //     angle: 155,
+  //     radius: 255,
+  //     icon: ShieldCheck,
+  //     bg: "bg-indigo-500",
+  //   },
+  //   {
+  //     type: "profile",
+  //     angle: 125,
+  //     radius: 295,
+  //     img: "/human2.avif",
+  //   },
+  //   {
+  //     type: "profile",
+  //     angle: 90,
+  //     radius: 320,
+  //     img: "/human3.avif",
+  //   },
+  //   {
+  //     type: "profile",
+  //     angle: 55,
+  //     radius: 295,
+  //     img: "/human4.avif",
+  //   },
+  //   {
+  //     type: "badge",
+  //     angle: 25,
+  //     radius: 255,
+  //     icon: TrendingUp,
+  //     bg: "bg-amber-400",
+  //   },
+  //   {
+  //     type: "profile",
+  //     angle: -5,
+  //     radius: 290,
+  //     img: "/human1.avif", // or repeat another image if you only have 4
+  //   },
+  //   {
+  //     type: "badge",
+  //     angle: 180,
+  //     radius: 230,
+  //     icon: Users,
+  //     bg: "bg-blue-500",
+  //   },
+  // ];
 
   const features = [
     {
