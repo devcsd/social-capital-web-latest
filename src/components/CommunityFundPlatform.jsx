@@ -44,17 +44,15 @@ const fadeUp = {
     },
   }),
 };
-
+// bg-[#3e3bd86e]
 export default function PayoutModels() {
   return (
-    <section className="overflow-hidden py-24 bg-[#3e3bd86e]">
-      <div className="mx-auto max-w-[1240px] px-6 xl:px-0">
-        {/* Heading */}
-        <div className="grid items-start gap-12 lg:grid-cols-2">
-          <div>
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2">
-              <span className="h-2 w-2 rounded-full bg-[#FFC72C]" />
-
+    <section className="overflow-hidden py-20 ">
+      <div className="mx-auto max-w-[1240px] px-16 xl:px-10 py-14">
+  <div className="grid items-start gap-8 lg:grid-cols-2">
+    <div>
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+        <span className="h-2 w-2 rounded-full bg-[#FFC72C]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#FFC72C]">
                 PAYOUT MODELS
               </span>
@@ -76,7 +74,7 @@ export default function PayoutModels() {
         </div>
 
         {/* Cards */}
-        <div className="mt-20 grid gap-6 xl:grid-cols-3">
+        <div className="mt-20 grid gap-7 xl:grid-cols-3">
           {payoutModels.map((item, index) => (
             <motion.div
               key={item.id}
@@ -88,7 +86,7 @@ export default function PayoutModels() {
               className="
     relative
     flex
-    h-[500px]
+    h-[450px]
     flex-col
     rounded-[28px]
     border
@@ -102,7 +100,7 @@ export default function PayoutModels() {
     hover:-translate-y-2
   ">
               {/* Top */}
-              <div className="mb-9 flex items-center justify-between">
+              <div className="mb-5 flex items-center justify-between">
                 <div
                   className={`flex h-9 w-9 items-center justify-center rounded-xl ${item.color} text-[13px] font-bold text-black`}>
                   {item.id}
@@ -128,7 +126,7 @@ export default function PayoutModels() {
                 {/* ROTATION */}
                 {item.type === "rotation" && (
                   <div className="border-t border-white/10 pt-6">
-                    <div className="mb-6 flex flex-wrap gap-2">
+                    <div className="mb-6 flex flex-wrap gap-3">
                       {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                         <div
                           key={num}
@@ -145,7 +143,7 @@ export default function PayoutModels() {
                       ))}
                     </div>
 
-                    <p className="text-[10px] uppercase tracking-[0.28em] text-[#C9D1FF]/70">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-[#C9D1FF]/70">
                       CYCLE 4 OF 8 · YOU'RE UP NEXT
                     </p>
                   </div>
@@ -239,7 +237,7 @@ export default function PayoutModels() {
                       ))}
                     </div>
 
-                    <p className="pt-6 text-[10px] uppercase tracking-[0.28em] text-[#C9D1FF]/70">
+                    <p className="pt-1 text-[10px] uppercase tracking-[0.28em] text-[#C9D1FF]/70">
                       LOCKED AT CYCLE START • NO CHANGES
                     </p>
                   </div>

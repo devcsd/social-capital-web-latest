@@ -12,7 +12,7 @@ const steps = [
     description:
       "Choose members you trust — family, classmates, colleagues. Pick your group's currency, cadence, and payout model.",
     extra: (
-      <div className="mt-8 rounded-[20px] border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
+      <div className="mt-auto rounded-[20px] border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
         <div className="space-y-3 text-sm">
           <div className="flex items-center justify-between">
             <span className="tracking-[0.2em] uppercase text-white/50 text-xs">
@@ -27,15 +27,15 @@ const steps = [
             </span>
 
             <div className="flex gap-2 flex-wrap justify-end">
-              <span className="px-3 py-1 rounded-full border border-white/10 text-white/50 text-xs">
+              <span className="px-1 py-1 rounded-full border border-white/10 text-white/50 text-xs">
                 Weekly
               </span>
 
-              <span className="px-3 py-1 rounded-full bg-[#FFC72C] text-black font-semibold text-xs">
+              <span className="px-1 py-1 rounded-full bg-[#FFC72C] text-black font-semibold text-xs">
                 Bi-weekly
               </span>
 
-              <span className="px-3 py-1 rounded-full border border-white/10 text-white/50 text-xs">
+              <span className="px-1 py-1 rounded-full border border-white/10 text-white/50 text-xs">
                 Monthly
               </span>
             </div>
@@ -61,7 +61,7 @@ const steps = [
     description:
       "Money moves peer-to-peer between members, outside the app. Use whatever rail your group prefers — even cash. Social Capital tracks who paid, sends reminders, and keeps the ledger honest.",
     extra: (
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-auto flex flex-wrap gap-3">
         {[
           "UPI",
           "Zelle",
@@ -140,7 +140,7 @@ export default function HowItWorksSection() {
         </div>
 
         {/* Cards */}
-        <div className="mt-20 grid gap-6 xl:grid-cols-3">
+        <div className="mt-20 grid gap-7 xl:grid-cols-3 ">
           {steps.map((step, index) => {
             const Icon = step.icon;
 
@@ -157,7 +157,7 @@ export default function HowItWorksSection() {
                 className="
     flex
     flex-col
-    h-[500px]
+    h-[420px]
     rounded-[30px]
     border
     border-white/[0.08]
@@ -173,29 +173,29 @@ export default function HowItWorksSection() {
   ">
                 {/* Icon */}
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06]">
-                  <Icon className="w-5 h-5 text-[#FFC72C]" />
+                  <Icon className="w-4 h-5 text-[#FFC72C]" />
                 </div>
 
                 {/* Label */}
-                <div className="mt-6 flex items-center gap-2">
+                <div className="mt-4 flex items-center gap-2">
                   <span className="text-[#FFC72C] text-[11px] tracking-[0.35em] uppercase font-semibold">
                     {step.id}
                   </span>
 
                   <span className="w-1 h-1 rounded-full bg-[#FFC72C]" />
 
-                  <span className="text-[#FFC72C] text-[11px] tracking-[0.35em] uppercase font-semibold">
+                  <span className="text-[#FFC72C] text-[10px] tracking-[0.35em] uppercase font-semibold">
                     {step.label}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="mt-5 whitespace-pre-line text-[26px] leading-[31px] font-semibold tracking-[-0.02em] text-white">
+                <h3 className="mt-2 whitespace-pre-line text-[26px] leading-[31px] font-semibold tracking-[-0.02em] text-white">
                   {step.title}
                 </h3>
 
                 {/* Description */}
-                <p className="mt-4 text-[16px] leading-7 text-white/65">
+                <p className="mt-4 text-[15px] leading-7 text-white/65">
                   {step.description}
                 </p>
 
@@ -206,6 +206,8 @@ export default function HowItWorksSection() {
           })}
         </div>
       </div>
+      
     </section>
+    
   );
 }
