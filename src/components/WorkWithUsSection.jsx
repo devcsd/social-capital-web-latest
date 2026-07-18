@@ -61,7 +61,7 @@ const steps = [
     description:
       "Money moves peer-to-peer between members, outside the app. Use whatever rail your group prefers — even cash. Social Capital tracks who paid, sends reminders, and keeps the ledger honest.",
     extra: (
-      <div className="mt-auto flex flex-wrap gap-3">
+      <div className="mt-auto flex flex-wrap gap-0.5">
         {[
           "UPI",
           "Zelle",

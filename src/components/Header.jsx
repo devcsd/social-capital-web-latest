@@ -6,6 +6,7 @@ import JoinPlatformPopup from "../components/JoinPlatform";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -19,8 +20,8 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 '}
-      }`}>
+      className={`sticky top-0 z-20 transition-all duration-500`}
+    >
       <div className="w-full">
         <div
           className={`
@@ -32,7 +33,8 @@ const Header = () => {
             transition-all duration-500
             px-6 lg:px-8 w-full
             ${isScrolled ? "h-[72px] w-100%" : "h-[78px] w-100%"}
-          `}>
+          `}
+        >
           {/* ---------------- Logo ---------------- */}
 
           <a href="#" className="flex items-center gap-3 shrink-0">
@@ -46,14 +48,16 @@ const Header = () => {
                 rounded-xl
                 bg-white
                 shadow-lg
-              ">
+              "
+            >
               <span
                 className="
                   font-display
                   text-xl
                   font-bold
                   text-sc-blue-600
-                ">
+                "
+              >
                 S
               </span>
             </div>
@@ -66,21 +70,10 @@ const Header = () => {
                   font-semibold
                   tracking-tight
                   text-white
-                ">
+                "
+              >
                 ocial <span className="text-sc-gold-500">Capital</span>
               </div>
-
-              {/* <p
-                className="
-                  mt-1
-                  text-[11px]
-                  uppercase
-                  tracking-[0.22em]
-                  text-white/65
-                  font-mono-sc
-                ">
-                Community Finance
-              </p> */}
             </div>
           </a>
 
@@ -92,7 +85,8 @@ const Header = () => {
               min-[900px]:flex
               items-center
               gap-10
-            ">
+            "
+          >
             <a
               href="#how-it-works"
               className="
@@ -102,7 +96,8 @@ const Header = () => {
                 transition-all
                 duration-300
                 hover:text-sc-gold-500
-              ">
+              "
+            >
               How it works
             </a>
 
@@ -115,7 +110,8 @@ const Header = () => {
                 transition-all
                 duration-300
                 hover:text-sc-gold-500
-              ">
+              "
+            >
               Community
             </a>
 
@@ -128,7 +124,8 @@ const Header = () => {
                 transition-all
                 duration-300
                 hover:text-sc-gold-500
-              ">
+              "
+            >
               Trust & Safety
             </a>
           </nav>
@@ -136,20 +133,23 @@ const Header = () => {
           {/* ---------------- CTA ---------------- */}
 
           <div className="hidden lg:flex items-center">
-            <JoinPlatformPopup
-              buttonName={
-                <span className="flex items-center gap-2">
-                  Get Started
-                  <ArrowRight
-                    size={18}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </span>
-              }
-            />
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-semibold rounded-lg hover:brightness-110 transition text-sm sm:text-base group"
+            >
+              Get Started
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      <JoinPlatformPopup open={showModal} setOpen={setShowModal} />
+      
     </header>
   );
 };

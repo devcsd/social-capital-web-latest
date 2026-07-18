@@ -12,6 +12,7 @@ import {
 import JoinPlatformPopup from "../components/JoinPlatform";
 
 const HeroSection = () => {
+    const [showModal, setShowModal] = useState(false);
   const [pulse, setPulse] = useState(0);
 
   useEffect(() => {
@@ -339,7 +340,9 @@ group-hover:opacity-100
                 />
 
                 <div className="relative">
-                  <JoinPlatformPopup buttonName="Get Started Free →" />
+                  
+                  <JoinPlatformPopup open={showModal} setOpen={setShowModal} 
+                  buttonName="Get Started Free →" /> 
                 </div>
               </div>
               <span className="text-sm text-white/700">
@@ -395,7 +398,7 @@ group-hover:opacity-100
             {people.map((person, index) => (
               <div
                 key={index}
-                className={`float-bounce absolute flex flex-col items-center gap-2 transition-opacity duration-500  z-50`}
+                className={`float-bounce absolute flex flex-col items-center gap-2 transition-opacity duration-500  z-30`}
                 style={{
                   top: person.top,
                   left: person.left,
@@ -424,7 +427,7 @@ group-hover:opacity-100
 
             {/* Badge — Shield Check / Trust */}
             <div
-              className="badge-pop absolute flex h-14 w-14 items-center justify-center  z-50 rounded-2xl"
+              className="badge-pop absolute flex h-14 w-14 items-center justify-center rounded-2xl"
               style={{
                 top: "20%",
                 left: "15%",
@@ -540,6 +543,8 @@ group-hover:opacity-100
 };
 
 export default HeroSection;
+
+
 // import { useState, useEffect } from "react";
 // import PhoneMockup from "./PhoneMockup";
 // import {

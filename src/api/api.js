@@ -160,4 +160,9 @@ export const updateContactEnquiries = async (id) => {
   });
 };
 
+//Dashboard Analytics
+export const getDashboardData = async (filters) => {
+  return apiService.post("admin/dashboardAnalytics", filters);
+};
+
 export default apiService;
