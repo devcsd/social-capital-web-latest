@@ -247,10 +247,16 @@ export default function FundManagerGroupRound() {
   useEffect(() => {
     if (!rounds.length) return;
 
-    const formattedChartData = rounds.map((r, index) => ({
-      label: `Round ${index + 1}`,
-      payout: r.payoutAmount ?? 0,
-    }));
+    const formattedChartData = [...rounds]
+      .sort((a, b) => {
+        const roundA = Number(a.round.replace("round_", ""));
+        const roundB = Number(b.round.replace("round_", ""));
+        return roundA - roundB;
+      })
+      .map((r) => ({
+        label: `Round ${r.round.replace("round_", "")}`,
+        payout: r.payoutAmount ?? 0,
+      }));
 
     setChartData(formattedChartData);
   }, [rounds]);

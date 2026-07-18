@@ -34,11 +34,32 @@ export default function GroupTranscation() {
   });
 
   const paymentChartOptions = {
+      indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
+      },
+      tooltip: {
+        callbacks: {
+          title: (items) => items[0].label,
+
+          label: (context) => {
+            const seconds = context.raw;
+
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+
+            return `Payment Time: ${mins}m ${secs}s`;
+          },
+
+          afterLabel: (context) => {
+            const date = context.dataset.transactionDates[context.dataIndex];
+
+            return `Paid At: ${formatTransactionTime(date)}`;
+          },
+        },
       },
     },
     scales: {
@@ -46,19 +67,17 @@ export default function GroupTranscation() {
         grid: {
           display: false,
         },
+        title: {
+          display: true,
+          text: "Members",
+        },
       },
       y: {
         title: {
           display: true,
-          text: "Days",
+          text: "Time (Seconds)",
         },
-        ticks: {
-          stepSize: 1,
-        },
-        grid: {
-          borderDash: [4, 4],
-          color: "#e5e7eb",
-        },
+        beginAtZero: true,
       },
     },
   };
@@ -93,32 +112,50 @@ export default function GroupTranscation() {
     return diffDays;
   };
 
+ const getDurationInSeconds = (start, end) => {
+  if (!start || !end) return 1;
+
+  const diff =
+    (new Date(end).getTime() - new Date(start).getTime()) / 1000;
+
+  return Math.max(Math.ceil(diff), 1);
+};
+
   const buildPaymentChartData = (apiData) => {
     const startDate = apiData.timeLine.transactionStartDate;
 
     const labels = [];
     const data = [];
+    const transactionDates = [];
 
     apiData.transactionDetails.forEach((txn) => {
-      if (txn.memberContributeAmount === null) return;
-      if (!txn.transactionDate) return;
+      if (txn.memberContributeAmount == null) return;
 
       labels.push(txn.userName);
-      data.push(getDurationInDays(startDate, txn.transactionDate));
+      data.push(getDurationInSeconds(startDate, txn.transactionDate));
+      transactionDates.push(txn.transactionDate);
     });
 
     return {
       labels,
       datasets: [
         {
-          label: "Days",
+          label: "Payment Time",
           data,
+          transactionDates, // <-- custom field
           backgroundColor: "#3b2fb3",
           borderRadius: 10,
           barThickness: 40,
         },
       ],
     };
+  };
+
+  const formatTransactionTime = (utcDate) => {
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "medium",
+    }).format(new Date(utcDate));
   };
 
   /* ---------------- Skeleton Blocks ---------------- */
@@ -189,7 +226,8 @@ export default function GroupTranscation() {
       <button
         disabled={!group}
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-primary mb-4 cursor-pointer">
+        className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
+      >
         <ArrowLeftOutlined />
         <Text strong>Back to rounds</Text>
       </button>
@@ -233,7 +271,8 @@ export default function GroupTranscation() {
                     group?.winnerName
                       ? "bg-green-100 text-green-700"
                       : "bg-blue-100 text-blue-700"
-                  }`}>
+                  }`}
+                >
                   {group?.winnerName ? "Completed" : "upcoming"}
                 </span>
               </div>
@@ -329,7 +368,8 @@ export default function GroupTranscation() {
                         group?.winnerName
                           ? "bg-green-100 text-green-700"
                           : "bg-blue-100 text-blue-700"
-                      }`}>
+                      }`}
+                    >
                       {group?.winnerName ? "Completed" : "upcoming"}
                     </span>
                   </div>
@@ -377,7 +417,7 @@ export default function GroupTranscation() {
                       <span>
                         {getCompletionRate(
                           group?.completeContribution,
-                          group?.totalMember
+                          group?.totalMember,
                         )}
                         %
                       </span>
@@ -388,7 +428,7 @@ export default function GroupTranscation() {
                         style={{
                           width: `${getCompletionRate(
                             group?.completeContribution,
-                            group?.totalMember
+                            group?.totalMember,
                           )}%`,
                         }}
                       />
@@ -451,7 +491,7 @@ export default function GroupTranscation() {
                           <td className="px-4 py-3 font-semibold text-primary">
                             {formatCurrency(
                               group?.currency,
-                              t.memberContributeAmount
+                              t.memberContributeAmount,
                             )}
                           </td>
 
@@ -464,7 +504,8 @@ export default function GroupTranscation() {
                               className={`rounded-full px-3 py-1 text-xs ${
                                 statusStyles[t.status] ||
                                 "bg-gray-100 text-gray-700"
-                              }`}>
+                              }`}
+                            >
                               {t.status}
                             </span>
                           </td>
@@ -534,6 +575,7 @@ export default function GroupTranscation() {
               </h2>
 
               <div className="h-[300px]">
+                {console.log("Chart Dataahsjahsjkahsjsajskj", chartData)}
                 {chartData?.datasets?.length > 0 && (
                   <Bar data={chartData} options={paymentChartOptions} />
                 )}
