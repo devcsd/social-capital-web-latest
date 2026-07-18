@@ -10,7 +10,7 @@ const Footer = () => {
 
   return (
     <footer className="border-t border-white/10 bg-[linear-gradient(180deg,rgba(6,12,35,0.98),rgba(8,15,45,1))] px-4 py-10 sm:px-6 md:px-10 lg:px-12">
-      <div className="mx-auto max-w-7xl rounded-[32px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_20px_80px_rgba(4,10,40,0.22)] backdrop-blur-xl sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-7xl rounded-[32px]   p-6 shadow-[0_20px_80px_rgba(4,10,40,0.22)] backdrop-blur-xl sm:p-8 lg:p-10">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           <div className="space-y-8">
             <div className="flex items-center gap-2">

@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import worldMap from "../images/world-map-base.png";
 
-const W = 900, H = 500;
+const W = 900,
+  H = 500;
 
 const COUNTRIES = [
   {
-    code: "US", name: "USA", currency: "$",
-    x: 185, y: 200,
+    code: "US",
+    name: "USA",
+    currency: "$",
+    x: 185,
+    y: 200,
     center: { letter: "L", color: "#f4b321" },
     members: [
       { letter: "A", color: "#f4b321" },
@@ -17,8 +21,11 @@ const COUNTRIES = [
     ],
   },
   {
-    code: "GB", name: "UK", currency: "£",
-    x: 415, y: 120,
+    code: "GB",
+    name: "UK",
+    currency: "£",
+    x: 415,
+    y: 120,
     center: { letter: "L", color: "#45b7ff" },
     members: [
       { letter: "S", color: "#45b7ff" },
@@ -27,8 +34,11 @@ const COUNTRIES = [
     ],
   },
   {
-    code: "IN", name: "India", currency: "₹",
-    x: 637, y: 250,
+    code: "IN",
+    name: "India",
+    currency: "₹",
+    x: 637,
+    y: 250,
     center: { letter: "L", color: "#f4b321" },
     members: [
       { letter: "K", color: "#eab308" },
@@ -37,12 +47,14 @@ const COUNTRIES = [
       { letter: "I", color: "#5b7cfa" },
       // { letter: "T", color: "#14b8a6" },
       // { letter: "C", color: "#ef476f" },
-      
     ],
   },
   {
-    code: "AE", name: "Dubai", currency: "AED",
-    x: 535, y: 285,
+    code: "AE",
+    name: "Dubai",
+    currency: "AED",
+    x: 535,
+    y: 285,
     center: { letter: "D", color: "#8b5cf6" },
     members: [
       { letter: "A", color: "#f4b321" },
@@ -51,8 +63,11 @@ const COUNTRIES = [
     ],
   },
   {
-    code: "AU", name: "Australia", currency: "A$",
-    x: 795, y: 375,
+    code: "AU",
+    name: "Australia",
+    currency: "A$",
+    x: 795,
+    y: 375,
     center: { letter: "B", color: "#2ec27e" },
     members: [
       { letter: "I", color: "#8b5cf6" },
@@ -88,12 +103,16 @@ function DashedLines({ selected }) {
 function CountryMarker({ country, active, onClick }) {
   const { x, y, center, members, name, currency } = country;
   const memberRadius = active ? 46 : 36;
-  const centerR      = active ? 30 : 22;
-  const memberR      = active ? 16 : 13;
-  const labelY       = active ? -92 : -78;
+  const centerR = active ? 30 : 22;
+  const memberR = active ? 16 : 13;
+  const labelY = active ? -92 : -78;
 
   return (
-    <g transform={`translate(${x},${y})`} style={{ cursor: "pointer" }} onClick={onClick}>
+    <g
+      transform={`translate(${x},${y})`}
+      style={{ cursor: "pointer" }}
+      onClick={onClick}
+    >
       {active && (
         <>
           <circle r={56} fill="rgba(255,255,255,0.07)" />
@@ -103,27 +122,45 @@ function CountryMarker({ country, active, onClick }) {
 
       {members.map((m, i) => {
         const angle = (i / members.length) * Math.PI * 2 - Math.PI / 2;
+
         const mx = Math.cos(angle) * memberRadius;
         const my = Math.sin(angle) * memberRadius;
+
         return (
           <g key={i} transform={`translate(${mx},${my})`}>
+            {/* avatar background */}
             <circle r={memberR} fill={m.color} stroke="white" strokeWidth="2" />
-            <text
-              textAnchor="middle"
-              dy={memberR * 0.42}
+
+            {/* head */}
+            <circle
+              cx="0"
+              cy={-memberR * 0.32}
+              r={memberR * 0.32}
               fill="white"
-              fontSize={active ? 15 : 12}
-              fontWeight="700"
-              fontFamily="system-ui,sans-serif"
-            >
-              {m.letter}
-            </text>
+            />
+
+            {/* shoulders */}
+            <path
+              d={`
+          M ${-memberR * 0.55} ${memberR * 0.55}
+          C ${-memberR * 0.55} ${memberR * 0.05},
+            ${memberR * 0.55} ${memberR * 0.05},
+            ${memberR * 0.55} ${memberR * 0.55}
+          Z
+        `}
+              fill="white"
+            />
           </g>
         );
       })}
 
-      <circle r={centerR} fill={center.color} stroke="white" strokeWidth="3.5" />
-      <text
+      {/* <circle
+        r={centerR}
+        fill={center.color}
+        stroke="white"
+        strokeWidth="3.5"
+      /> */}
+      {/* <text
         textAnchor="middle"
         dy={centerR * 0.42}
         fill="white"
@@ -132,7 +169,7 @@ function CountryMarker({ country, active, onClick }) {
         fontFamily="system-ui,sans-serif"
       >
         {center.letter}
-      </text>
+      </text> */}
 
       <foreignObject x="-52" y={labelY} width="104" height="34">
         <div
@@ -149,10 +186,23 @@ function CountryMarker({ country, active, onClick }) {
             whiteSpace: "nowrap",
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 600, color: active ? "#000" : "#fff", fontFamily: "system-ui,sans-serif" }}>
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: active ? "#000" : "#fff",
+              fontFamily: "system-ui,sans-serif",
+            }}
+          >
             {name}
           </span>
-          <span style={{ fontSize: 11, color: active ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.5)", fontFamily: "system-ui,sans-serif" }}>
+          <span
+            style={{
+              fontSize: 11,
+              color: active ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.5)",
+              fontFamily: "system-ui,sans-serif",
+            }}
+          >
             {currency}
           </span>
         </div>
@@ -163,7 +213,9 @@ function CountryMarker({ country, active, onClick }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function WorldMapCard() {
-  const [selected, setSelected] = useState(COUNTRIES.find((c) => c.code === "IN"));
+  const [selected, setSelected] = useState(
+    COUNTRIES.find((c) => c.code === "IN"),
+  );
 
   // Auto-rotate
   useEffect(() => {
@@ -177,25 +229,39 @@ export default function WorldMapCard() {
   }, []);
 
   return (
-    <div style={{
-      position: "relative",
-      width: "100%",
-      height: 500,
-      background: "#071759",
-      borderRadius: 24,
-      overflow: "hidden",
-      fontFamily: "system-ui,sans-serif",
-    }}>
-
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: 500,
+        background: "#071759",
+        borderRadius: 24,
+        overflow: "hidden",
+        fontFamily: "system-ui,sans-serif",
+      }}
+    >
       {/* ── Top-right: Any Currency ── */}
-      <div style={{
-        position: "absolute", top: 16, right: 16, zIndex:0,
-        display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8,
-      }}>
-        <span style={{
-          fontSize: 11, fontWeight: 600, letterSpacing: "0.12em",
-          color: "rgba(255,255,255,0.45)", textTransform: "uppercase",
-        }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          zIndex: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 8,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.12em",
+            color: "rgba(255,255,255,0.45)",
+            textTransform: "uppercase",
+          }}
+        >
           Any Currency
         </span>
         <div style={{ display: "flex", gap: 6 }}>
@@ -222,17 +288,30 @@ export default function WorldMapCard() {
       </div>
 
       {/* ── Bottom-left: Live In ── */}
-      <div style={{
-        position: "absolute", bottom: 16, left: 16, zIndex: 5,
-        background: "#0d1d67",
-        border: "1px solid rgba(255,255,255,0.12)",
-        borderRadius: 14, padding: "10px 16px",
-        display: "flex", flexDirection: "column", gap: 2,
-      }}>
-        <span style={{
-          fontSize: 10, fontWeight: 600, letterSpacing: "0.1em",
-          color: "rgba(255,255,255,0.4)", textTransform: "uppercase",
-        }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 16,
+          left: 16,
+          zIndex: 5,
+          background: "#0d1d67",
+          border: "1px solid rgba(255,255,255,0.12)",
+          borderRadius: 14,
+          padding: "10px 16px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            color: "rgba(255,255,255,0.4)",
+            textTransform: "uppercase",
+          }}
+        >
           Live in
         </span>
         <span style={{ fontSize: 15, fontWeight: 600, color: "white" }}>
@@ -243,7 +322,12 @@ export default function WorldMapCard() {
       {/* ── SVG canvas ── */}
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+        }}
       >
         {/* Background map image */}
         <image
@@ -251,7 +335,7 @@ export default function WorldMapCard() {
           y="0"
           width={W}
           height={H}
-          href={worldMap}  // instead of the CDN URL
+          href={worldMap} // instead of the CDN URL
           preserveAspectRatio="xMidYMid slice"
         />
 

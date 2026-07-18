@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
+import { SiCashapp } from "react-icons/si";
 import JoinPlatformPopup from "../components/JoinPlatform";
 
 const Header = () => {
@@ -37,30 +38,8 @@ const Header = () => {
         >
           {/* ---------------- Logo ---------------- */}
 
-          <a href="#" className="flex items-center gap-3 shrink-0">
-            <div
-              className="
-                flex
-                h-11
-                w-11
-                items-center
-                justify-center
-                rounded-xl
-                bg-white
-                shadow-lg
-              "
-            >
-              <span
-                className="
-                  font-display
-                  text-xl
-                  font-bold
-                  text-sc-blue-600
-                "
-              >
-                S
-              </span>
-            </div>
+          <a href="#" className="flex items-center gap-1 shrink-0">
+            <SiCashapp className="h-8 w-8 text-white" />
 
             <div className="leading-none">
               <div
@@ -71,8 +50,7 @@ const Header = () => {
                   tracking-tight
                   text-white
                 "
-              >
-                ocial <span className="text-sc-gold-500">Capital</span>
+              >ocial <span className="text-sc-gold-500">Capital</span>
               </div>
             </div>
           </a>

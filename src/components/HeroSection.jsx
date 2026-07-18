@@ -1,540 +1,294 @@
+/* =========================================================
+   LIFESTYLE HERO — React + Tailwind version
+   (Ported from custom-CSS Hero; visuals preserved 1:1)
+   ========================================================= */
+   
 import { useState, useEffect } from "react";
-import PhoneMockup from "./PhoneMockup";
-import {
-  Users,
-  ShieldCheck,
-  TrendingUp,
-  Target,
-  Link2,
-  Wallet,
-  LockIcon,
-} from "lucide-react";
+import screenshot from "../screenshots/DashboardEmpty.jpeg";
 import JoinPlatformPopup from "../components/JoinPlatform";
 
-const HeroSection = () => {
+const HIcon = {
+  group: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1"/><circle cx="9" cy="7" r="3.2"/><path d="M22 19v-1a4 4 0 0 0-3-3.8"/><path d="M16 3.2A4 4 0 0 1 16 11"/></svg>),
+  shield: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>),
+  trend: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>),
+  target: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>),
+  rocket: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13c-1.5 1-2 5-2 5s4-.5 5-2"/><path d="M14 4c4 1 6 4 6 9-2 2-5 4-8 4-1-2-2-3-4-4 0-3 2-6 4-8 .7-.7 1.3-1 2-1Z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg>),
+  arrow: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>),
+  lock: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>),
+};
+
+/* =========================================================
+   PHONE MOCKUP — centered product hero
+   (Tailwind version — screen shows a single image, no mock UI)
+   ========================================================= */
+
+const Phone = () => {
+  return (
+    <div className="w-[300px] relative">
+      <div
+        className="relative w-[300px] h-[618px] bg-[#05091f] rounded-[44px] p-[10px]"
+        style={{
+          boxShadow:
+            '0 40px 90px -30px rgba(2,6,28,0.8), 0 0 0 2px rgba(255,255,255,0.06), 0 0 0 11px #0a0f2e',
+        }}
+      >
+        {/* dynamic island */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 w-[92px] h-[26px] bg-[#05091f] rounded-full z-[5]" />
+
+        {/* screen */}
+        <div className="relative w-full h-full rounded-[34px] overflow-hidden">
+          <img
+            id="phone-screen-image"
+            src={screenshot}
+            placeholder="App screen"
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
+          ></img>
+        </div>
+      </div>
+    </div>
+  );
+};
+// Orbiting diverse avatars (fill with real photos)
+const ORBIT = [
+  { id: 'orbit-african', top: 5, left: 33, cap: 'African man',src:"/human1.jpg"},
+  { id: 'orbit-sindian', top: 3, left: 61, cap: 'South Indian woman',src:"/human2.jpg" },
+  { id: 'orbit-mideast', top: 13, left: 87, cap: 'Middle Eastern man',src:"/human3.jpg" },
+  { id: 'orbit-asian', top: 37, left: 95, cap: 'East Asian woman',src:"/human4.jpg" },
+  { id: 'orbit-latina', top: 28, left: 4, cap: 'Latina woman',src:"/human5.jpg" },
+];
+const PHONE_HUB = { x: 50, y: 56 };
+
+// gradient variants (kept as plain CSS strings, applied via inline style
+// since Tailwind's JIT can't reliably pick up dynamically-built class names)
+const GRADIENTS = {
+  aurora: 'linear-gradient(118deg, #0a1f6b 0%, #1e4fe5 28%, #6d3bd4 56%, #c23a86 77%, #ff8a3d 100%)',
+  cool: 'linear-gradient(118deg, #081a57 0%, #1230a6 40%, #1e4fe5 72%, #4f46e5 100%)',
+  warm: 'linear-gradient(118deg, #1a1340 0%, #5b2bb0 38%, #b5439a 70%, #ff8a3d 100%)',
+};
+
+const Hero = ({ gradient = 'aurora' }) => {
     const [showModal, setShowModal] = useState(false);
-  const [pulse, setPulse] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPulse((p) => (p + 1) % 5);
-    }, 1800);
-    return () => clearInterval(timer);
-  }, []);
-
-  // const people = [
-  //   {
-  //     label: "South Indian Man",
-  //     top: "4%",
-  //     left: "25%",
-  //     img: "/human1.jpg",
-  //     delay: "0s",
-  //     duration: "3s",
-  //   },
-  //   {
-  //     label: "South Indian Woman",
-  //     top: "3%",
-  //     left: "58%",
-  //     img: "/human2.jpg",
-  //     delay: "0.3s",
-  //     duration: "3.4s",
-  //   },
-  //   {
-  //     label: "South Indian Man",
-  //     top: "5%",
-  //     left: "80%",
-  //     img: "/human3.jpg",
-  //     delay: "0.6s",
-  //     duration: "3.8s",
-  //   },
-  //   {
-  //     label: "South Indian Woman",
-  //     top: "30%",
-  //     left: "90%",
-  //     img: "/human4.jpg",
-  //     delay: "0.9s",
-  //     duration: "4.2s",
-  //   },
-  //   {
-  //     label: "South Indian Professional",
-  //     top: "20%",
-  //     left: "-5%",
-  //     img: "/human5.webp", // Reuse if you have only 4 images
-  //     delay: "1.2s",
-  //     duration: "3.6s",
-  //   },
-  // ];
-
-  const people = [
-    {
-      label: "African Man",
-      top: "5%",
-      left: "27%",
-      img: "/human1.jpg",
-      delay: "0s",
-      duration: "3s",
-    },
-    {
-      label: "South Indian Woman",
-      top: "3%",
-      left: "55%",
-      img: "/human2.jpg",
-      delay: "0.3s",
-      duration: "3.4s",
-    },
-    {
-      label: "Middle Eastern Man",
-      top: "12%",
-      left: "80%",
-      img: "/human3.jpg",
-      delay: "0.6s",
-      duration: "3.8s",
-    },
-    {
-      label: "Latina Woman",
-      top: "27%",
-      left: "-5%",
-      img: "/human4.jpg",
-      delay: "0.9s",
-      duration: "4.2s",
-    },
-    {
-      label: "Asian Woman",
-      top: "39%",
-      left: "89%",
-      img: "/human5.webp",
-      delay: "1.2s",
-      duration: "3.6s",
-    },
-  ];
-
-  // const arcItems = [
-  //   {
-  //     type: "profile",
-  //     angle: 205,
-  //     radius: 290,
-  //     img: "/human1.avif",
-  //   },
-  //   {
-  //     type: "badge",
-  //     angle: 155,
-  //     radius: 255,
-  //     icon: ShieldCheck,
-  //     bg: "bg-indigo-500",
-  //   },
-  //   {
-  //     type: "profile",
-  //     angle: 125,
-  //     radius: 295,
-  //     img: "/human2.avif",
-  //   },
-  //   {
-  //     type: "profile",
-  //     angle: 90,
-  //     radius: 320,
-  //     img: "/human3.avif",
-  //   },
-  //   {
-  //     type: "profile",
-  //     angle: 55,
-  //     radius: 295,
-  //     img: "/human4.avif",
-  //   },
-  //   {
-  //     type: "badge",
-  //     angle: 25,
-  //     radius: 255,
-  //     icon: TrendingUp,
-  //     bg: "bg-amber-400",
-  //   },
-  //   {
-  //     type: "profile",
-  //     angle: -5,
-  //     radius: 290,
-  //     img: "/human1.avif", // or repeat another image if you only have 4
-  //   },
-  //   {
-  //     type: "badge",
-  //     angle: 180,
-  //     radius: 230,
-  //     icon: Users,
-  //     bg: "bg-blue-500",
-  //   },
-  // ];
-
-  const features = [
-    {
-      icon: Users,
-      title: "Group Savings",
-      desc: "Save as a team and reach goals together.",
-      bg: "bg-blue-500/60",
-      color: "text-blue-100",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Trust & Security",
-      desc: "Private groups, your money never held by us.",
-      bg: "bg-purple-500/60",
-      color: "text-purple-700",
-    },
-    {
-      icon: TrendingUp,
-      title: "Growth Tracking",
-      desc: "Track progress and celebrate every milestone.",
-      bg: "bg-orange-500/60",
-      color: "text-orange-700",
-    },
-  ];
-
-  const bottomFeatures = [
-    {
-      icon: Target,
-      title: "Build financial discipline",
-      desc: "Stay consistent and take control.",
-    },
-    {
-      icon: Link2,
-      title: "Achieve goals faster",
-      desc: "Pool resources and make big things happen.",
-    },
-    {
-      icon: Users,
-      title: "Stay accountable with your group",
-      desc: "Support, encourage, and celebrate together.",
-    },
-  ];
-
   return (
     <section
-      className="relative overflow-hidden py-11"
-      style={{
-        background: `
-      radial-gradient(circle at 52% 42%, rgba(139,92,246,0.35) 0%, rgba(139,92,246,0.18) 22%, transparent 48%),
-
-      radial-gradient(circle at 50% 100%, rgba(37,99,235,0.45) 0%, transparent 30%),
-
-      linear-gradient(
-        90deg,
-        #2342B8 0%,
-        #2E53D4 20%,
-        #4A4DDD 45%,
-        #6C3FDD 60%,
-        #A33FB7 78%,
-        #E25573 92%,
-        #F97A38 100%
-      )
-    `,
-      }}
+      className="relative overflow-hidden isolate pt-7 pb-14 "
+      style={{ background: GRADIENTS[gradient] || GRADIENTS.aurora }}
     >
-      {/* Glow */}
-      <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-indigo-700/30 blur-3xl" />
+      {/* local keyframes (Tailwind has no built-in "floaty" animation) */}
+      <style>{`
+        @keyframes lhero-floaty {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
 
-      {/* Main Container */}
-      <div className="relative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
-        <div className="flex flex-col items-center lg:flex-row">
-          {/* LEFT */}
-          <div className="flex-1 pt-10">
-            <h1 className="leading-none font-black tracking-tight text-white text-6xl md:text-7xl lg:text-9xl ">
-              Social
-              <br />
+      {/* wash */}
+      <div
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(900px 500px at 80% 0%, rgba(255,199,44,0.18), transparent 60%), radial-gradient(700px 500px at 8% 12%, rgba(64,114,255,0.25), transparent 60%)',
+        }}
+      />
+      {/* bottom fade (was ::after) */}
+      <div
+        className="absolute left-0 right-0 bottom-0 h-40 -z-10 pointer-events-none"
+        style={{ background: 'linear-gradient(180deg, transparent, #1e4fe5)' }}
+      />
+
+      <div className="elative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
+        <div className="grid grid-cols-1 gap-2 items-center pt-6 pb-2 lg:grid-cols-[1fr_1.05fr] lg:gap-9">
+
+          {/* ---------- COPY ---------- */}
+          <div className="max-w-[560px] mx-auto text-center lg:mx-0 lg:text-left">
+            <h1 className="[font-family:var(--ff-display)] font-bold leading-[0.9] tracking-[-0.04em] m-0 flex flex-col items-center lg:items-start">
+              <span className="text-white text-[clamp(52px,16vw,80px)] sm:text-[clamp(64px,9vw,132px)]">Social</span>
               <span
-                className="bg-clip-text text-transparent"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(90deg, #5B7CFF 0%, #7C72FF 30%, #A96CFF 60%, #FF7B93 100%)",
-                }}
+                className="text-[clamp(52px,16vw,80px)] sm:text-[clamp(64px,9vw,132px)] bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(96deg, #4072ff 0%, #a78bfa 38%, #f472b6 64%, #ffc72c 100%)' }}
               >
                 Capital
               </span>
             </h1>
 
-            <p className="mt-4 text-2xl font-bold text-white md:text-3xl">
-              <span className="text-blue-400">Save</span> Together.
-              <span className="text-yellow-400"> Grow</span> Together.
-            </p>
-
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/80">
-              Create groups, track savings, and reach your goals faster with
-              your people.
-            </p>
-
-            {/* Features */}
-            <div className="mt-10 flex flex-col gap-4">
-              {features.map((feature, index) => {
-                const Icon = feature.icon;
-                return (
-                  <div
-                    key={index}
-                    className="
-group
-relative
-flex
-max-w-md
-items-center
-gap-5
-overflow-hidden
-rounded-2xl
-border
-border-white/15
-bg-white/10
-px-5
-py-2
-backdrop-blur-2xl
-shadow-[0_8px_32px_rgba(0,0,0,0.25)]
-transition-all
-duration-500
-hover:-translate-y-1
-hover:border-white/30
-hover:bg-white/15
-hover:shadow-[0_20px_60px_rgba(99,102,241,0.35)]
-"
-                  >
-                    <div
-                      className={`
-  relative
-  flex
-  h-12
-  w-12
-  items-center
-  justify-center
-  rounded-2xl
-  ${feature.bg}
-  shadow-lg
-  transition-transform
-  duration-300
-  group-hover:scale-110
-`}
-                    >
-                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
-                      <Icon size={20} className="text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white">
-                        {feature.title}
-                      </h3>
-                      <p className="text-sm text-white/700">{feature.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="[font-family:var(--ff-display)] font-semibold text-[clamp(22px,2.4vw,30px)] tracking-[-0.02em] text-white mt-[18px]">
+              <span className="text-[#6ea8ff]">Save</span> Together.{' '}
+              <span className="text-[#ffc72c]">Grow</span> Together.
             </div>
 
-            {/* CTA */}
-            <div className="mt-10 flex flex-wrap items-center gap-5">
-              <div className="relative inline-block group">
-                <div
-                  className="
-absolute
--inset-1
-rounded-2xl
-bg-gradient-to-r
-from-yellow-400
-via-orange-400
-to-orange-500
-opacity-60
-blur-xl
-transition
-duration-500
-group-hover:opacity-100
-"
-                />
+            <p className="text-lg leading-[1.55] text-white/[0.86] mt-4 max-w-[460px] mx-auto lg:mx-0 [text-wrap:pretty]">
+              Create groups, track savings, and reach your goals faster
+              with your people.
+            </p>
 
-                <div className="relative">
-                  
-                  <JoinPlatformPopup open={showModal} setOpen={setShowModal} 
-                  buttonName="Get Started Free →" /> 
+            <div className="flex flex-col gap-3 mt-7 max-w-[460px] mx-auto lg:mx-0">
+              <div className="flex items-center gap-3.5 bg-white/[0.08] border border-white/[0.14] backdrop-blur-[10px] rounded-2xl px-4 py-3 text-left">
+                <div
+                  className="w-11 h-11 rounded-xl grid place-items-center flex-shrink-0 text-white [&>svg]:w-[22px] [&>svg]:h-[22px]"
+                  style={{ background: 'linear-gradient(135deg, #2f6bff, #1e4fe5)', boxShadow: '0 8px 20px -8px rgba(30,79,229,0.8)' }}
+                >
+                  <HIcon.group/>
+                </div>
+                <div>
+                  <div className="[font-family:var(--ff-display)] font-semibold text-base text-white">Group Savings</div>
+                  <div className="text-[13px] text-white mt-px">Save as a team and reach goals together.</div>
                 </div>
               </div>
-              <span className="text-sm text-white/700">
-                <div className="flex items-center gap-2">
-                  <LockIcon />
-                  <span>Secure. Trusted. Community Driven.</span>
+
+              <div className="flex items-center gap-3.5 bg-white/[0.08] border border-white/[0.14] backdrop-blur-[10px] rounded-2xl px-4 py-3 text-left">
+                <div
+                  className="w-11 h-11 rounded-xl grid place-items-center flex-shrink-0 text-white [&>svg]:w-[22px] [&>svg]:h-[22px]"
+                  style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d3bd4)', boxShadow: '0 8px 20px -8px rgba(124,58,212,0.8)' }}
+                >
+                  <HIcon.shield/>
                 </div>
-              </span>
+                <div>
+                  <div className="[font-family:var(--ff-display)] font-semibold text-base text-white">Trust &amp; Security</div>
+                  <div className="text-[13px] text-white mt-px">Private groups, your money never held by us.</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3.5 bg-white/[0.08] border border-white/[0.14] backdrop-blur-[10px] rounded-2xl px-4 py-3 text-left">
+                <div
+                  className="w-11 h-11 rounded-xl grid place-items-center flex-shrink-0 text-[#2a1c02] [&>svg]:w-[22px] [&>svg]:h-[22px]"
+                  style={{ background: 'linear-gradient(135deg, #ffb13c, #e8870b)', boxShadow: '0 8px 20px -8px rgba(232,135,11,0.8)' }}
+                >
+                  <HIcon.trend/>
+                </div>
+                <div>
+                  <div className="[font-family:var(--ff-display)] font-semibold text-base text-white">Growth Tracking</div>
+                  <div className="text-[13px] text-white mt-px">Track progress and celebrate every milestone.</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-5 flex-wrap mt-[30px] justify-center lg:justify-start">
+              <button
+                onClick={() => setShowModal(true)}
+                className="inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl [font-family:var(--ff-display)] font-semibold text-base text-[#2a1c02] transition-transform transition-shadow duration-200 hover:-translate-y-0.5 [&>svg]:w-[18px] [&>svg]:h-[18px]"
+                style={{
+                  background: 'linear-gradient(135deg, #ffd152, #ff9b3d)',
+                  boxShadow: '0 14px 34px -12px rgba(255,155,61,0.9)',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 18px 40px -12px rgba(255,155,61,1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 14px 34px -12px rgba(255,155,61,0.9)')}
+              >
+                Get Started Free <HIcon.arrow/>
+              </button>
+              <div className="inline-flex items-center gap-2 text-[13px] text-white/[0.82] [font-family:var(--ff-display)] font-medium [&>svg]:w-[15px] [&>svg]:h-[15px] [&>svg]:text-[#9fe3c0]">
+                <HIcon.lock/> Secure. Trusted. Community Driven.
+              </div>
             </div>
           </div>
+ <JoinPlatformPopup open={showModal} setOpen={setShowModal} />
+          {/* ---------- VISUAL STAGE ---------- */}
+          <div className="relative min-h-[560px] mt-3 lg:min-h-[660px] lg:mt-0">
+            <svg className="absolute inset-0 w-full h-full z-[1]" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              {ORBIT.map((o, i) => (
+                <line key={i} x1={o.left} y1={o.top} x2={PHONE_HUB.x} y2={PHONE_HUB.y}
+                  stroke="rgba(255,255,255,0.35)" strokeWidth="0.25" strokeDasharray="0.9 0.7"/>
+              ))}
+            </svg>
 
+            {/* floating glow icons */}
+            <div
+              className="absolute top-[15%] left-[15%] w-11 h-11 lg:w-[54px] lg:h-[54px] rounded-2xl grid place-items-center text-white z-[6] backdrop-blur-[8px] [&>svg]:w-5 [&>svg]:h-5 lg:[&>svg]:w-[26px] lg:[&>svg]:h-[26px]"
+              style={{
+                background: 'linear-gradient(135deg, #8b5cf6, #6d3bd4)',
+                boxShadow: '0 12px 30px -8px rgba(124,58,212,0.9)',
+                animation: 'lhero-floaty 5s ease-in-out infinite',
+              }}
+            >
+              <HIcon.shield/>
+            </div>
+            <div
+              className="absolute top-[45%] left-0 w-11 h-11 lg:w-[54px] lg:h-[54px] rounded-2xl grid place-items-center text-white z-[6] backdrop-blur-[8px] [&>svg]:w-5 [&>svg]:h-5 lg:[&>svg]:w-[26px] lg:[&>svg]:h-[26px]"
+              style={{
+                background: 'linear-gradient(135deg, #2f6bff, #1e4fe5)',
+                boxShadow: '0 12px 30px -8px rgba(30,79,229,0.9)',
+                animation: 'lhero-floaty 5s ease-in-out infinite',
+                animationDelay: '-1.6s',
+              }}
+            >
+              <HIcon.group/>
+            </div>
+            <div
+              className="absolute top-[24%] right-[5%] w-11 h-11 lg:w-[54px] lg:h-[54px] rounded-2xl grid place-items-center text-[#2a1c02] z-[6] backdrop-blur-[8px] [&>svg]:w-5 [&>svg]:h-5 lg:[&>svg]:w-[26px] lg:[&>svg]:h-[26px]"
+              style={{
+                background: 'linear-gradient(135deg, #ffb13c, #e8870b)',
+                boxShadow: '0 12px 30px -8px rgba(232,135,11,0.9)',
+                animation: 'lhero-floaty 5s ease-in-out infinite',
+                animationDelay: '-3.1s',
+              }}
+            >
+              <HIcon.trend/>
+            </div>
 
-
-          {/* RIGHT */}
-          <div className="relative flex min-h-[650px] flex-1 items-center justify-center ">
-            <svg
-    className="absolute inset-0 w-full h-full z-10 pointer-events-none"
-    viewBox="0 0 1000 700"
->
-
-    {/* Phone → Left Avatar */}
-    {/* <path
-        d="M310 340 L2 125"
-        fill="none"
-        stroke="#ffffff66"
-        strokeWidth="2"
-        strokeDasharray="8 8"
-        strokeLinecap="round"
-    /> */}
-
-    {/* Phone → Right Avatar */}
-    {/* <path
-        d="M400 1110 L1100 105"
-        fill="none"
-        stroke="#ffffff66"
-        strokeWidth="2"
-        strokeDasharray="8 8"
-        strokeLinecap="round"
-    /> */}
-
-    {/* Phone → Top Right Avatar */}
-    {/* <path
-        d="M370 900 L870 1"
-        fill="none"
-        stroke="#ffffff66"
-        strokeWidth="2"
-        strokeDasharray="8 8"
-        strokeLinecap="round"
-    /> */}
-
-</svg>
-            {/* Floating People — real avatars with bounce */}
-            {people.map((person, index) => (
+            {/* orbiting diverse avatars (photo slots) */}
+            {ORBIT.map(o => (
               <div
-                key={index}
-                className={`float-bounce absolute flex flex-col items-center gap-2 transition-opacity duration-500  z-30`}
+                key={o.id}
+                className="absolute w-[54px] h-[54px] lg:w-[70px] lg:h-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full z-[5] bg-white/[0.08]"
                 style={{
-                  top: person.top,
-                  left: person.left,
-                  animationDelay: person.delay,
-                  animationDuration: person.duration,
+                  top: `${o.top}%`,
+                  left: `${o.left}%`,
+                  boxShadow: '0 10px 28px -8px rgba(0,0,0,0.5), 0 0 0 3px rgba(255,255,255,0.55)',
                 }}
               >
-                <div
-                  className="h-20 w-20 rounded-full border-2 border-dashed border-white/40 p-[3px]"
-                  style={{
-                    background: "rgba(255,255,255,0.08)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <img
-                    src={person.img}
-                    alt={person.label}
-                    className="h-full w-full rounded-full object-cover"
-                  />
-                </div>
-                {/* <span className="max-w-[70px] text-center text-[10px] font-medium leading-tight text-white/75">
-                  {person.label}
-                </span> */}
+                <img
+                src={o.src}
+                  id={o.id}
+                  shape="circle"
+                  placeholder={o.cap}
+                  className="h-full w-full rounded-full object-cover"
+                  style={{ width: '100%', height: '100%', display: 'block', borderRadius: '9999px', overflow: 'hidden' }}
+                ></img>
               </div>
             ))}
 
-            {/* Badge — Shield Check / Trust */}
-            <div
-              className="badge-pop absolute flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{
-                top: "20%",
-                left: "15%",
-                background: "rgba(99,102,241,0.9)",
-                backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                animationDuration: "2.8s",
-                animationDelay: "0.2s",
-              }}
-            >
-              <ShieldCheck size={22} className="text-white" />
-            </div>
+            {/* large people photos (behind phone) */}
+            
+            
 
-            {/* Badge — Users / Group */}
-            <div
-              className="badge-pop absolute flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{
-                top: "49%",
-                left: "3%",
-                background: "rgba(59,130,246,0.9)",
-                backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                animationDuration: "3.2s",
-                animationDelay: "0.8s",
-              }}
-            >
-              <Users size={22} className="text-white" />
+            {/* phone centerpiece */}
+            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 z-[4]">
+              <Phone/>
             </div>
-
-            {/* Badge — TrendingUp / Growth */}
-            <div
-              className="badge-pop absolute flex h-12 w-12 items-center justify-center rounded-xl"
-              style={{
-                top: "30%",
-                right: "10%",
-                background: "#f59e0b",
-                boxShadow: "0 4px 20px rgba(245,158,11,0.45)",
-                animationDuration: "2.5s",
-                animationDelay: "1.4s",
-              }}
-            >
-              <TrendingUp size={24} className="text-black" />
-            </div>
-
-            {/* Phone */}
-            <PhoneMockup />
           </div>
         </div>
 
-        {/* Stronger Together */}
-        <div
-          className="
-    mt-20
-    rounded-[32px]
-    border border-white/15
-    bg-white/10
-    px-12
-    py-8
-    backdrop-blur-2xl
-    shadow-[0_20px_60px_rgba(0,0,0,0.2)]
-  "
-        >
-          <h2 className="text-center text-3xl font-bold text-white">
+        {/* ---------- BOTTOM BAND ---------- */}
+        <div className="relative z-[2] mt-6 bg-white/[0.07] border border-white/[0.14] backdrop-blur-[12px] rounded-[22px] px-8 py-[26px]">
+          <div className="[font-family:var(--ff-display)] font-semibold text-xl text-white text-center mb-[22px] tracking-[-0.01em]">
             Stronger Together. Better Future.
-          </h2>
-
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {bottomFeatures.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex gap-4 border-l border-white/10 pl-4"
-                >
-                  <div
-                    className="
-    flex
-    h-14
-    w-14
-    items-center
-    justify-center
-    rounded-2xl
-    border
-    border-white/15
-    bg-white/5
-    backdrop-blur-xl
-    shadow-[0_8px_25px_rgba(255,193,7,0.12)]
-    transition-all
-    duration-300
-    hover:bg-white/10
-    hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)]
-  "
-                  >
-                    <Icon
-                      size={24}
-                      className="text-[#FFC107]"
-                      strokeWidth={2.2}
-                    />
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-white">{item.title}</h3>
-                    <p className="mt-1 text-sm text-white/600">{item.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
+          </div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+            <div className="flex items-start gap-3.5 px-2">
+              <div className="w-[42px] h-[42px] rounded-xl border border-white/[0.22] grid place-items-center text-[#ffc72c] flex-shrink-0 [&>svg]:w-[22px] [&>svg]:h-[22px]">
+                <HIcon.target/>
+              </div>
+              <div>
+                <div className="[font-family:var(--ff-display)] font-semibold text-[15px] text-white leading-[1.2]">Build financial discipline</div>
+                <div className="text-[13px] text-white/[0.72] mt-1 leading-[1.45]">Stay consistent and take control.</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3.5 px-2 lg:border-l lg:border-white/[0.12] lg:pl-6">
+              <div className="w-[42px] h-[42px] rounded-xl border border-white/[0.22] grid place-items-center text-[#ffc72c] flex-shrink-0 [&>svg]:w-[22px] [&>svg]:h-[22px]">
+                <HIcon.rocket/>
+              </div>
+              <div>
+                <div className="[font-family:var(--ff-display)] font-semibold text-[15px] text-white leading-[1.2]">Achieve goals faster</div>
+                <div className="text-[13px] text-white/[0.72] mt-1 leading-[1.45]">Pool resources and make big things happen.</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3.5 px-2 lg:border-l lg:border-white/[0.12] lg:pl-6">
+              <div className="w-[42px] h-[42px] rounded-xl border border-white/[0.22] grid place-items-center text-[#ffc72c] flex-shrink-0 [&>svg]:w-[22px] [&>svg]:h-[22px]">
+                <HIcon.group/>
+              </div>
+              <div>
+                <div className="[font-family:var(--ff-display)] font-semibold text-[15px] text-white leading-[1.2]">Stay accountable with your group</div>
+                <div className="text-[13px] text-white/[0.72] mt-1 leading-[1.45]">Support, encourage, and celebrate together.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -542,427 +296,4 @@ group-hover:opacity-100
   );
 };
 
-export default HeroSection;
-
-
-// import { useState, useEffect } from "react";
-// import PhoneMockup from "./PhoneMockup";
-// import {
-//   Users,
-//   ShieldCheck,
-//   TrendingUp,
-//   Target,
-//   Link2,
-//   Wallet,
-//   LockIcon,
-// } from "lucide-react";
-// import JoinPlatformPopup from "../components/JoinPlatform";
-
-// const HeroSection = () => {
-//   const [pulse, setPulse] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setPulse((p) => (p + 1) % 5);
-//     }, 1800);
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   const people = [
-//     {
-//       label: "African Man",
-//       top: "5%",
-//       left: "27%",
-//       img: "/human1.jpg",
-//       delay: "0s",
-//       duration: "3s",
-//     },
-//     {
-//       label: "South Indian Woman",
-//       top: "3%",
-//       left: "55%",
-//       img: "/human2.jpg",
-//       delay: "0.3s",
-//       duration: "3.4s",
-//     },
-//     {
-//       label: "Middle Eastern Man",
-//       top: "12%",
-//       left: "80%",
-//       img: "/human3.jpg",
-//       delay: "0.6s",
-//       duration: "3.8s",
-//     },
-//     {
-//       label: "Latina Woman",
-//       top: "27%",
-//       left: "-5%",
-//       img: "/human4.jpg",
-//       delay: "0.9s",
-//       duration: "4.2s",
-//     },
-//     {
-//       label: "Asian Woman",
-//       top: "39%",
-//       left: "89%",
-//       img: "/human5.webp",
-//       delay: "1.2s",
-//       duration: "3.6s",
-//     },
-//   ];
-
-//   const features = [
-//     {
-//       icon: Users,
-//       title: "Group Savings",
-//       desc: "Save as a team and reach goals together.",
-//       bg: "bg-blue-500/60",
-//       color: "text-blue-100",
-//     },
-//     {
-//       icon: ShieldCheck,
-//       title: "Trust & Security",
-//       desc: "Private groups, your money never held by us.",
-//       bg: "bg-purple-500/60",
-//       color: "text-purple-700",
-//     },
-//     {
-//       icon: TrendingUp,
-//       title: "Growth Tracking",
-//       desc: "Track progress and celebrate every milestone.",
-//       bg: "bg-orange-500/60",
-//       color: "text-orange-700",
-//     },
-//   ];
-
-//   const bottomFeatures = [
-//     {
-//       icon: Target,
-//       title: "Build financial discipline",
-//       desc: "Stay consistent and take control.",
-//     },
-//     {
-//       icon: Link2,
-//       title: "Achieve goals faster",
-//       desc: "Pool resources and make big things happen.",
-//     },
-//     {
-//       icon: Users,
-//       title: "Stay accountable with your group",
-//       desc: "Support, encourage, and celebrate together.",
-//     },
-//   ];
-
-//   return (
-//     <section
-//       className="relative overflow-hidden py-11"
-//       style={{
-//         background: `
-//       radial-gradient(circle at 52% 42%, rgba(139,92,246,0.35) 0%, rgba(139,92,246,0.18) 22%, transparent 48%),
-
-//       radial-gradient(circle at 50% 100%, rgba(37,99,235,0.45) 0%, transparent 30%),
-
-//       linear-gradient(
-//         90deg,
-//         #2342B8 0%,
-//         #2E53D4 20%,
-//         #4A4DDD 45%,
-//         #6C3FDD 60%,
-//         #A33FB7 78%,
-//         #E25573 92%,
-//         #F97A38 100%
-//       )
-//     `,
-//       }}
-//     >
-//       {/* Glow - Lower z-index */}
-//       <div className="absolute left-[30%] top-[20%] h-[600px] w-[600px] rounded-full bg-indigo-700/30 blur-3xl z-0" />
-
-//       {/* Main Container */}
-//       <div className="relative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
-//         <div className="flex flex-col items-center lg:flex-row gap-8 lg:gap-12">
-//           {/* LEFT SECTION - Content */}
-//           <div className="flex-1 pt-10 z-20 relative">
-//             <h1 className="leading-none font-black tracking-tight text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
-//               Social
-//               <br />
-//               <span
-//                 className="bg-clip-text text-transparent"
-//                 style={{
-//                   backgroundImage:
-//                     "linear-gradient(90deg, #5B7CFF 0%, #7C72FF 30%, #A96CFF 60%, #FF7B93 100%)",
-//                 }}
-//               >
-//                 Capital
-//               </span>
-//             </h1>
-
-//             <p className="mt-4 text-xl sm:text-2xl md:text-3xl font-bold text-white">
-//               <span className="text-blue-400">Save</span> Together.
-//               <span className="text-yellow-400"> Grow</span> Together.
-//             </p>
-
-//             <p className="mt-6 max-w-lg text-base sm:text-lg leading-relaxed text-white/80">
-//               Create groups, track savings, and reach your goals faster with
-//               your people.
-//             </p>
-
-//             {/* Features */}
-//             <div className="mt-10 flex flex-col gap-4">
-//               {features.map((feature, index) => {
-//                 const Icon = feature.icon;
-//                 return (
-//                   <div
-//                     key={index}
-//                     className="
-// group
-// relative
-// flex
-// max-w-md
-// items-center
-// gap-5
-// overflow-hidden
-// rounded-2xl
-// border
-// border-white/15
-// bg-white/10
-// px-5
-// py-3
-// backdrop-blur-2xl
-// shadow-[0_8px_32px_rgba(0,0,0,0.25)]
-// transition-all
-// duration-500
-// hover:-translate-y-1
-// hover:border-white/30
-// hover:bg-white/15
-// hover:shadow-[0_20px_60px_rgba(99,102,241,0.35)]
-// "
-//                   >
-//                     <div
-//                       className={`
-//   relative
-//   flex
-//   h-12
-//   w-12
-//   min-w-[48px]
-//   items-center
-//   justify-center
-//   rounded-2xl
-//   ${feature.bg}
-//   shadow-lg
-//   transition-transform
-//   duration-300
-//   group-hover:scale-110
-// `}
-//                     >
-//                       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
-//                       <Icon size={20} className="text-white" />
-//                     </div>
-//                     <div className="min-w-0">
-//                       <h3 className="font-semibold text-white truncate">
-//                         {feature.title}
-//                       </h3>
-//                       <p className="text-sm text-white/700">{feature.desc}</p>
-//                     </div>
-//                   </div>
-//                 );
-//               })}
-//             </div>
-
-//             {/* CTA */}
-//             <div className="mt-10 flex flex-wrap items-center gap-5">
-//               <div className="relative inline-block group">
-//                 <div
-//                   className="
-// absolute
-// -inset-1
-// rounded-2xl
-// bg-gradient-to-r
-// from-yellow-400
-// via-orange-400
-// to-orange-500
-// opacity-60
-// blur-xl
-// transition
-// duration-500
-// group-hover:opacity-100
-// "
-//                 />
-
-//                 <div className="relative z-20">
-//                   <JoinPlatformPopup 
-//                     buttonName="Get Started Free →"
-//                     source="hero"
-//                   />
-//                 </div>
-//               </div>
-//               <span className="text-sm text-white/700">
-//                 <div className="flex items-center gap-2">
-//                   <LockIcon size={16} />
-//                   <span>Secure. Trusted. Community Driven.</span>
-//                 </div>
-//               </span>
-//             </div>
-//           </div>
-
-//           {/* RIGHT SECTION - Phone Mockup with Avatars */}
-//           <div className="relative flex min-h-[500px] sm:min-h-[600px] lg:min-h-[650px] flex-1 items-center justify-center z-10">
-//             <svg
-//               className="absolute inset-0 w-full h-full z-0 pointer-events-none"
-//               viewBox="0 0 1000 700"
-//             >
-//               {/* Connection lines can go here */}
-//             </svg>
-
-//             {/* Floating People - with proper z-index */}
-//             <div className="absolute inset-0 z-5">
-//               {people.map((person, index) => (
-//                 <div
-//                   key={index}
-//                   className={`float-bounce absolute flex flex-col items-center gap-2 transition-opacity duration-500`}
-//                   style={{
-//                     top: person.top,
-//                     left: person.left,
-//                     animationDelay: person.delay,
-//                     animationDuration: person.duration,
-//                   }}
-//                 >
-//                   <div
-//                     className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-2 border-dashed border-white/40 p-[3px]"
-//                     style={{
-//                       background: "rgba(255,255,255,0.08)",
-//                       backdropFilter: "blur(6px)",
-//                     }}
-//                   >
-//                     <img
-//                       src={person.img}
-//                       alt={person.label}
-//                       className="h-full w-full rounded-full object-cover"
-//                     />
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-
-//             {/* Badge — Shield Check / Trust */}
-//             <div
-//               className="badge-pop absolute flex h-14 w-14 items-center justify-center z-5 rounded-2xl"
-//               style={{
-//                 top: "20%",
-//                 left: "15%",
-//                 background: "rgba(99,102,241,0.9)",
-//                 backdropFilter: "blur(8px)",
-//                 border: "1px solid rgba(255,255,255,0.25)",
-//                 animationDuration: "2.8s",
-//                 animationDelay: "0.2s",
-//               }}
-//             >
-//               <ShieldCheck size={22} className="text-white" />
-//             </div>
-
-//             {/* Badge — Users / Group */}
-//             <div
-//               className="badge-pop absolute flex h-14 w-14 items-center justify-center rounded-2xl z-5"
-//               style={{
-//                 top: "49%",
-//                 left: "3%",
-//                 background: "rgba(59,130,246,0.9)",
-//                 backdropFilter: "blur(8px)",
-//                 border: "1px solid rgba(255,255,255,0.25)",
-//                 animationDuration: "3.2s",
-//                 animationDelay: "0.8s",
-//               }}
-//             >
-//               <Users size={22} className="text-white" />
-//             </div>
-
-//             {/* Badge — TrendingUp / Growth */}
-//             <div
-//               className="badge-pop absolute flex h-12 w-12 items-center justify-center rounded-xl z-5"
-//               style={{
-//                 top: "30%",
-//                 right: "10%",
-//                 background: "#f59e0b",
-//                 boxShadow: "0 4px 20px rgba(245,158,11,0.45)",
-//                 animationDuration: "2.5s",
-//                 animationDelay: "1.4s",
-//               }}
-//             >
-//               <TrendingUp size={24} className="text-black" />
-//             </div>
-
-//             {/* Phone */}
-//             <div className="relative z-10">
-//               <PhoneMockup />
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Bottom Features Section */}
-//         <div
-//           className="
-//     mt-16 sm:mt-20
-//     rounded-[32px]
-//     border border-white/15
-//     bg-white/10
-//     px-6 sm:px-8 md:px-12
-//     py-8
-//     backdrop-blur-2xl
-//     shadow-[0_20px_60px_rgba(0,0,0,0.2)]
-//     relative z-20
-//   "
-//         >
-//           <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
-//             Stronger Together. Better Future.
-//           </h2>
-
-//           <div className="mt-10 grid gap-8 md:grid-cols-3">
-//             {bottomFeatures.map((item, index) => {
-//               const Icon = item.icon;
-//               return (
-//                 <div
-//                   key={index}
-//                   className="flex gap-4 border-l border-white/10 pl-4"
-//                 >
-//                   <div
-//                     className="
-//     flex
-//     h-14
-//     w-14
-//     min-w-[56px]
-//     items-center
-//     justify-center
-//     rounded-2xl
-//     border
-//     border-white/15
-//     bg-white/5
-//     backdrop-blur-xl
-//     shadow-[0_8px_25px_rgba(255,193,7,0.12)]
-//     transition-all
-//     duration-300
-//     hover:bg-white/10
-//     hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)]
-//   "
-//                   >
-//                     <Icon
-//                       size={24}
-//                       className="text-[#FFC107]"
-//                       strokeWidth={2.2}
-//                     />
-//                   </div>
-
-//                   <div className="min-w-0">
-//                     <h3 className="font-semibold text-white">{item.title}</h3>
-//                     <p className="mt-1 text-sm text-white/600">{item.desc}</p>
-//                   </div>
-//                 </div>
-//               );
-//             })}
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default HeroSection;
+export default Hero;
