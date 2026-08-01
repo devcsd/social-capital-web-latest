@@ -180,7 +180,7 @@ export default function RoundRotation() {
           </div>
 
           <SummaryItem
-            label="Settlement"
+            label="Payout"
             value={`${currencySymbol} ${settlementAmount ?? 0}`}
           />
 
@@ -190,7 +190,7 @@ export default function RoundRotation() {
           />
 
           <SummaryItem
-            label="Dividend"
+            label="Bonus"
             value={`${currencySymbol} ${dividendAmount ?? 0}`}
           />
 

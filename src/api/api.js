@@ -165,4 +165,26 @@ export const getDashboardData = async (filters) => {
   return apiService.post("admin/dashboardAnalytics", filters);
 };
 
+export const getMasterTypes = async () => {
+  return apiService.get("masterType");
+};
+ 
+/* ─── Update a single master type record by id ─────────────────────────── */
+export const updateMasterType = async (id, body) => {
+  return apiService.put(`masterType/${id}`, body);
+};
+ 
+/* ─── Convenience wrappers (optional, but keeps call-sites readable) ───── */
+export const updateTotalMember = async (id, value) =>
+  updateMasterType(id, { value: String(value) });
+ 
+export const updateTotalGroups = async (id, value) =>
+  updateMasterType(id, { value: String(value) });
+ 
+export const updateCurrencyFundRange = async (id, minFundAmount, maxFundAmount) =>
+  updateMasterType(id, {
+    min_fund_amount: minFundAmount,
+    max_fund_amount: maxFundAmount,
+  });
+
 export default apiService;

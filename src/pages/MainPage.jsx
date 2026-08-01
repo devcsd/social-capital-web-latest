@@ -10,6 +10,7 @@ import Services from "../components/Services";
 import Footer from "../components/Footer";
 import Chatbot from "../components/Chatbot";
 import Globalsection from "../components/Global"
+import YouCAnDoSection from "../components/YouCanDoSection"
 import "../index.css";
 
 function Main() {
@@ -17,6 +18,7 @@ function Main() {
     <div className="min-h-screen bg-primary scrollbar-hide">
       <Header />
       <HeroSection />
+      <YouCAnDoSection/>
       <HowItWorksSection />
       {/* <BenefitHighlightSection /> */}
       <DevelopmentSection />

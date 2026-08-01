@@ -3,7 +3,6 @@ import { FiSettings } from "react-icons/fi";
 import { MdArrowForward } from "react-icons/md";
 import { FaUsers, FaUserTie, FaTrophy } from "react-icons/fa";
 import ReactCountryFlag from "react-country-flag";
-import GroupSettingsModal from "./GroupSettingsModal";
 
 /* ─── Currency Helpers ──────────────────────────────────────────────────── */
 const currencyMeta = {
@@ -87,7 +86,7 @@ export const GroupCard = ({ group, onClick }) => {
           </span>
 
           <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
-            {group.fundDistributionType === "Member → Group Manager → Winner" ? (
+            {group.fundDistributionType === "Member → Fund Manager → Winner" ? (
               <>
                 <FaUsers className="text-[11px] text-gray-500" />
                 <MdArrowForward className="text-[12px] text-gray-400" />
@@ -126,7 +125,7 @@ export const GroupCard = ({ group, onClick }) => {
           </div>
           <div className="bg-gray-50 rounded-lg p-2">
             <p className="text-[10px] text-gray-400 uppercase tracking-wide">
-              Commission
+              Admin Fee
             </p>
             <p className="text-sm font-bold text-gray-700 mt-0.5">
               {getCurrencySymbol(group.currency)}
@@ -166,24 +165,9 @@ export const GroupCard = ({ group, onClick }) => {
             <p className="text-xs text-gray-400">
               📍 {group.city || "NA"}, {group.state || "NA"} · {group.currency}
             </p>
-            {/* <button
-              onClick={handleSettingsClick}
-              className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium text-xs transition-colors whitespace-nowrap"
-              title="Manage group settings">
-              <FiSettings size={14} />
-              <span>Settings</span>
-            </button> */}
           </div>
         </div>
       </div>
-
-      {/* Settings Modal */}
-      <GroupSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        group={group}
-        onSave={handleSettingsSave}
-      />
     </>
   );
 };

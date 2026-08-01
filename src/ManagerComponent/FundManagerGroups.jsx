@@ -116,7 +116,7 @@ const GroupCard = ({
 
         {/* Settlement Amount */}
         <div className="flex justify-between items-center">
-          <p className="text-sm text-gray-500">Settlement Amount</p>
+          <p className="text-sm text-gray-500">Payout Amount</p>
           <p className="font-semibold text-primary text-base">
             {formatCurrency(currency, amount)}
           </p>

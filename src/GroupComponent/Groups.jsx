@@ -206,16 +206,15 @@ const Groups = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const handleSettingsClick = () => {
-  // If using a modal
-  setShowSettings(true);
+    // If using a modal
+    setShowSettings(true);
 
-  // If using a page
-  // navigate("/adminPanel/group-settings");
+    // If using a page
+    // navigate("/adminPanel/group-settings");
 
-  // OR if you haven't created the page yet
-  // console.log("Settings clicked");
-};
-
+    // OR if you haven't created the page yet
+    // console.log("Settings clicked");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -501,7 +500,6 @@ const Groups = () => {
             </div>
           </div>
 
-
           {/* Txn Type */}
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-1">
@@ -529,7 +527,7 @@ const Groups = () => {
             </div>
           </div>
 
-           {/* Currencies Type */}
+          {/* Currencies Type */}
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-1">
               Currencies
@@ -556,13 +554,13 @@ const Groups = () => {
             </div>
           </div>
           <button
-    onClick={handleSettingsClick}
-    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium text-sm transition-colors"
-    title="Manage Group Settings"
-  >
-    <FiSettings size={16} />
-   Manage Group Settings
-  </button>
+            onClick={handleSettingsClick}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium text-sm transition-colors"
+            title="Manage Group Settings"
+          >
+            <FiSettings size={16} />
+            Manage Group Settings
+          </button>
         </div>
       </div>
       {/* <pre>{JSON.stringify(groups, null, 2)}</pre> */}
@@ -601,15 +599,26 @@ const Groups = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {paginatedGroups.map((g) => (
-              <GroupCard
-                key={g.groupId}
-                group={g}
-                onClick={() =>
-                  navigate(`/adminPanel/GroupDetails/${g.groupId}`)
-                }
-              />
-            ))}
+            {paginatedGroups.map((g) => {
+              console.log("the Groups:",g)
+              return (
+                <GroupCard
+                  key={g.groupId}
+                  group={g}
+                  onClick={() => {
+                    g.groupType === "Rotation"
+                      ? navigate(
+                          `/adminPanel/RotationGroupDetails/${g.groupId}`,
+                        )
+                      : g.groupType === "Auction"
+                        ? navigate(
+                            `/adminPanel/AuctionGroupDetails/${g.groupId}`,
+                          )
+                        : navigate(`/adminPanel/GroupCategories`);
+                  }}
+                />
+              );
+            })}
           </div>
 
           {/* ── Pagination ── */}
@@ -629,7 +638,7 @@ const Groups = () => {
       )}
 
       {/* ── Charts Row ── */}
-            {/* ── Charts Row ── */}
+      {/* ── Charts Row ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ChartCard title="Members per Group">
           <Doughnut data={donutData} options={chartOpts()} />
@@ -661,132 +670,6 @@ const Groups = () => {
     </div>
   );
 };
-    
-
-/* ─── Group Card ──────────────────────────────────────────────────────────── */
-// const GroupCard = ({ group, onClick }) => {
-//   const { label, cls } = statusMeta(group.groupStatus, group.isPause);
-
-//   return (
-//     <div
-//       onClick={onClick}
-//       className="bg-white rounded-xl shadow p-5 flex flex-col gap-4 cursor-pointer hover:shadow-lg transition-shadow"
-//       style={{ borderTop: "3px solid #0154D8" }}
-//     >
-//       {/* Top row: name + currency badge */}
-//       <div className="flex justify-between items-start">
-//         <div className="flex items-center gap-3">
-//           <div>
-//             <h3 className="font-semibold text-gray-800 text-sm leading-tight">
-//               {group.groupName}
-//             </h3>
-//             <p className="text-xs text-gray-400 mt-0.5">
-//               {group.groupType} · {group.frequency}
-//             </p>
-//           </div>
-//         </div>
-//         <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
-//           <ReactCountryFlag
-//             countryCode={currencyMeta[group.currency]?.flag || "IN"}
-//             svg
-//             style={{ width: "18px", height: "18px", borderRadius: "999px" }}
-//           />
-//           <span className="text-xs font-medium text-gray-700">
-//             {group.currency}
-//           </span>
-//         </div>
-//       </div>
-
-//       {/* Status badge */}
-//       <span
-//         className={`self-start text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${cls}`}
-//       >
-//         {label}
-//       </span>
-//       <div className="flex items-center gap-2">
-//         <span className="text-[10px] uppercase tracking-wide text-gray-400">
-//           Flow
-//         </span>
-
-//         <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
-//           {group.fundDistributionType === "Member → Group Manager → Winner" ? (
-//             <>
-//               <FaUsers className="text-[11px] text-gray-500" />
-//               <MdArrowForward className="text-[12px] text-gray-400" />
-//               <FaUserTie className="text-[11px] text-blue-600" />
-//               <MdArrowForward className="text-[12px] text-gray-400" />
-//               <FaTrophy className="text-[11px] text-yellow-500" />
-//             </>
-//           ) : (
-//             <>
-//               <FaUsers className="text-[11px] text-gray-500" />
-//               <MdArrowForward className="text-[12px] text-gray-400" />
-//               <FaTrophy className="text-[11px] text-yellow-500" />
-//             </>
-//           )}
-//         </div>
-//       </div>
-//       {/* Stats grid */}
-//       <div className="grid grid-cols-3 gap-2 text-center">
-//         <div className="bg-gray-50 rounded-lg p-2">
-//           <p className="text-[10px] text-gray-400 uppercase tracking-wide">
-//             Fund
-//           </p>
-//           <p className="text-sm font-bold text-gray-700 mt-0.5">
-//             {getCurrencySymbol(group.currency)}
-//             {fmtINR(group.totalFundAmount)}
-//           </p>
-//         </div>
-//         <div className="bg-gray-50 rounded-lg p-2">
-//           <p className="text-[10px] text-gray-400 uppercase tracking-wide">
-//             Members
-//           </p>
-//           <p className="text-sm font-bold text-gray-700 mt-0.5">
-//             {group.totalMembers}
-//           </p>
-//         </div>
-//         <div className="bg-gray-50 rounded-lg p-2">
-//           <p className="text-[10px] text-gray-400 uppercase tracking-wide">
-//             Commission
-//           </p>
-//           <p className="text-sm font-bold text-gray-700 mt-0.5">
-//             {getCurrencySymbol(group.currency)}
-//             {fmtINR(group.adminCommissionAmount)}
-//           </p>
-//         </div>
-//       </div>
-
-//       {/* Manager row */}
-//       <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
-//         {group.fundManagerProfileImage ? (
-//           <img
-//             src={group.fundManagerProfileImage}
-//             alt={group.fundManager}
-//             className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-//             onError={(e) => {
-//               e.target.style.display = "none";
-//             }}
-//           />
-//         ) : (
-//           <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-gray-200 text-gray-500 flex-shrink-0">
-//             {group.fundManagerProfileName}
-//           </div>
-//         )}
-//         <span className="text-xs text-gray-500 flex-1 truncate">
-//           {group.fundManager}
-//         </span>
-//         <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full flex-shrink-0">
-//           Admin
-//         </span>
-//       </div>
-
-//       {/* Location */}
-//       <p className="text-xs text-gray-400 -mt-1">
-//         📍 {group.city || "NA"}, {group.state || "NA"} · {group.currency}
-//       </p>
-//     </div>
-//   );
-// };
 
 /* ─── Reusable Atoms ──────────────────────────────────────────────────────── */
 const StatCard = ({ label, value, accent }) => (
@@ -807,7 +690,5 @@ const ChartCard = ({ title, children }) => (
     <div className="flex-1 flex items-center justify-center">{children}</div>
   </div>
 );
-
-
 
 export default Groups;

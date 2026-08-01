@@ -83,7 +83,7 @@ const RoundCardSkeleton = () => (
   </div>
 );
 
-export default function GroupDetails() {
+export default function AuctionGroupDetails() {
   const { groupID } = useParams();
   const navigate = useNavigate();
   const [group, setGroup] = useState(null);
@@ -255,7 +255,7 @@ export default function GroupDetails() {
             />
 
             <StatCard
-              title="Total Admin Commission"
+              title="Total Admin Fee"
               value={formatCurrency(
                 group?.currencyLabel,
                 group?.totalCommission,
@@ -348,7 +348,7 @@ hover:shadow-xl transition-all duration-300 cursor-pointer"
                     {/* Settlement */}
                     <div className="bg-yellow-400 rounded-xl px-4 py-4 flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-800">
-                        Settlement Amount
+                        Payout Amount
                       </span>
 
                       <div className="flex items-center gap-1 font-semibold text-gray-900">

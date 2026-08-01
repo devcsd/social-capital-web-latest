@@ -17,7 +17,8 @@ import FundManagerGroupRound from "../ManagerComponent/Rounds";
 import GroupTranscation from "../ManagerComponent/GroupTranscation";
 import AuctionOverview from "../FundType/AuctionGroups";
 import RotationOverview from "../FundType/RotationGroups";
-import FundTypeGroupDetails from "../FundType/GroupDetails";
+import AuctionGroupDetails from "../FundType/AuctionGroupDetails";
+import RotationGroupDetails from "../FundType/RotationGroupDetails"
 import RoundAuction from "../FundType/RoundAuction";
 import RoundRotation from "../FundType/RoundRotation";
 import SupportEnquiry from "../Adminpages/SupportEnquiry";
@@ -147,10 +148,18 @@ const AppRoute = () => (
           }
         />
         <Route
-          path="/adminPanel/GroupDetails/:groupID"
+          path="/adminPanel/AuctionGroupDetails/:groupID"
           element={
             <ProtectedRoute>
-              <FundTypeGroupDetails />
+              <AuctionGroupDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminPanel/RotationGroupDetails/:groupID"
+          element={
+            <ProtectedRoute>
+              <RotationGroupDetails />
             </ProtectedRoute>
           }
         />

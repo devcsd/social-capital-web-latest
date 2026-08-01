@@ -380,7 +380,7 @@ export default function GroupTranscation() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Settlement Amount</span>
+                    <span className="text-gray-500">Payout Amount</span>
                     <span className="font-semibold text-primary">
                       {formatCurrency(group?.currency, group?.settlementAmount)}
                     </span>

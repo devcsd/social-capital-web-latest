@@ -35,10 +35,11 @@ const pathKeyMap = {
   "/adminPanel/ManagerGroupsDetails/:groupID": "FundManager",
   "/adminPanel/GroupsRound/:roundID": "FundManager",
   "/adminPanel/Auction": "Auction",
-    "/adminPanel/AuctionRound/:roundID": "Auction",
-  "/adminPanel/GroupDetails/:groupID": "Rotation",
+  "/adminPanel/AuctionRound/:roundID": "Auction",
+  "/adminPanel/AuctionGroupDetails/:groupID": "Auction",
   "/adminPanel/Rotation": "Rotation",
   "/adminPanel/RotationRound/:roundID": "Rotation",
+  "/adminPanel/RotationGroupDetails/:groupID":"Rotation",
   "/adminPanel/Boardcast": "Boardcast",
   "/adminPanel/supportEnquiry": "SupportEnquiry",
 };
@@ -296,11 +297,6 @@ const LayoutDrawer = ({ children }) => {
                   />
                 }
               />
-              {isSidebarOpen && (
-                <Title level={3} style={{ color: "white", margin: 0 }}>
-                  Admin Panel
-                </Title>
-              )}
             </div>
             <div
               className="absolute bottom-0 left-4 flex items-center gap-2 p-4 cursor-pointer"
@@ -348,9 +344,7 @@ const LayoutDrawer = ({ children }) => {
             onClick={() => setDrawerOpen(true)}
             icon={<FaHome style={{ color: "#ffc404", fontSize: 24 }} />}
           />
-          <Title level={4} style={{ color: "white", margin: 0 }}>
-            Admin Panel
-          </Title>
+         
           <div className="scale-90">
             <UserProfile
               avatarBgClass="bg-white"

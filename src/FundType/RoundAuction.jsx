@@ -1,4 +1,9 @@
-import { FaArrowLeft, FaDownload, FaClock, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaDownload,
+  FaClock,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import { getTransactionByRoundID } from "../api/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -22,9 +27,7 @@ const currencyOptions = [
   { code: "GBP", symbol: "£" },
 ];
 const getCurrencySymbol = (currencyCode) => {
-  const currency = currencyOptions.find(
-    (item) => item.code === currencyCode
-  );
+  const currency = currencyOptions.find((item) => item.code === currencyCode);
 
   return currency?.symbol || currencyCode;
 };
@@ -40,8 +43,16 @@ const formatDateTime = (isoString) => {
   if (!isoString) return "-";
   const d = new Date(isoString);
   return {
-    time: d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
-    date: d.toLocaleDateString([], { day: "2-digit", month: "short", year: "numeric" }),
+    time: d.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }),
+    date: d.toLocaleDateString([], {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
   };
 };
 
@@ -95,7 +106,7 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.text("Round Settlement Receipt", margin, cursorY);
+  doc.text("Round Payout Receipt", margin, cursorY);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
@@ -104,7 +115,7 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
     `Generated on ${new Date().toLocaleString("en-IN")}`,
     pageWidth - margin,
     cursorY,
-    { align: "right" }
+    { align: "right" },
   );
 
   cursorY += 15;
@@ -128,17 +139,13 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
 
-  doc.text(
-    `Status : ${roundStatus}`,
-    margin,
-    cursorY
-  );
+  doc.text(`Status : ${roundStatus}`, margin, cursorY);
 
   doc.text(
     `Started : ${roundStart.date} ${roundStart.time}`,
     pageWidth - margin,
     cursorY,
-    { align: "right" }
+    { align: "right" },
   );
 
   cursorY += 30;
@@ -158,12 +165,9 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
 
   doc.text(winnerName || "-", margin, cursorY);
 
-  doc.text(
-    money(settlementAmount),
-    pageWidth - margin,
-    cursorY,
-    { align: "right" }
-  );
+  doc.text(money(settlementAmount), pageWidth - margin, cursorY, {
+    align: "right",
+  });
 
   cursorY += 30;
 
@@ -178,9 +182,9 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
     head: [["Financial Summary", ""]],
 
     body: [
-      ["Total Fund Value", money(totalFundValue)],
-      ["Settlement Amount", money(settlementAmount)],
-      ["Dividend Amount", money(dividendAmount)],
+      ["Total Group  Value", money(totalFundValue)],
+      ["Payout Amount", money(settlementAmount)],
+      ["Bonus Amount", money(dividendAmount)],
       ["Minimum Bid", money(minimumBidAmount)],
       ["Maximum Bid", money(maximumBidAmount)],
       ["Members", totalMember],
@@ -276,36 +280,28 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("Settlement Timeline", margin, cursorY);
+    doc.text("Payout Timeline", margin, cursorY);
 
     cursorY += 20;
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
 
-    doc.text(
-      `Started : ${start.date} ${start.time}`,
-      margin,
-      cursorY
-    );
+    doc.text(`Started : ${start.date} ${start.time}`, margin, cursorY);
 
     cursorY += 15;
 
-    doc.text(
-      `Completed : ${end.date} ${end.time}`,
-      margin,
-      cursorY
-    );
+    doc.text(`Completed : ${end.date} ${end.time}`, margin, cursorY);
 
     cursorY += 15;
 
     doc.text(
       `Duration : ${formatDuration(
         timeLine.transactionStartDate,
-        timeLine.transactionEndDate
+        timeLine.transactionEndDate,
       )}`,
       margin,
-      cursorY
+      cursorY,
     );
   }
 
@@ -322,7 +318,7 @@ const generateReceiptPDF = (roundData, currencySymbol) => {
     pageHeight - 30,
     {
       align: "center",
-    }
+    },
   );
 
   doc.save(`round-${roundNumber}-receipt.pdf`);
@@ -505,10 +501,13 @@ export default function RoundAuction() {
   // Winner badge belongs only on the single lowest bid, not every row
   // for the winning member (status field from the API can't be trusted
   // to mark exactly one row).
-  const winningBidIndex = biddingHistory?.reduce((lowestIdx, item, idx, arr) => {
-    if (lowestIdx === -1) return idx;
-    return item.bidAmount < arr[lowestIdx].bidAmount ? idx : lowestIdx;
-  }, -1);
+  const winningBidIndex = biddingHistory?.reduce(
+    (lowestIdx, item, idx, arr) => {
+      if (lowestIdx === -1) return idx;
+      return item.bidAmount < arr[lowestIdx].bidAmount ? idx : lowestIdx;
+    },
+    -1,
+  );
 
   const formatTime = (date) => {
     if (!date) return "-";
@@ -528,59 +527,81 @@ export default function RoundAuction() {
     userProfileImage: item.userProfileImage,
   }));
 
-  const CustomDot = (props) => {
-    const { cx, cy, payload } = props;
+  const isCompleted = roundStatus === "completed";
+  const isLastRound = totalMember && roundNumber === totalMember;
+  const hasBidding = biddingHistory && biddingHistory.length > 0;
 
-    if (!cx || !cy) return null;
+const CustomDot = (props) => {
+  const { cx, cy, payload } = props;
 
-    return (
-      <g>
-        {payload.userProfileImage ? (
+  if (!cx || !cy) return null;
+
+  const size = 60; // profile image diameter
+  const radius = size / 2;
+
+  return (
+    <g>
+      {payload.userProfileImage ? (
+        <>
+          <clipPath id={`clip-${cx}-${cy}`}>
+            <circle cx={cx} cy={cy} r={radius} />
+          </clipPath>
+
           <image
             href={payload.userProfileImage}
-            x={cx - 12}
-            y={cy - 12}
-            width={24}
-            height={24}
-            clipPath="circle(12px)"
+            x={cx - radius}
+            y={cy - radius}
+            width={size}
+            height={size}
+            clipPath={`url(#clip-${cx}-${cy})`}
+            preserveAspectRatio="xMidYMid slice"
           />
-        ) : (
-          <>
-            <circle
-              cx={cx}
-              cy={cy}
-              r={12}
-              fill="#0154D8"
-              stroke="#fff"
-              strokeWidth={2}
-            />
 
-            <text
-              x={cx}
-              y={cy + 4}
-              textAnchor="middle"
-              fontSize="9"
-              fill="#fff"
-              fontWeight="bold"
-            >
-              {payload.userName
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .substring(0, 2)}
-            </text>
-          </>
-        )}
-      </g>
-    );
-  };
+          <circle
+            cx={cx}
+            cy={cy}
+            r={radius}
+            fill="none"
+            stroke="#fff"
+            strokeWidth={2}
+          />
+        </>
+      ) : (
+        <>
+          <circle
+            cx={cx}
+            cy={cy}
+            r={radius}
+            fill="#0154D8"
+            stroke="#fff"
+            strokeWidth={2}
+          />
 
+          <text
+            x={cx}
+            y={cy + 5}
+            textAnchor="middle"
+            fontSize="14"
+            fill="#fff"
+            fontWeight="bold"
+          >
+            {payload.userName
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .substring(0, 2)}
+          </text>
+        </>
+      )}
+    </g>
+  );
+};
   const roundStart = formatDateTime(roundStartDate);
   const txStart = formatDateTime(timeLine?.transactionStartDate);
   const txEnd = formatDateTime(timeLine?.transactionEndDate);
   const txDuration = formatDuration(
     timeLine?.transactionStartDate,
-    timeLine?.transactionEndDate
+    timeLine?.transactionEndDate,
   );
 
   return (
@@ -618,66 +639,89 @@ export default function RoundAuction() {
       <div className="bg-white rounded-xl border p-5 mb-6">
         <h3 className="font-semibold mb-4">Winner Summary</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="md:col-span-2 flex items-center gap-4">
-            <Avatar name={winnerName} imageUrl={winnerProfileImage} size={14} />
-
-            <div>
-              <p className="text-sm text-gray-500">Winner Name</p>
-
-              <p className="font-semibold text-lg">{winnerName}</p>
-
-              <span
-                className={`inline-block mt-2 px-3 py-1 text-xs rounded-full ${
-                  roundStatus === "completed"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-yellow-100 text-yellow-600"
-                }`}
-              >
-                {roundStatus}
-              </span>
+        {isCompleted ? (
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="md:col-span-2 flex items-center gap-4">
+              <Avatar
+                name={winnerName}
+                imageUrl={winnerProfileImage}
+                size={14}
+              />
+              <div>
+                <p className="text-sm text-gray-500">Winner Name</p>
+                <p className="font-semibold text-lg">{winnerName}</p>
+                <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-green-100 text-green-600">
+                  {roundStatus}
+                </span>
+              </div>
             </div>
+
+            <SummaryItem
+              label="Payout Amount"
+              value={`${currencySymbol}${formatAmount(settlementAmount, transactionData.currency)}`}
+            />
+            <SummaryItem
+              label="Total Fund"
+              value={`${currencySymbol}${formatAmount(totalFundValue, transactionData.currency)}`}
+            />
+            <SummaryItem
+              label="Bonus"
+              value={`${currencySymbol}${formatAmount(dividendAmount, transactionData.currency)}`}
+            />
+            <SummaryItem
+              label="Minimum Bid"
+              value={`${currencySymbol}${formatAmount(minimumBidAmount, transactionData.currency)}`}
+            />
           </div>
-
-          <SummaryItem
-            label="Settlement Amount"
-            value={`${currencySymbol}${formatAmount(settlementAmount, transactionData.currency)}`}
-          />
-
-          <SummaryItem
-            label="Total Fund"
-            value={`${currencySymbol}${formatAmount(totalFundValue, transactionData.currency)}`}
-          />
-
-          <SummaryItem
-            label="Dividend"
-            value={`${currencySymbol}${formatAmount(dividendAmount, transactionData.currency)}`}
-          />
-
-          <SummaryItem
-            label="Minimum Bid"
-            value={`${currencySymbol}${formatAmount(minimumBidAmount, transactionData.currency)}`}
-          />
-        </div>
+        ) : (
+          <div className="flex items-center gap-3 bg-yellow-50 text-yellow-700 rounded-lg p-4">
+            <span className="inline-block px-3 py-1 text-xs rounded-full bg-yellow-100 font-semibold">
+              {roundStatus}
+            </span>
+            <p className="text-sm">
+              This round hasn't completed yet — winner, payout and bonus will
+              appear once it's settled.
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        {/* Bid Summary */}
+      {roundStatus !== "completed" ? (
+        <div className="bg-white rounded-xl border p-5 lg:col-span-2 flex flex-col items-center justify-center text-center py-16">
+          <FaClock className="text-4xl text-indigo-300 mb-3" />
+          <h3 className="font-semibold text-gray-700">
+            Round Still In Progress
+          </h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Bidding summary and trend chart will appear once this round is
+            completed.
+          </p>
+        </div>
+      ) : isLastRound ? (
+        <div className="bg-white rounded-xl border p-5 lg:col-span-2 flex flex-col items-center justify-center text-center py-16">
+          <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
+            🏆
+          </div>
+          <h3 className="font-semibold text-gray-700">
+            Last Round — Direct Selection
+          </h3>
+          <p className="text-sm text-gray-500 mt-1 max-w-sm">
+            This is the final round of the group. No bidding took place — the
+            winner was allotted directly as the last remaining member.
+          </p>
+        </div>
+      ) : (
         <div className="bg-white rounded-xl border p-5 lg:col-span-2">
           <h3 className="font-semibold mb-4">Bidding Summary</h3>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Stat label="Total Bids" value={biddingHistory?.length} />
-
             <Stat label="Members" value={totalMember} />
-
             <Stat
               label="Lowest Bid"
               value={`${currencySymbol}${formatAmount(minimumBidAmount, transactionData.currency)}`}
               color="text-green-600"
             />
-
             <Stat
               label="Highest Bid"
               value={`${currencySymbol}${formatAmount(maximumBidAmount, transactionData.currency)}`}
@@ -685,13 +729,13 @@ export default function RoundAuction() {
             />
           </div>
 
+          {/* Bidding Trend - Line Chart */}
           <div className="mt-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h4 className="text-lg font-semibold text-gray-800">
                   Bidding Trend
                 </h4>
-
                 <p className="text-sm text-gray-500">
                   Bid amount movement over time
                 </p>
@@ -706,15 +750,14 @@ export default function RoundAuction() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
-
                   <XAxis dataKey="time" tick={{ fontSize: 12 }} />
-
                   <YAxis
                     tick={{ fontSize: 12 }}
                     domain={["dataMin - 500", "dataMax + 500"]}
-                    tickFormatter={(v) => formatAmount(v, transactionData.currency)}
+                    tickFormatter={(v) =>
+                      formatAmount(v, transactionData.currency)
+                    }
                   />
-
                   <Tooltip
                     contentStyle={{
                       borderRadius: "12px",
@@ -726,18 +769,17 @@ export default function RoundAuction() {
                     ]}
                     labelFormatter={(label, payload) => {
                       if (!payload?.length) return "";
-
                       const user = payload[0].payload.userName;
-
                       return (
                         <>
-                          <div><strong>{user}</strong></div>
+                          <div>
+                            <strong>{user}</strong>
+                          </div>
                           <div>Time: {label}</div>
                         </>
                       );
                     }}
                   />
-
                   <Line
                     type="monotone"
                     dataKey="bid"
@@ -751,193 +793,152 @@ export default function RoundAuction() {
             </div>
           </div>
         </div>
+      )}
 
-        {/* Contribution + Timeline */}
-        <div className="flex flex-col gap-6">
-          <div className="bg-white rounded-xl border p-5">
-            <h3 className="font-semibold mb-4">Contribution Status</h3>
+      {isCompleted && !isLastRound && (
+        <div className="flex items-center justify-end gap-3 mb-5">
+          <Button
+            label="Download Receipt"
+            onClick={() => generateReceiptPDF(transactionData, currencySymbol)}
+          />
+        </div>
+      )}
 
-            <div className="space-y-4">
-              <div className="bg-green-500 text-white rounded-lg p-4">
-                <p className="text-sm">Completed</p>
-
-                <p className="text-2xl font-bold">{completeContribution}</p>
-              </div>
-
-              <div className="bg-yellow-400 text-white rounded-lg p-4">
-                <p className="text-sm">Pending</p>
-
-                <p className="text-2xl font-bold">{pendingContribution}</p>
-              </div>
+      {isCompleted && (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b bg-gray-50">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">
+                Bid History
+              </h3>
+              <p className="text-sm text-gray-500">
+                All bidding activities for this round
+              </p>
+            </div>
+            <div className="bg-indigo-100 text-indigo-600 text-sm font-medium px-3 py-1 rounded-full">
+              {biddingHistory?.length || 0} Bids
             </div>
           </div>
 
-          {timeLine && (
-            <div className="bg-white rounded-xl border p-5">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <FaClock className="text-indigo-400" />
-                Settlement Timeline
-              </h3>
+          {hasBidding ? (
+            <div className="overflow-x-auto">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[700px]">
+                  <thead className="bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        #
+                      </th>
 
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Started</span>
-                  <span className="font-medium text-gray-800">
-                    {txStart.date}, {txStart.time}
-                  </span>
-                </div>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Member
+                      </th>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Completed</span>
-                  <span className="font-medium text-gray-800">
-                    {txEnd.date}, {txEnd.time}
-                  </span>
-                </div>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Bid Amount
+                      </th>
 
-                <div className="flex items-center justify-between pt-2 border-t">
-                  <span className="text-gray-500">Total Duration</span>
-                  <span className="font-semibold text-indigo-600">{txDuration}</span>
-                </div>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Bid Time
+                      </th>
+
+                      <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="divide-y divide-gray-100">
+                    {biddingHistory?.map((item, index) => {
+                      const bidTime = formatDateTime(item.bidAskAt);
+                      const isWinningBid = index === winningBidIndex;
+                      return (
+                        <tr
+                          key={item.userId + item.bidAskAt}
+                          className={`transition-all duration-200 hover:bg-gray-50 ${
+                            isWinningBid ? "bg-yellow-50" : "bg-white"
+                          }`}
+                        >
+                          {/* Rank */}
+                          <td className="px-6 py-4">
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+                              {index + 1}
+                            </div>
+                          </td>
+
+                          {/* User */}
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <Avatar
+                                name={item.userName}
+                                imageUrl={item.userProfileImage}
+                                size={10}
+                              />
+
+                              <div>
+                                <p className="font-medium text-gray-800">
+                                  {item.userName}
+                                </p>
+
+                                <p className="text-xs text-gray-400">
+                                  ID: {item.userId?.slice(0, 8)}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Amount */}
+                          <td className="px-6 py-4">
+                            <p className="font-semibold text-gray-900 text-base">
+                              {currencySymbol}
+                              {formatAmount(
+                                item.bidAmount,
+                                transactionData.currency,
+                              )}
+                            </p>
+                          </td>
+
+                          {/* Time */}
+                          <td className="px-6 py-4">
+                            <div>
+                              <p className="text-sm font-medium text-gray-700">
+                                {bidTime.time}
+                              </p>
+
+                              <p className="text-xs text-gray-400">
+                                {bidTime.date}
+                              </p>
+                            </div>
+                          </td>
+
+                          {/* Status */}
+                          <td className="px-6 py-4 text-center">
+                            {isWinningBid ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                🏆 Winner
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                Participated
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
+            </div>
+          ) : (
+            <div className="px-6 py-10 text-center text-gray-500 text-sm">
+              {isLastRound
+                ? "This was the final round — winner was selected directly, no bids were placed."
+                : "No bids recorded for this round."}
             </div>
           )}
         </div>
-      </div>
-
-      <div className="flex items-center justify-end gap-3 mb-5">
-        <Button
-          label="Download Receipt"
-          onClick={() => generateReceiptPDF(transactionData, currencySymbol)}
-        />
-      </div>
-
-      {/* Bid History */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b bg-gray-50">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800">Bid History</h3>
-
-            <p className="text-sm text-gray-500">
-              All bidding activities for this round
-            </p>
-          </div>
-
-          <div className="bg-indigo-100 text-indigo-600 text-sm font-medium px-3 py-1 rounded-full">
-            {biddingHistory?.length || 0} Bids
-          </div>
-        </div>
-
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px]">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  #
-                </th>
-
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Member
-                </th>
-
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Bid Amount
-                </th>
-
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Bid Time
-                </th>
-
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-gray-100">
-              {biddingHistory?.map((item, index) => {
-                const bidTime = formatDateTime(item.bidAskAt);
-                const isWinningBid = index === winningBidIndex;
-                return (
-                  <tr
-                    key={item.userId + item.bidAskAt}
-                    className={`transition-all duration-200 hover:bg-gray-50 ${
-                      isWinningBid ? "bg-yellow-50" : "bg-white"
-                    }`}
-                  >
-                    {/* Rank */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
-                        {index + 1}
-                      </div>
-                    </td>
-
-                    {/* User */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar name={item.userName} imageUrl={item.userProfileImage} size={10} />
-
-                        <div>
-                          <p className="font-medium text-gray-800">
-                            {item.userName}
-                          </p>
-
-                          <p className="text-xs text-gray-400">
-                            ID: {item.userId?.slice(0, 8)}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Amount */}
-                    <td className="px-6 py-4">
-                      <p className="font-semibold text-gray-900 text-base">
-                        {currencySymbol}
-                        {formatAmount(item.bidAmount, transactionData.currency)}
-                      </p>
-                    </td>
-
-                    {/* Time */}
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          {bidTime.time}
-                        </p>
-
-                        <p className="text-xs text-gray-400">{bidTime.date}</p>
-                      </div>
-                    </td>
-
-                    {/* Status */}
-                    <td className="px-6 py-4 text-center">
-                      {isWinningBid ? (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                          🏆 Winner
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
-                          Participated
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Footer */}
-        <div className="px-6 py-4 border-t bg-gray-50 flex items-center justify-between">
-          <p className="text-sm text-gray-500">Showing all bids</p>
-
-          <div className="text-sm font-medium text-indigo-600">
-            Lowest Bid : {currencySymbol}
-            {formatAmount(minimumBidAmount, transactionData.currency)}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

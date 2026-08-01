@@ -11,13 +11,10 @@ const COUNTRIES = [
     currency: "$",
     x: 185,
     y: 200,
-    center: { letter: "L", color: "#f4b321" },
     members: [
       { letter: "A", color: "#f4b321" },
       { letter: "P", color: "#2ec27e" },
       { letter: "R", color: "#c678dd" },
-      { letter: "N", color: "#5b7cfa" },
-      { letter: "V", color: "#ef476f" },
     ],
   },
   {
@@ -26,11 +23,9 @@ const COUNTRIES = [
     currency: "£",
     x: 415,
     y: 120,
-    center: { letter: "L", color: "#45b7ff" },
     members: [
       { letter: "S", color: "#45b7ff" },
-      { letter: "M", color: "#f4b321" },
-      { letter: "D", color: "#8b5cf6" },
+      { letter: "D", color: "#ef476f" },
     ],
   },
   {
@@ -39,28 +34,18 @@ const COUNTRIES = [
     currency: "₹",
     x: 637,
     y: 250,
-    center: { letter: "L", color: "#f4b321" },
     members: [
-      { letter: "K", color: "#eab308" },
-      { letter: "M", color: "#c084fc" },
-      { letter: "J", color: "#2ec27e" },
-      { letter: "I", color: "#5b7cfa" },
-      // { letter: "T", color: "#14b8a6" },
-      // { letter: "C", color: "#ef476f" },
-    ],
+      { letter: "K", color: "#5b7cfa" },
+      { letter: "S", color: "#f4b321" },
+    ],  
   },
   {
     code: "AE",
-    name: "Dubai",
+    name: "UAE",
     currency: "AED",
     x: 535,
     y: 285,
-    center: { letter: "D", color: "#8b5cf6" },
-    members: [
-      { letter: "A", color: "#f4b321" },
-      { letter: "S", color: "#45b7ff" },
-      { letter: "M", color: "#f4b321" },
-    ],
+    members: [{ letter: "A", color: "#45b7ff" }],
   },
   {
     code: "AU",
@@ -68,14 +53,23 @@ const COUNTRIES = [
     currency: "A$",
     x: 795,
     y: 375,
-    center: { letter: "B", color: "#2ec27e" },
     members: [
-      { letter: "I", color: "#8b5cf6" },
-      { letter: "R", color: "#f87171" },
-      { letter: "S", color: "#0ea5e9" },
+      { letter: "I", color: "#ef476f" },
+      { letter: "R", color: "#45b7ff" },
     ],
   },
 ];
+
+// Small scatter cluster instead of an even ring — loosely matches a
+// hand-placed group of avatars sitting near/over the country shape.
+function scatterOffset(i, n) {
+  const spacing = 34;
+  const col = i % 2;
+  const row = Math.floor(i / 2);
+  const dx = (col === 0 ? -1 : 1) * (spacing / 2) + (n === 1 ? 0 : 0);
+  const dy = row * spacing - ((Math.ceil(n / 2) - 1) * spacing) / 2;
+  return n === 1 ? { dx: 0, dy: 0 } : { dx, dy };
+}
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 function DashedLines({ selected }) {
@@ -92,7 +86,7 @@ function DashedLines({ selected }) {
             stroke="#f4b321"
             strokeWidth="1.5"
             strokeDasharray="6,5"
-            opacity="0.65"
+            opacity="0.5"
           />
         );
       })}
@@ -100,113 +94,96 @@ function DashedLines({ selected }) {
   );
 }
 
-function CountryMarker({ country, active, onClick }) {
-  const { x, y, center, members, name, currency } = country;
-  const memberRadius = active ? 46 : 36;
-  const centerR = active ? 30 : 22;
-  const memberR = active ? 16 : 13;
-  const labelY = active ? -92 : -78;
-
+function Avatar({ x, y, r, color }) {
   return (
-    <g
-      transform={`translate(${x},${y})`}
-      style={{ cursor: "pointer" }}
-      onClick={onClick}
-    >
-      {active && (
-        <>
-          <circle r={56} fill="rgba(255,255,255,0.07)" />
-          <circle r={76} fill="rgba(255,255,255,0.035)" />
-        </>
-      )}
-
-      {members.map((m, i) => {
-        const angle = (i / members.length) * Math.PI * 2 - Math.PI / 2;
-
-        const mx = Math.cos(angle) * memberRadius;
-        const my = Math.sin(angle) * memberRadius;
-
-        return (
-          <g key={i} transform={`translate(${mx},${my})`}>
-            {/* avatar background */}
-            <circle r={memberR} fill={m.color} stroke="white" strokeWidth="2" />
-
-            {/* head */}
-            <circle
-              cx="0"
-              cy={-memberR * 0.32}
-              r={memberR * 0.32}
-              fill="white"
-            />
-
-            {/* shoulders */}
-            <path
-              d={`
-          M ${-memberR * 0.55} ${memberR * 0.55}
-          C ${-memberR * 0.55} ${memberR * 0.05},
-            ${memberR * 0.55} ${memberR * 0.05},
-            ${memberR * 0.55} ${memberR * 0.55}
+    <g transform={`translate(${x},${y})`}>
+      <circle r={r} fill={color} stroke="white" strokeWidth="2" />
+      <circle cx="0" cy={-r * 0.32} r={r * 0.32} fill="white" />
+      <path
+        d={`
+          M ${-r * 0.55} ${r * 0.55}
+          C ${-r * 0.55} ${r * 0.05},
+            ${r * 0.55} ${r * 0.05},
+            ${r * 0.55} ${r * 0.55}
           Z
         `}
-              fill="white"
-            />
-          </g>
-        );
-      })}
-
-      {/* <circle
-        r={centerR}
-        fill={center.color}
-        stroke="white"
-        strokeWidth="3.5"
-      /> */}
-      {/* <text
-        textAnchor="middle"
-        dy={centerR * 0.42}
         fill="white"
-        fontSize={active ? 30 : 22}
-        fontWeight="700"
-        fontFamily="system-ui,sans-serif"
-      >
-        {center.letter}
-      </text> */}
+      />
+    </g>
+  );
+}
 
-      <foreignObject x="-52" y={labelY} width="104" height="34">
-        <div
-          xmlns="http://www.w3.org/1999/xhtml"
-          style={{
-            background: active ? "#f4b321" : "#0d1d67",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: 10,
-            padding: "4px 10px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 5,
-            whiteSpace: "nowrap",
-          }}
-        >
-          <span
+function CountryMarker({ country, active, onClick }) {
+  const { x, y, members, name, currency } = country;
+  const memberR = active ? 15 : 12;
+  const labelY = -102;
+  const pinY = -68;
+
+  return (
+    <g style={{ cursor: "pointer" }} onClick={onClick}>
+      {/* leader line from label down to the marker cluster */}
+      <line
+        x1={x}
+        y1={y + labelY + 30}
+        x2={x}
+        y2={y}
+        stroke="rgba(255,255,255,0.35)"
+        strokeWidth="1"
+        strokeDasharray="3,4"
+      />
+      <circle cx={x} cy={y + labelY + 28} r="3" fill="rgba(255,255,255,0.55)" />
+
+      <g transform={`translate(${x},${y})`}>
+        {active && <circle r={54} fill="rgba(255,255,255,0.06)" />}
+
+        {members.map((m, i) => {
+          const { dx, dy } = scatterOffset(i, members.length);
+          return <Avatar key={i} x={dx} y={dy} r={memberR} color={m.color} />;
+        })}
+
+        <foreignObject x="-52" y={labelY} width="104" height="34">
+          <div
+            xmlns="http://www.w3.org/1999/xhtml"
             style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: active ? "#000" : "#fff",
-              fontFamily: "system-ui,sans-serif",
+              background: active ? "#f4b321" : "#0d1d67",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: 10,
+              padding: "4px 10px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              whiteSpace: "nowrap",
             }}
           >
-            {name}
-          </span>
-          <span
-            style={{
-              fontSize: 11,
-              color: active ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.5)",
-              fontFamily: "system-ui,sans-serif",
-            }}
-          >
-            {currency}
-          </span>
-        </div>
-      </foreignObject>
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: active ? "#000" : "#fff",
+                fontFamily: "system-ui,sans-serif",
+              }}
+            >
+              {name}
+            </span>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                padding: "1px 6px",
+                borderRadius: 6,
+                background: active
+                  ? "rgba(0,0,0,0.12)"
+                  : "rgba(255,255,255,0.1)",
+                color: active ? "rgba(0,0,0,0.65)" : "rgba(255,255,255,0.6)",
+                fontFamily: "system-ui,sans-serif",
+              }}
+            >
+              {currency}
+            </span>
+          </div>
+        </foreignObject>
+      </g>
     </g>
   );
 }
@@ -246,18 +223,23 @@ export default function WorldMapCard() {
           position: "absolute",
           top: 16,
           right: 16,
-          zIndex: 0,
+          zIndex: 10,
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
-          gap: 8,
+          gap: 10,
+          background: "rgba(6,14,56,0.55)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 16,
+          padding: "12px 14px",
+          backdropFilter: "blur(6px)",
         }}
       >
         <span
           style={{
             fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.12em",
+            fontWeight: 700,
+            letterSpacing: "0.14em",
             color: "rgba(255,255,255,0.45)",
             textTransform: "uppercase",
           }}
@@ -271,11 +253,15 @@ export default function WorldMapCard() {
               onClick={() => setSelected(c)}
               style={{
                 background: selected.code === c.code ? "#f4b321" : "#0d1d67",
-                border: `1px solid ${selected.code === c.code ? "#f4b321" : "rgba(255,255,255,0.12)"}`,
-                borderRadius: 10,
-                padding: "6px 12px",
+                border: `1px solid ${
+                  selected.code === c.code
+                    ? "#f4b321"
+                    : "rgba(255,255,255,0.12)"
+                }`,
+                borderRadius: 8,
+                padding: "8px 12px",
                 fontSize: 13,
-                fontWeight: 600,
+                fontWeight: 700,
                 color: selected.code === c.code ? "#000" : "#fff",
                 cursor: "pointer",
                 transition: "all 0.2s",
@@ -293,11 +279,11 @@ export default function WorldMapCard() {
           position: "absolute",
           bottom: 16,
           left: 16,
-          zIndex: 5,
+          zIndex: 10,
           background: "#0d1d67",
           border: "1px solid rgba(255,255,255,0.12)",
           borderRadius: 14,
-          padding: "10px 16px",
+          padding: "10px 18px",
           display: "flex",
           flexDirection: "column",
           gap: 2,
@@ -306,15 +292,28 @@ export default function WorldMapCard() {
         <span
           style={{
             fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: "0.1em",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
             color: "rgba(255,255,255,0.4)",
             textTransform: "uppercase",
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
           }}
         >
+          <span
+            style={{
+              position: "relative",
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: "#f4b321",
+              boxShadow: "0 0 0 6px rgba(244,179,33,0.15)",
+            }}
+          />
           Live in
         </span>
-        <span style={{ fontSize: 15, fontWeight: 600, color: "white" }}>
+        <span style={{ fontSize: 18, fontWeight: 700, color: "white" }}>
           {selected.name}
         </span>
       </div>
@@ -335,11 +334,11 @@ export default function WorldMapCard() {
           y="0"
           width={W}
           height={H}
-          href={worldMap} // instead of the CDN URL
+          href={worldMap}
           preserveAspectRatio="xMidYMid slice"
         />
 
-        {/* Connecting arcs */}
+        {/* Connecting arcs from the active country */}
         <DashedLines selected={selected} />
 
         {/* Markers */}

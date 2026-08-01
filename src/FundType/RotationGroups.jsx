@@ -17,7 +17,7 @@ const Card = ({ group }) => {
     <div
       className="bg-white rounded-2xl shadow-sm border p-6 flex flex-col gap-4 hover:shadow-md transition cursor-pointer"
       onClick={() => {
-        window.location.href = `/adminPanel/GroupDetails/${group.groupId}`;
+        window.location.href = `/adminPanel/RotationGroupDetails/${group.groupId}`;
       }}>
       <div className="flex items-center justify-between">
         <div>
