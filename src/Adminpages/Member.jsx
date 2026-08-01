@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaChevronLeft, FaChevronRight,FaMapMarkerAlt} from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
 import {
   User,
@@ -10,6 +10,7 @@ import {
   Building2,
   X,
   SlidersHorizontal,
+  Users,
 } from "lucide-react";
 import { getAllMemberPageId } from "../api/api";
 import EmptyState from "../AdminComponent/EmptyState";
@@ -50,28 +51,32 @@ const buildPayload = (filters, page) => ({
 });
 
 const FieldLabel = ({ children }) => (
-  <label className="block text-[11px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">
+  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
     {children}
   </label>
 );
 
 const IconInput = ({ icon: Icon, value, onChange, placeholder }) => (
-  <div className="relative flex items-center">
-    <Icon size={14} className="absolute left-3 text-slate-400 pointer-events-none z-10" />
+  <div className="relative flex items-center group">
+    <Icon
+      size={14}
+      className="absolute left-3 text-slate-400 pointer-events-none z-10 transition-colors group-focus-within:text-primary"
+    />
     <input
       type="text"
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-slate-200
-                 bg-white text-slate-800 placeholder-slate-400
-                 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300
-                 transition"
+      className="w-full pl-8 pr-8 py-2.5 text-sm rounded-lg border border-slate-200
+                 bg-slate-50/60 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary/40 focus:bg-white
+                 hover:border-slate-300
+                 transition-all duration-150"
     />
     {value && (
       <button
         onClick={() => onChange({ target: { value: "" } })}
-        className="absolute right-2 text-slate-300 hover:text-slate-500 transition"
+        className="absolute right-2 text-slate-300 hover:text-slate-500 transition-colors"
       >
         <X size={13} />
       </button>
@@ -136,21 +141,21 @@ const Members = () => {
 
   /* ── skeleton ── */
   const SkeletonCard = () => (
-    <div className="relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm p-5 animate-pulse">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gray-200" />
+    <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm p-5 animate-pulse">
+      <div className="absolute top-0 left-0 w-full h-1 bg-slate-200" />
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-2xl bg-gray-200" />
+        <div className="w-14 h-14 rounded-2xl bg-slate-200" />
         <div className="flex-1">
-          <div className="h-4 w-32 bg-gray-200 rounded mb-2" />
-          <div className="h-3 w-40 bg-gray-100 rounded mb-2" />
-          <div className="h-3 w-24 bg-gray-100 rounded" />
+          <div className="h-4 w-32 bg-slate-200 rounded mb-2" />
+          <div className="h-3 w-40 bg-slate-100 rounded mb-2" />
+          <div className="h-3 w-24 bg-slate-100 rounded" />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3 mt-5">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-xl bg-gray-100 p-3">
-            <div className="h-3 w-12 bg-gray-200 rounded mx-auto mb-2" />
-            <div className="h-5 w-10 bg-gray-300 rounded mx-auto" />
+          <div key={i} className="rounded-xl bg-slate-100 p-3">
+            <div className="h-3 w-12 bg-slate-200 rounded mx-auto mb-2" />
+            <div className="h-5 w-10 bg-slate-300 rounded mx-auto" />
           </div>
         ))}
       </div>
@@ -163,9 +168,19 @@ const Members = () => {
       {/* Page header */}
       <div className="flex justify-between items-center mb-5 flex-shrink-0">
         {loading ? (
-          <div className="h-8 w-56 rounded-md bg-gray-200 animate-pulse" />
+          <div className="h-8 w-56 rounded-md bg-slate-200 animate-pulse" />
         ) : (
-          <h1 className="text-2xl font-bold text-primary">Members overview</h1>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white shadow-sm">
+              <Users size={18} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-primary leading-tight">Members overview</h1>
+              <p className="text-xs text-slate-400">
+                {hasAnyFilter ? "Filtered results" : "All registered members"}
+              </p>
+            </div>
+          </div>
         )}
       </div>
 
@@ -184,7 +199,7 @@ const Members = () => {
               <button
                 onClick={clearAll}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                           bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 transition"
+                           bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 hover:border-red-300 transition-colors"
               >
                 <X size={11} /> Clear all
               </button>
@@ -192,9 +207,9 @@ const Members = () => {
             <button
               onClick={applyFilters}
               disabled={!hasDraftChange}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all
                 ${hasDraftChange
-                  ? "bg-primary text-white hover:opacity-90"
+                  ? "bg-primary text-white hover:opacity-90 shadow-sm hover:shadow"
                   : "bg-slate-100 text-slate-400 cursor-not-allowed"
                 }`}
             >
@@ -243,9 +258,9 @@ const Members = () => {
                 <span
                   key={key}
                   className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs
-                             bg-blue-50 text-blue-600 border border-blue-100"
+                             bg-blue-50 text-blue-600 border border-blue-100 hover:border-blue-200 transition-colors"
                 >
-                  <span className="capitalize font-medium">{key}:</span> {value}
+                  <span className="capitalize font-semibold">{key}:</span> {value}
                   <button
                     onClick={() => {
                       const next = { ...applied, [key]: "" };
@@ -253,7 +268,7 @@ const Members = () => {
                       setDraft(next);
                       setPage(1);
                     }}
-                    className="text-blue-400 hover:text-blue-600 transition ml-0.5"
+                    className="text-blue-400 hover:text-blue-600 transition-colors ml-0.5"
                   >
                     <X size={10} />
                   </button>
@@ -277,11 +292,11 @@ const Members = () => {
             {members.map((member) => (
               <div
                 key={member.userId}
-                className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100
-                           shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-5"
+                className="group relative overflow-hidden rounded-2xl bg-white border border-slate-100
+                           shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-slate-200 transition-all duration-300 p-5"
               >
                 {/* Top accent */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-80 group-hover:opacity-100 transition-opacity" />
 
                 {/* Profile */}
                 <div className="flex items-center gap-4">
@@ -289,22 +304,22 @@ const Members = () => {
                     <img
                       src={member.profileImage}
                       alt={member.name}
-                      className="w-14 h-14 rounded-2xl object-cover border-2 border-primary/20"
+                      className="w-14 h-14 rounded-2xl object-cover border-2 border-primary/20 group-hover:border-primary/40 transition-colors"
                     />
                   ) : (
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary
-                                    text-white flex items-center justify-center font-bold text-lg">
+                                    text-white flex items-center justify-center font-bold text-lg shadow-sm">
                       {member.profileName || member.name?.charAt(0) || "M"}
                     </div>
                   )}
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900 truncate text-base">
+                    <h3 className="font-bold text-gray-900 truncate text-base group-hover:text-primary transition-colors">
                       {member.name}
                     </h3>
                     <p className="text-xs text-gray-500 truncate">{member.emailId}</p>
-                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                      <FaPhone className="inline-block" />
+                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
+                      <FaPhone className="inline-block text-slate-300" size={10} />
                       {member.mobileNumber || "NA"}
                     </p>
                   </div>
@@ -312,20 +327,20 @@ const Members = () => {
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-3 mt-5">
-                  <div className="bg-blue-50 rounded-xl p-3 text-center">
-                    <p className="text-[11px] text-gray-500 mb-1">Groups</p>
+                  <div className="bg-blue-50/70 rounded-xl p-3 text-center border border-blue-100/50">
+                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Groups</p>
                     <p className="font-bold text-blue-600 text-lg">
                       {member.participateGroup || 0}
                     </p>
                   </div>
-                  <div className="bg-red-50 rounded-xl p-3 text-center">
-                    <p className="text-[11px] text-gray-500 mb-1">Pending</p>
+                  <div className="bg-red-50/70 rounded-xl p-3 text-center border border-red-100/50">
+                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Pending</p>
                     <p className="font-bold text-red-600 text-sm">
                       ₹{member.pendingDueAmount?.toLocaleString() || "0"}
                     </p>
                   </div>
-                  <div className="bg-green-50 rounded-xl p-3 text-center">
-                    <p className="text-[11px] text-gray-500 mb-1">Paid</p>
+                  <div className="bg-green-50/70 rounded-xl p-3 text-center border border-green-100/50">
+                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Paid</p>
                     <p className="font-bold text-green-600 text-sm">
                       ₹{member.completedDueAmount?.toLocaleString() || "0"}
                     </p>
@@ -333,18 +348,18 @@ const Members = () => {
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-gray-100" />
-                 <p className="text-xs text-gray-500 mt-1 flex items-center gap-2">
-    <FaMapMarkerAlt className="text-red-500" />
-    <span>
-      {[
-        member.city,
-        member.state,
-        member.country,
-      ]
-        .filter(Boolean)
-        .join(", ") || "Location Not Available"}
-    </span>
-  </p>
+                <p className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-red-500 flex-shrink-0" />
+                  <span className="truncate">
+                    {[
+                      member.city,
+                      member.state,
+                      member.country,
+                    ]
+                      .filter(Boolean)
+                      .join(", ") || "Location Not Available"}
+                  </span>
+                </p>
               </div>
             ))}
           </div>
@@ -353,31 +368,31 @@ const Members = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center mt-4 gap-3 flex-shrink-0">
+        <div className="flex justify-center items-center mt-4 gap-3 flex-shrink-0">
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
-            className={`px-3 py-1 rounded-md text-sm flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-1 font-medium transition-colors ${
               page === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary-hover"
+                : "bg-primary text-white hover:bg-primary-hover shadow-sm"
             }`}
           >
-            <FaChevronLeft /> Prev
+            <FaChevronLeft size={12} /> Prev
           </button>
-          <span className="px-3 py-1 bg-gray-100 rounded-md text-sm font-medium">
+          <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-md text-sm font-medium text-slate-600 shadow-sm">
             Page {page} of {totalPages}
           </span>
           <button
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}
-            className={`px-3 py-1 rounded-md text-sm flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-1 font-medium transition-colors ${
               page === totalPages
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary-hover"
+                : "bg-primary text-white hover:bg-primary-hover shadow-sm"
             }`}
           >
-            Next <FaChevronRight />
+            Next <FaChevronRight size={12} />
           </button>
         </div>
       )}

@@ -181,7 +181,12 @@ const LayoutDrawer = ({ children }) => {
       selectedKeys={[selectedMenu]}
       onClick={handleMenuClick}
       items={renderMenuItems(menuItems)}
-      style={{ height: "100%", borderRight: 0 }}
+      style={{
+        height: "100%",
+        borderRight: 0,
+        background: "transparent",
+        padding: "8px 10px",
+      }}
       className="custom-menu bg-primary"
     />
   );
@@ -199,7 +204,8 @@ const LayoutDrawer = ({ children }) => {
           alt="Admin"
           className={`
           w-10 h-10 rounded-full object-cover
-          border-2 border-primary
+          border-2 border-primary shadow-sm
+          ring-2 ring-white/40
           ${avatarBgClass}
         `}
         />
@@ -207,7 +213,7 @@ const LayoutDrawer = ({ children }) => {
         <div
           className={`
           w-10 h-10 rounded-full flex items-center justify-center font-semibold
-          border-2 border-primary
+          border-2 border-primary shadow-sm ring-2 ring-white/40
           ${avatarBgClass} ${avatarTextClass}
         `}
         >
@@ -217,7 +223,7 @@ const LayoutDrawer = ({ children }) => {
 
       <span
         className={`
-        text-sm font-semibold whitespace-nowrap
+        text-sm font-semibold whitespace-nowrap tracking-wide
         ${textClass}
       `}
       >
@@ -233,14 +239,15 @@ const LayoutDrawer = ({ children }) => {
         minHeight: "100vh",
         fontFamily: "sans-serif",
         overflowX: "hidden",
+        background: "#F5F7FB",
       }}
     >
       {logoutpopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl animate-fadeIn">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5 animate-fadeIn">
             {/* Icon */}
             <div className="flex justify-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-100 ring-8 ring-red-50">
                 <FaSignOutAlt className="text-3xl text-red-600" />
               </div>
             </div>
@@ -259,7 +266,7 @@ const LayoutDrawer = ({ children }) => {
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => setLogoutPopup(false)}
-                className="flex-1 rounded-xl border border-gray-300 bg-white py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
+                className="flex-1 rounded-xl border border-gray-300 bg-white py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
               >
                 Cancel
               </button>
@@ -269,7 +276,7 @@ const LayoutDrawer = ({ children }) => {
                   await logout();
                   navigate("/administrator");
                 }}
-                className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-red-600"
+                className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-red-700 hover:shadow-lg active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
               >
                 Logout
               </button>
@@ -285,29 +292,37 @@ const LayoutDrawer = ({ children }) => {
             onCollapse={handleCollapse}
             width={256}
             className="fixed bg-primary left-0 h-full"
+            style={{
+              boxShadow: "2px 0 12px rgba(1, 44, 114, 0.18)",
+              background: "linear-gradient(180deg, #0154D8 0%, #013EA6 100%)",
+              transition: "width 0.25s ease",
+            }}
           >
-            <div className="flex items-center justify-between p-4 border-b border-primary">
+            <div
+              className="flex items-center justify-between p-4"
+              style={{ borderBottom: "1px solid rgba(255,255,255,0.12)" }}
+            >
               <Button
                 type="text"
                 onClick={toggleSidebarBtn}
                 icon={
                   <FaHome
-                    className="text-secondary text-3xl"
+                    className="text-secondary text-3xl transition-transform duration-200 hover:scale-110"
                     style={{ color: "#ffc404" }}
                   />
                 }
               />
             </div>
             <div
-              className="absolute bottom-0 left-4 flex items-center gap-2 p-4 cursor-pointer"
+              className="absolute bottom-0 left-4 flex items-center gap-2 p-4 cursor-pointer transition-opacity duration-150 hover:opacity-80"
               onClick={async () => {
                 await logout();
                 navigate("/administrator");
               }}
             >
-              <SiCashapp size={32} className="text-white" />
+              <SiCashapp size={32} className="text-white drop-shadow-sm" />
               {isSidebarOpen && (
-                <Text style={{ color: "white", fontWeight: 600, fontSize: 16 }}>
+                <Text style={{ color: "white", fontWeight: 600, fontSize: 16, letterSpacing: "0.02em" }}>
                   <span style={{ color: "white" }}>ocial</span>
                   <span style={{ color: "#ffc404" }}>Capital</span>
                 </Text>
@@ -317,11 +332,13 @@ const LayoutDrawer = ({ children }) => {
             {MenuNode}
           </Sider>
           <div className="px-4 py-4 border-none absolute right-5 ">
-            <UserProfile
-              avatarBgClass="bg-primary"
-              avatarTextClass="text-white"
-              textClass="text-primary"
-            />
+            <div className="rounded-full bg-white/90 backdrop-blur-sm px-3 py-1.5 shadow-sm">
+              <UserProfile
+                avatarBgClass="bg-primary"
+                avatarTextClass="text-white"
+                textClass="text-primary"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -330,13 +347,15 @@ const LayoutDrawer = ({ children }) => {
       {/* Mobile header (shows hamburger) */}
       {isMobile && (
         <div
-          className="w-full flex items-center justify-between p-3 border-b bg-primary"
+          className="w-full flex items-center justify-between p-3 bg-primary"
           style={{
             position: "fixed",
             zIndex: 1000,
             top: 0,
             left: 0,
             right: 0,
+            background: "linear-gradient(90deg, #0154D8 0%, #013EA6 100%)",
+            boxShadow: "0 2px 10px rgba(1, 44, 114, 0.25)",
           }}
         >
           <Button
@@ -368,22 +387,23 @@ const LayoutDrawer = ({ children }) => {
           header: {
             background: "#0154D8",
             color: "white",
+            borderBottom: "1px solid rgba(255,255,255,0.12)",
           },
         }}
       >
-        <div className="bg-gradient-to-b from-primary to-[#012C72]">
+        <div className="bg-gradient-to-b from-primary to-[#012C72] h-full">
           {MenuNode}
 
           <div
-            className="absolute bottom-0 left-2 flex items-center gap-2 p-4 cursor-pointer"
+            className="absolute bottom-0 left-2 flex items-center gap-2 p-4 cursor-pointer transition-opacity duration-150 hover:opacity-80"
             onClick={async () => {
               await logout();
               setDrawerOpen(false);
               navigate("/administrator");
             }}
           >
-            <SiCashapp size={48} className="text-white h-8 w-8" />
-            <Text style={{ color: "white", fontWeight: "600", fontSize: 16 }}>
+            <SiCashapp size={48} className="text-white h-8 w-8 drop-shadow-sm" />
+            <Text style={{ color: "white", fontWeight: "600", fontSize: 16, letterSpacing: "0.02em" }}>
               <span style={{ color: "white" }}>ocial</span>
               <span style={{ color: "#ffc404" }}>Capital</span>
             </Text>
@@ -396,6 +416,7 @@ const LayoutDrawer = ({ children }) => {
         style={{
           marginLeft: !isMobile ? (isSidebarOpen ? 256 : 80) : 0,
           transition: "all 0.2s",
+          background: "transparent",
         }}
       >
         {/* add top padding on mobile to account for fixed mobile header */}
@@ -407,7 +428,11 @@ const LayoutDrawer = ({ children }) => {
           }}
           className={`flex-1 relative p-6 transition-all duration-300`}
         >
-          {children}
+          <div
+            className="rounded-2xl p-6 min-h-[calc(100vh-96px)]"
+          >
+            {children}
+          </div>
         </Content>
       </Layout>
     </Layout>

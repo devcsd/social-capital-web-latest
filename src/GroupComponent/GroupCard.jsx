@@ -20,10 +20,20 @@ const getCurrencySymbol = (currency) =>
   currencyMeta[currency]?.symbol || currency;
 
 const statusMeta = (groupStatus, isPause) => {
-  if (isPause) return { label: "Paused", cls: "bg-amber-100 text-amber-700" };
+  if (isPause)
+    return {
+      label: "Paused",
+      cls: "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200",
+    };
   if (!groupStatus)
-    return { label: "Active", cls: "bg-green-100 text-green-700" };
-  return { label: groupStatus, cls: "bg-gray-100 text-gray-600" };
+    return {
+      label: "Active",
+      cls: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200",
+    };
+  return {
+    label: groupStatus,
+    cls: "bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-200",
+  };
 };
 
 /* ─── Updated GroupCard Component ──────────────────────────────────────── */
@@ -47,27 +57,29 @@ export const GroupCard = ({ group, onClick }) => {
     <>
       <div
         onClick={onClick}
-        className="bg-white rounded-xl shadow p-5 flex flex-col gap-4 cursor-pointer hover:shadow-lg transition-shadow"
-        style={{ borderTop: "3px solid #0154D8" }}>
+        className="group relative bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5 flex flex-col gap-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 hover:ring-primary/20 transition-all duration-200 overflow-hidden"
+      >
+        {/* Accent top bar */}
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-primary/70 to-primary/30" />
+
         {/* Top row: name + currency badge */}
-        <div className="flex justify-between items-start">
-          <div className="flex items-center gap-3 flex-1">
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-800 text-sm leading-tight">
-                {group.groupName}
-              </h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                {group.groupType} · {group.frequency}
-              </p>
-            </div>
+        <div className="flex justify-between items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-gray-900 text-sm leading-tight tracking-tight truncate">
+              {group.groupName}
+            </h3>
+            <p className="text-xs text-gray-400 mt-1">
+              {group.groupType} <span className="mx-1 text-gray-300">·</span>{" "}
+              {group.frequency}
+            </p>
           </div>
-          <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
+          <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1 shrink-0">
             <ReactCountryFlag
               countryCode={currencyMeta[group.currency]?.flag || "IN"}
               svg
-              style={{ width: "18px", height: "18px", borderRadius: "999px" }}
+              style={{ width: "16px", height: "16px", borderRadius: "999px" }}
             />
-            <span className="text-xs font-medium text-gray-700">
+            <span className="text-xs font-medium text-gray-600">
               {group.currency}
             </span>
           </div>
@@ -75,30 +87,32 @@ export const GroupCard = ({ group, onClick }) => {
 
         {/* Status badge */}
         <span
-          className={`self-start text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${cls}`}>
+          className={`self-start text-[10px] font-semibold px-2.5 py-1 rounded-full ${cls}`}
+        >
           {label}
         </span>
 
         {/* Flow/Transaction Type */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-wide text-gray-400">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
             Flow
           </span>
 
-          <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1">
-            {group.fundDistributionType === "Member → Fund Manager → Winner" ? (
+          <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-full px-3 py-1.5">
+            {group.fundDistributionType ===
+            "Member → Fund Manager → Winner" ? (
               <>
                 <FaUsers className="text-[11px] text-gray-500" />
-                <MdArrowForward className="text-[12px] text-gray-400" />
+                <MdArrowForward className="text-[12px] text-gray-300" />
                 <FaUserTie className="text-[11px] text-blue-600" />
-                <MdArrowForward className="text-[12px] text-gray-400" />
-                <FaTrophy className="text-[11px] text-yellow-500" />
+                <MdArrowForward className="text-[12px] text-gray-300" />
+                <FaTrophy className="text-[11px] text-amber-500" />
               </>
             ) : (
               <>
                 <FaUsers className="text-[11px] text-gray-500" />
-                <MdArrowForward className="text-[12px] text-gray-400" />
-                <FaTrophy className="text-[11px] text-yellow-500" />
+                <MdArrowForward className="text-[12px] text-gray-300" />
+                <FaTrophy className="text-[11px] text-amber-500" />
               </>
             )}
           </div>
@@ -106,28 +120,28 @@ export const GroupCard = ({ group, onClick }) => {
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="bg-gray-50 rounded-lg p-2">
-            <p className="text-[10px] text-gray-400 uppercase tracking-wide">
+          <div className="bg-gray-50 rounded-xl p-2.5 group-hover:bg-primary/5 transition-colors">
+            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
               Fund
             </p>
-            <p className="text-sm font-bold text-gray-700 mt-0.5">
+            <p className="text-sm font-bold text-gray-800 mt-0.5 tabular-nums">
               {getCurrencySymbol(group.currency)}
               {fmtINR(group.totalFundAmount)}
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-2">
-            <p className="text-[10px] text-gray-400 uppercase tracking-wide">
+          <div className="bg-gray-50 rounded-xl p-2.5 group-hover:bg-primary/5 transition-colors">
+            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
               Members
             </p>
-            <p className="text-sm font-bold text-gray-700 mt-0.5">
+            <p className="text-sm font-bold text-gray-800 mt-0.5 tabular-nums">
               {group.totalMembers}
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-2">
-            <p className="text-[10px] text-gray-400 uppercase tracking-wide">
+          <div className="bg-gray-50 rounded-xl p-2.5 group-hover:bg-primary/5 transition-colors">
+            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
               Admin Fee
             </p>
-            <p className="text-sm font-bold text-gray-700 mt-0.5">
+            <p className="text-sm font-bold text-gray-800 mt-0.5 tabular-nums">
               {getCurrencySymbol(group.currency)}
               {fmtINR(group.adminCommissionAmount)}
             </p>
@@ -135,20 +149,20 @@ export const GroupCard = ({ group, onClick }) => {
         </div>
 
         {/* Manager row + Manage Settings Button */}
-        <div className="space-y-3 pt-2 border-t border-gray-100">
+        <div className="space-y-3 pt-3 border-t border-gray-100">
           {/* Manager Info */}
           <div className="flex items-center gap-2">
             {group.fundManagerProfileImage ? (
               <img
                 src={group.fundManagerProfileImage}
                 alt={group.fundManager}
-                className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-1 ring-gray-200"
                 onError={(e) => {
                   e.target.style.display = "none";
                 }}
               />
             ) : (
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-gray-200 text-gray-500 flex-shrink-0">
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-primary/10 text-primary flex-shrink-0">
                 {group.fundManagerProfileName}
               </div>
             )}
@@ -162,8 +176,10 @@ export const GroupCard = ({ group, onClick }) => {
 
           {/* Location with Manage Settings Button */}
           <div className="flex items-center justify-between gap-2">
-            <p className="text-xs text-gray-400">
-              📍 {group.city || "NA"}, {group.state || "NA"} · {group.currency}
+            <p className="text-xs text-gray-400 flex items-center gap-1">
+              <span>📍</span>
+              {group.city || "NA"}, {group.state || "NA"}{" "}
+              <span className="text-gray-300">·</span> {group.currency}
             </p>
           </div>
         </div>

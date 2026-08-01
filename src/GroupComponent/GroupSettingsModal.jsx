@@ -27,13 +27,7 @@ const StepperInput = ({ value, onChange, min = 0, max = Infinity, step = 1, pref
 
   return (
     <div className="flex items-center gap-2">
-      <button
-        type="button"
-        onClick={() => onChange(clamp(safeValue - step))}
-        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors flex items-center justify-center text-gray-700"
-        aria-label="Decrease">
-        <AiOutlineMinus size={16} />
-      </button>
+     
 
       <div className="flex-1 relative min-w-0">
         {prefix && (
@@ -48,19 +42,13 @@ const StepperInput = ({ value, onChange, min = 0, max = Infinity, step = 1, pref
           min={min}
           max={max}
           style={{ color: "#1f2937", backgroundColor: "#ffffff", WebkitTextFillColor: "#1f2937" }}
-          className={`w-full py-2 border border-gray-300 rounded-lg text-center font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+          className={`w-full py-2 border border-gray-300 rounded-lg text-center font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow ${
             prefix ? "pl-7 pr-2" : "px-2"
           }`}
         />
       </div>
 
-      <button
-        type="button"
-        onClick={() => onChange(clamp(safeValue + step))}
-        className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors flex items-center justify-center text-gray-700"
-        aria-label="Increase">
-        <AiOutlinePlus size={16} />
-      </button>
+      
     </div>
   );
 };
@@ -71,7 +59,7 @@ const CurrencyFundCard = ({ code, data, onChange }) => {
   const step = code === "usd" || code === "aud" ? 1 : 100;
 
   return (
-    <div className="border border-gray-200 rounded-xl p-4 space-y-3 bg-white hover:shadow-sm transition-shadow">
+    <div className="border border-gray-200 rounded-xl p-4 space-y-3 bg-white hover:shadow-md hover:border-primary/30 transition-all">
       {/* Header: flag badge + label, styled like the GroupCard currency pill */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
@@ -235,32 +223,32 @@ export const MasterSettingsModal = ({ isOpen, onClose }) => {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={onClose} />
 
-          <div className="relative z-10 w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+          <div className="relative z-10 w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl ring-1 ring-black/5">
             {/* Header */}
-            <div className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 px-6 py-5 flex items-center justify-between">
+            <div className="sticky top-0 z-20 bg-gradient-to-r from-primary/10 via-indigo-50 to-blue-50 border-b border-gray-200 px-6 py-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <FiSettings className="text-primary" size={24} />
+                <div className="p-2.5 bg-primary/10 rounded-xl">
+                  <FiSettings className="text-primary" size={22} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">Master Settings</h2>
+                  <h2 className="text-xl font-bold text-gray-900 tracking-tight">Master Settings</h2>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Group limits & Group amount configuration
+                    Group limits &amp; Group amount configuration
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <button
                   onClick={loadData}
-                  className="p-2 hover:bg-gray-200/50 rounded-lg transition-colors"
+                  className="p-2 hover:bg-white/70 rounded-lg transition-colors"
                   aria-label="Refresh">
                   <FiRefreshCw size={18} className="text-gray-600" />
                 </button>
                 <button
                   onClick={onClose}
-                  className="p-1 hover:bg-gray-200/50 rounded-lg transition-colors"
+                  className="p-1 hover:bg-white/70 rounded-lg transition-colors"
                   aria-label="Close modal">
                   <FiX size={24} className="text-gray-600" />
                 </button>
@@ -270,14 +258,16 @@ export const MasterSettingsModal = ({ isOpen, onClose }) => {
             {/* Body */}
             <div className="p-6 space-y-6">
               {loading ? (
-                <div className="flex items-center justify-center py-16">
+                <div className="flex flex-col items-center justify-center gap-3 py-16">
                   <FiRefreshCw className="animate-spin text-primary" size={28} />
+                  <p className="text-xs text-gray-400">Loading settings…</p>
                 </div>
               ) : (
                 <>
                   {errorMessage && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-sm font-medium text-red-700">⚠ {errorMessage}</p>
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2">
+                      <span className="text-red-500 mt-0.5">⚠</span>
+                      <p className="text-sm font-medium text-red-700">{errorMessage}</p>
                     </div>
                   )}
 
@@ -332,7 +322,7 @@ export const MasterSettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3 justify-end">
+            <div className="sticky bottom-0 bg-gray-50/95 backdrop-blur border-t border-gray-200 px-6 py-4 flex gap-3 justify-end">
               <button
                 onClick={onClose}
                 className="px-6 py-2.5 rounded-lg border border-gray-300 font-medium text-gray-700 hover:bg-gray-100 transition-colors"
@@ -342,7 +332,7 @@ export const MasterSettingsModal = ({ isOpen, onClose }) => {
               <button
                 onClick={handleSave}
                 disabled={saving || loading}
-                className="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                className="px-6 py-2.5 rounded-lg bg-primary text-white font-medium shadow-sm hover:bg-primary/90 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
                 {saving ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -364,4 +354,4 @@ export const MasterSettingsModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default MasterSettingsModal;
+export default MasterSettingsModal; 

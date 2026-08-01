@@ -76,14 +76,14 @@ const statusMeta = (groupStatus, isPause) => {
 
 /* ─── Skeleton Atoms ──────────────────────────────────────────────────────── */
 const SkeletonStat = () => (
-  <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-3 animate-pulse">
+  <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5 flex flex-col gap-3 animate-pulse">
     <div className="h-3 w-28 bg-gray-200 rounded" />
     <div className="h-7 w-20 bg-gray-200 rounded" />
   </div>
 );
 
 const SkeletonCard = () => (
-  <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-4 animate-pulse">
+  <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5 flex flex-col gap-4 animate-pulse">
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-gray-200 rounded-full" />
@@ -129,7 +129,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-1.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         ← Prev
       </button>
@@ -139,7 +139,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <>
           <button
             onClick={() => onPageChange(1)}
-            className="w-9 h-9 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+            className="w-9 h-9 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors"
           >
             1
           </button>
@@ -155,7 +155,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
             p === currentPage
               ? "bg-primary text-white border border-primary shadow-sm"
-              : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+              : "border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"
           }`}
         >
           {p}
@@ -170,7 +170,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           )}
           <button
             onClick={() => onPageChange(totalPages)}
-            className="w-9 h-9 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+            className="w-9 h-9 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors"
           >
             {totalPages}
           </button>
@@ -181,7 +181,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-1.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         Next →
       </button>
@@ -231,7 +231,7 @@ const Groups = () => {
   /* ── Skeleton ── */
   if (!responsedata) {
     return (
-      <div className="min-h-screen p-6 space-y-6">
+      <div className="min-h-screen p-6 space-y-6 bg-gray-50/50">
         <div className="h-8 w-56 rounded-md bg-gray-200 animate-pulse" />
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
@@ -247,7 +247,7 @@ const Groups = () => {
           {[1, 2].map((i) => (
             <div
               key={i}
-              className="bg-white p-5 rounded-xl shadow h-[300px] animate-pulse"
+              className="bg-white p-5 rounded-2xl shadow-sm ring-1 ring-gray-100 h-[300px] animate-pulse"
             >
               <div className="h-5 w-28 bg-gray-200 rounded mb-4" />
               <div className="h-full bg-gray-100 rounded-lg" />
@@ -371,14 +371,21 @@ const Groups = () => {
     <div className="min-h-screen p-6 space-y-6">
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
-        <h1 className="text-2xl font-bold text-primary">Group Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-primary tracking-tight">
+            Group Management
+          </h1>
+          <p className="text-sm text-gray-400 mt-0.5">
+            Monitor, filter, and manage all active fund groups.
+          </p>
+        </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
+      <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5 mb-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-800 tracking-tight">
               Filter Groups
             </h3>
             <p className="text-sm text-gray-500">
@@ -398,7 +405,7 @@ const Groups = () => {
                 TxnType: "",
               })
             }
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
           >
             <FiX size={14} />
             Clear
@@ -424,7 +431,7 @@ const Groups = () => {
                     country: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-shadow"
               />
             </div>
           </div>
@@ -446,7 +453,7 @@ const Groups = () => {
                     state: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-shadow"
               />
             </div>
           </div>
@@ -468,7 +475,7 @@ const Groups = () => {
                     city: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-shadow"
               />
             </div>
           </div>
@@ -488,7 +495,7 @@ const Groups = () => {
                     groupType: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white transition-shadow"
               >
                 <option value="">All Group Types</option>
                 {groupTypes.map((type) => (
@@ -515,7 +522,7 @@ const Groups = () => {
                     TxnType: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white transition-shadow"
               >
                 <option value="">All Transaction Types</option>
                 {txnTypes.map((type) => (
@@ -542,7 +549,7 @@ const Groups = () => {
                     currencies: e.target.value,
                   })
                 }
-                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white"
+                className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none bg-white transition-shadow"
               >
                 <option value="">All Currencies</option>
                 {currencies.map((currency) => (
@@ -591,9 +598,13 @@ const Groups = () => {
 
       {/* ── Group Cards Grid ── */}
       {filteredGroups.length === 0 ? (
-        <div className="bg-white rounded-xl shadow p-12 text-center">
-          <p className="text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-12 text-center">
+          <p className="text-3xl mb-2">🔍</p>
+          <p className="text-gray-500 text-sm font-medium">
             No groups match your current filters.
+          </p>
+          <p className="text-gray-400 text-xs mt-1">
+            Try adjusting or clearing a filter to see more results.
           </p>
         </div>
       ) : (
@@ -673,20 +684,24 @@ const Groups = () => {
 
 /* ─── Reusable Atoms ──────────────────────────────────────────────────────── */
 const StatCard = ({ label, value, accent }) => (
-  <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
+  <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
     <div>
-      <p className="text-xs text-gray-500 uppercase tracking-wide">{label}</p>
-      <h2 className={`text-xl font-bold mt-0.5 ${accent}`}>{value}</h2>
+      <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        {label}
+      </p>
+      <h2 className={`text-xl font-bold mt-0.5 tracking-tight tabular-nums ${accent}`}>
+        {value}
+      </h2>
     </div>
   </div>
 );
 
 const ChartCard = ({ title, children }) => (
   <div
-    className="bg-white p-5 rounded-xl shadow flex flex-col"
+    className="bg-white p-5 rounded-2xl shadow-sm ring-1 ring-gray-100 flex flex-col hover:shadow-md transition-shadow"
     style={{ height: 300 }}
   >
-    <h2 className="text-sm font-semibold text-primary mb-3">{title}</h2>
+    <h2 className="text-sm font-semibold text-primary tracking-tight mb-3">{title}</h2>
     <div className="flex-1 flex items-center justify-center">{children}</div>
   </div>
 );

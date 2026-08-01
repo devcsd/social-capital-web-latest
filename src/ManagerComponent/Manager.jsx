@@ -10,6 +10,9 @@ import {
   Building2,
   Coins,
   X,
+  Users,
+  SlidersHorizontal,
+  ChevronRight,
 } from "lucide-react";
 import { currencyMeta } from "../utils/currencyMeta";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -35,21 +38,21 @@ const ALL_CURRENCIES = ["INR", "AUD", "USD", "GBP", "CNY"];
 
 /* ── small reusable label ── */
 const FieldLabel = ({ children }) => (
-  <label className="block text-[11px] font-medium text-slate-400 uppercase tracking-wide mb-1.5">
+  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
     {children}
   </label>
 );
 
 /* ── input with lucide prefix icon ── */
 const IconInput = ({ icon: Icon, ...props }) => (
-  <div className="relative flex items-center">
+  <div className="relative flex items-center group">
     <Icon
       size={14}
-      className="absolute left-3 text-slate-400 pointer-events-none z-10"
+      className="absolute left-3 text-slate-400 group-focus-within:text-primary pointer-events-none z-10 transition-colors"
     />
     <Input
       {...props}
-      className="pl-8 rounded-lg border-slate-200 w-full"
+      className="pl-8 rounded-lg border-slate-200 w-full hover:border-primary/50 focus:border-primary transition-colors"
       allowClear
     />
   </div>
@@ -72,6 +75,11 @@ export default function ManagerDetails() {
 
   const hasAnyFilter = Object.entries(filters).some(([k, v]) =>
     k === "currencies" ? v.length > 0 : v !== "",
+  );
+
+  const activeFilterCount = Object.entries(filters).reduce(
+    (count, [k, v]) => count + (k === "currencies" ? (v.length > 0 ? 1 : 0) : v !== "" ? 1 : 0),
+    0,
   );
 
   /* ── filter logic ── */
@@ -120,7 +128,8 @@ export default function ManagerDetails() {
 
   /* ── skeleton ── */
   const SkeletonCard = () => (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 animate-pulse flex flex-col items-center">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 overflow-hidden relative flex flex-col items-center">
+      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-slate-100/70 to-transparent" />
       <div className="w-20 h-20 rounded-full bg-slate-200 mb-4" />
       <div className="h-4 w-32 bg-slate-200 rounded mb-2" />
       <div className="h-3 w-20 bg-slate-200 rounded mb-4" />
@@ -129,6 +138,11 @@ export default function ManagerDetails() {
         <div className="h-10 bg-slate-200 rounded-xl" />
       </div>
       <div className="w-full mt-4 h-20 bg-slate-200 rounded-xl" />
+      <style>{`
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </div>
   );
 
@@ -136,34 +150,53 @@ export default function ManagerDetails() {
   return (
     <div className="p-0 max-w-7xl mx-auto min-h-screen">
       {/* Page header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-primary">
-          Group managers overview
-        </h1>
-        <p className="text-sm text-slate-500">
-          Manage and monitor all group managers
-        </p>
+      <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold text-primary tracking-tight">
+            Group managers overview
+          </h1>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Manage and monitor all group managers
+          </p>
+        </div>
+        {!loading && (
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-100 text-xs font-medium text-slate-500">
+            <Users size={13} className="text-primary" />
+            {filteredManagers.length} manager{filteredManagers.length !== 1 ? "s" : ""}
+            {hasAnyFilter && ` of ${fundManager.length}`}
+          </div>
+        )}
       </div>
 
       {/* ═══════════════════ FILTER PANEL ═══════════════════ */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-6 py-5 mb-8">
         {/* Panel header */}
         <div className="flex items-start justify-between mb-5">
-          <div>
-            <p className="text-sm font-semibold text-slate-700">
-              Filter managers
-            </p>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Search and filter managers by name, contact, location, and
-              currency.
-            </p>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <SlidersHorizontal size={14} className="text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                Filter managers
+                {activeFilterCount > 0 && (
+                  <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-white text-[10px] font-semibold">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Search and filter managers by name, contact, location, and
+                currency.
+              </p>
+            </div>
           </div>
 
           {hasAnyFilter && (
             <button
               onClick={() => setFilters(EMPTY_FILTERS)}
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
-                         bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 transition"
+                         bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 active:scale-95 transition-all"
             >
               <X size={12} />
               Clear all
@@ -285,7 +318,9 @@ export default function ManagerDetails() {
           ))}
 
         {!loading && currentData.length === 0 && (
-          <EmptyState message="No group managers match your filters" />
+          <div className="sm:col-span-2 lg:col-span-3">
+            <EmptyState message="No group managers match your filters" />
+          </div>
         )}
 
         {!loading &&
@@ -294,23 +329,32 @@ export default function ManagerDetails() {
             return (
               <div
                 key={fm.fundManagerId}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm
-                           hover:shadow-md transition p-6 flex flex-col items-center
-                           text-center cursor-pointer"
+                className="group relative bg-white rounded-2xl border border-slate-100 shadow-sm
+                           hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20 transition-all duration-200
+                           p-6 flex flex-col items-center text-center cursor-pointer"
                 onClick={() =>
                   navigate(`/adminPanel/FundManager/${fm.fundManagerId}`)
                 }
               >
+                <ChevronRight
+                  size={16}
+                  className="absolute top-5 right-5 text-slate-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200"
+                />
+
                 {fm.profileImage ? (
                   <img
                     src={fm.profileImage}
                     alt={fm.fundManagerName}
-                    className="w-20 h-20 rounded-full object-cover mb-4 border-2 border-blue-100"
+                    className={`w-20 h-20 rounded-full object-cover mb-4 ring-2 ring-offset-2 transition-shadow ${
+                      isActive ? "ring-green-200" : "ring-slate-200"
+                    }`}
                   />
                 ) : (
                   <div
-                    className="w-20 h-20 rounded-full mb-4 bg-primary text-white
-                                text-xl font-semibold flex items-center justify-center"
+                    className={`w-20 h-20 rounded-full mb-4 bg-primary text-white ring-2 ring-offset-2
+                                text-xl font-semibold flex items-center justify-center ${
+                                  isActive ? "ring-green-200" : "ring-slate-200"
+                                }`}
                   >
                     {getInitials(fm.fundManagerName)}
                   </div>
@@ -334,12 +378,17 @@ export default function ManagerDetails() {
                 </div>
 
                 <span
-                  className={`mt-2 px-4 py-1 rounded-full text-xs font-medium ${
+                  className={`mt-3 inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-xs font-medium ${
                     isActive
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
                   }`}
                 >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      isActive ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  />
                   {isActive ? "Active" : "Inactive"}
                 </span>
 
@@ -371,7 +420,7 @@ export default function ManagerDetails() {
                           <div
                             key={currency}
                             className="flex items-center justify-between
-                                       bg-white/70 rounded-lg px-3 py-2"
+                                       bg-white/70 rounded-lg px-3 py-2 hover:bg-white transition-colors"
                           >
                             <ReactCountryFlag
                               svg
