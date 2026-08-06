@@ -82,7 +82,7 @@ function StepBadge({ id }) {
 export default function HowItWorksSection() {
   return (
     <section
-      className="overflow-hidden py-20 lg:min-h-screen flex items-center"
+      className="overflow-hidden py-10 lg:min-h-screen flex items-center"
       id="how-it-works">
       <div className="mx-auto max-w-[1240px] px-6 xl:px-0 w-full">
         {/* Top Section */}

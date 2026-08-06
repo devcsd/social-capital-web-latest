@@ -83,12 +83,12 @@ const glassCardStyle = {
 export default function SocialCapitalChartSection() {
   return (
     <section
-      className="relative overflow-hidden py-[130px] px-[130px]"
+      className="relative overflow-hidden py-10 px-[130px]"
       // style={{
       //   background:
       //     "linear-gradient(135deg, #3D63EA 0%, #2B4FDB 40%, #1D3AA8 75%, #16307F 100%)",
       // }}
-      >
+    >
       {/* Background Glow */}
       <div className="absolute left-[-220px] top-[140px] h-[520px] w-[520px] rounded-full bg-[#6F91FF]/15 blur-[170px]" />
       <div className="absolute right-[-220px] top-[60px] h-[460px] w-[460px] rounded-full bg-[#FFC72C]/6 blur-[170px]" />

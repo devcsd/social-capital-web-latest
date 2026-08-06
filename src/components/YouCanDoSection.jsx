@@ -83,8 +83,7 @@ const UCIcon = {
       className="w-5 h-5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <circle cx="12" cy="12" r="9" />
       <path d="M9 12h6M12 9v6" />
     </svg>
@@ -95,8 +94,7 @@ const UCIcon = {
       className="w-5 h-5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <path d="M3 13l1.5-5A2 2 0 016.4 6.5h11.2A2 2 0 0119.5 8l1.5 5" />
       <rect x="3" y="13" width="18" height="5" rx="1.5" />
       <circle cx="7.5" cy="18" r="1.5" />
@@ -109,8 +107,7 @@ const UCIcon = {
       className="w-5 h-5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0012 3z" />
     </svg>
   ),
@@ -187,8 +184,7 @@ function People({ names = [], members }) {
               shadow-[0_8px_18px_rgba(0,0,0,.35)]
               transition-transform duration-300
               hover:scale-110
-            `}
-          >
+            `}>
             {n.charAt(0).toUpperCase()}
           </div>
         ))}
@@ -206,7 +202,9 @@ function CircleMeta({ c }) {
         <div className="font-display text-2xl font-semibold text-white">
           {c.pool}
         </div>
-        {c.poolAlt && <div className="text-xs text-white/50">{c.pct}% there</div>}
+        {c.poolAlt && (
+          <div className="text-xs text-white/50">{c.pct}% there</div>
+        )}
       </div>
       <div className="mt-1 text-xs text-white/55">{c.freq} contributions</div>
 
@@ -219,7 +217,7 @@ function CircleMeta({ c }) {
       <div className="mt-3 text-xs leading-relaxed text-white/60">
         {c.statDesc}
       </div>
-     <div className="border-t-2 border-gray-500 mt-2 "/>
+      <div className="border-t-2 border-gray-500 mt-2 " />
       {c.velocity && (
         <div className={`mt-3 text-xs leading-relaxed text-yellow-500`}>
           {c.velocity}
@@ -236,8 +234,7 @@ const ChipIcon = {
       className="w-4 h-4"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <rect x="4" y="4" width="16" height="12" rx="1.5" />
       <path d="M8 20h8M12 16v4" />
     </svg>
@@ -248,8 +245,7 @@ const ChipIcon = {
       className="w-4 h-4"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <path d="M4 11l8-7 8 7" />
       <path d="M6 10v9h12v-9" />
     </svg>
@@ -260,8 +256,7 @@ const ChipIcon = {
       className="w-4 h-4"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <path d="M2 9l10-5 10 5-10 5-10-5z" />
       <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
     </svg>
@@ -272,8 +267,7 @@ const ChipIcon = {
       className="w-4 h-4"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
-    >
+      strokeWidth="1.75">
       <path d="M12 21s-7-4.35-9.5-8.6C.8 8.8 2.4 5 6 5c2 0 3.3 1 4 2 .7-1 2-2 4-2 3.6 0 5.2 3.8 3.5 7.4C19 16.65 12 21 12 21z" />
     </svg>
   ),
@@ -282,9 +276,8 @@ const ChipIcon = {
 export default function HowItWorksSection() {
   return (
     <section
-      className="relative overflow-hidden bg-primary py-24"
-      id="how-it-works"
-    >
+      className="relative overflow-hidden bg-primary py-10"
+      id="how-it-works">
       {/* Background gradients */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(120,140,255,0.35)_0%,transparent_70%)]" />
@@ -298,8 +291,7 @@ export default function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mx-auto flex max-w-3xl flex-col items-center text-center"
-        >
+          className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2 mb-8">
             <span className="h-1.5 w-1.5 rounded-full bg-[#FFC72C]" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80">
@@ -332,8 +324,7 @@ export default function HowItWorksSection() {
     p-6 sm:p-8 shadow-[0_24px_80px_rgba(0,0,0,0.35)]
     transition-transform duration-300 hover:-translate-y-2
     ${toneStyles[c.tone].border}
-  `}
-                >
+  `}>
                   {/* Background Glow */}
                   <div
                     className={`absolute inset-0 ${toneStyles[c.tone].glow}`}
@@ -358,8 +349,7 @@ export default function HowItWorksSection() {
                 border border-white/15
                 bg-[linear-gradient(180deg,#56546b,#2e3159)]
                 shadow-[inset_0_1px_0_rgba(255,255,255,.15),0_20px_40px_rgba(0,0,0,.35)]
-              "
-                      >
+              ">
                         <Icon className="h-12 w-12 text-[#ffc72c]" />
                       </div>
 
@@ -408,8 +398,7 @@ export default function HowItWorksSection() {
                       transition-all
                       duration-300
                       hover:bg-white/10
-                    "
-                            >
+                    ">
                               <span className="text-[#FFC72C]">
                                 <CI />
                               </span>
@@ -447,8 +436,7 @@ export default function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mt-8 rounded-[30px] border border-white/10 bg-[#171B3D]/70 p-8 sm:p-10 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.35)]"
-        >
+          className="mt-8 rounded-[30px] border border-white/10 bg-[#171B3D]/70 p-8 sm:p-10 backdrop-blur-2xl ">
           <span className="text-[15px] font-medium text-white/60">
             Why not just put it on an EMI?
           </span>
@@ -466,8 +454,7 @@ export default function HowItWorksSection() {
             {chips.map((chip) => (
               <div
                 key={chip.from}
-                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5"
-              >
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5">
                 <span className="text-[13px] text-red-400 line-through">
                   {chip.from}
                 </span>

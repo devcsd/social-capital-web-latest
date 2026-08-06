@@ -47,12 +47,12 @@ const fadeUp = {
 // bg-[#3e3bd86e]
 export default function PayoutModels() {
   return (
-    <section className="overflow-hidden py-20 ">
-      <div className="mx-auto max-w-[1240px] px-16 xl:px-10 py-14">
-  <div className="grid items-start gap-8 lg:grid-cols-2">
-    <div>
-      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
-        <span className="h-2 w-2 rounded-full bg-[#FFC72C]" />
+    <section className="overflow-hidden py-10 ">
+      <div className="mx-auto max-w-[1240px] px-16 xl:px-10 ">
+        <div className="grid items-start gap-8 lg:grid-cols-2">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+              <span className="h-2 w-2 rounded-full bg-[#FFC72C]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#FFC72C]">
                 PAYOUT MODELS
               </span>

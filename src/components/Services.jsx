@@ -93,7 +93,7 @@ const Services = () => {
   ];
 
   return (
-    <section className="relative w-full py-24 px-4 sm:px-8">
+    <section className="relative w-full py-10 px-4 sm:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16 space-y-6">
