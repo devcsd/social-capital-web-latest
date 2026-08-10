@@ -333,7 +333,7 @@ export default function HowItWorksSection() {
 
                   {/* Ribbon */}
                   {c.ribbon && (
-                    <div className="absolute right-8 top-3 z-20 rounded-full bg-[#FFC72C] px-3 py-2 text-xs font-semibold text-[#1b1606] shadow-[0_12px_30px_rgba(255,199,44,.45)]">
+                    <div className="absolute right-8 top-3 rounded-full bg-[#FFC72C] px-3 py-2 text-xs font-semibold text-[#1b1606] shadow-[0_12px_30px_rgba(255,199,44,.45)]">
                       {c.ribbon}
                     </div>
                   )}
