@@ -431,7 +431,7 @@ const Hero = ({ gradient = "aurora" }) => {
           </div>
           <JoinPlatformPopup open={showModal} setOpen={setShowModal} />
           {/* ---------- VISUAL STAGE ---------- */}
-          <div className="relative min-h-[560px] mt-3 lg:min-h-[660px] lg:mt-0">
+          <div className="relative min-h-[660px] mt-14 lg:mt-0">
             <svg
               className="absolute inset-0 w-full h-full z-[1]"
               viewBox="0 0 100 100"
@@ -492,8 +492,8 @@ const Hero = ({ gradient = "aurora" }) => {
                 key={o.id}
                 className="absolute w-[54px] h-[54px] lg:w-[70px] lg:h-[70px] -translate-x-1/2 -translate-y-1/2 rounded-full z-[5] bg-white/[0.08]"
                 style={{
-                  top: `${o.top}%`,
-                  left: `${o.left}%`,
+                  top: `clamp(24px, ${o.top}%, calc(100% - 24px))`,
+                  left: `clamp(24px, ${o.left}%, calc(100% - 24px))`,
                   boxShadow:
                     "0 10px 28px -8px rgba(0,0,0,0.5), 0 0 0 3px rgba(255,255,255,0.55)",
                 }}

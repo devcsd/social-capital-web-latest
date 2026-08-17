@@ -84,7 +84,7 @@ export default function SocialCapitalChartSection() {
   return (
     <section
       id="trust"
-      className="relative overflow-hidden py-10 px-[130px]"
+      className="relative overflow-hidden py-10 px-4 sm:px-6 md:px-10 lg:px-[130px]"
       // style={{
       //   background:
       //     "linear-gradient(135deg, #3D63EA 0%, #2B4FDB 40%, #1D3AA8 75%, #16307F 100%)",
@@ -95,9 +95,9 @@ export default function SocialCapitalChartSection() {
       <div className="absolute right-[-220px] top-[60px] h-[460px] w-[460px] rounded-full bg-[#FFC72C]/6 blur-[170px]" />
       <div className="absolute left-1/2 top-[-220px] h-[760px] w-[760px] -translate-x-1/2 rounded-full bg-white/[0.03] blur-[170px]" />
 
-      <div className="relative mx-auto max-w-[1480px] px-[30px]">
+      <div className="relative mx-auto max-w-[1480px] px-0 sm:px-4 lg:px-[30px]">
         {/* ================= TOP ================= */}
-        <div className="grid grid-cols-[42%_58%] gap-[40px] items-start">
+        <div className="grid grid-cols-1 gap-10 items-start lg:grid-cols-[42%_58%] lg:gap-[40px]">
           {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -113,7 +113,7 @@ export default function SocialCapitalChartSection() {
             </div>
 
             {/* Heading */}
-            <h2 className="mt-10 text-[52px] leading-[58px] font-bold tracking-[-0.02em] text-white">
+            <h2 className="mt-6 text-[32px] leading-[38px] font-bold tracking-[-0.02em] text-white sm:mt-8 sm:text-[40px] sm:leading-[46px] lg:mt-10 lg:text-[52px] lg:leading-[58px]">
               Coordination only.
               <br />
               <span className="text-[#FFC72C]">
@@ -124,7 +124,7 @@ export default function SocialCapitalChartSection() {
             </h2>
 
             {/* Description */}
-            <p className="mt-[40px] max-w-[560px] text-[20px] leading-[38px] text-white/72">
+            <p className="mt-5 max-w-[560px] text-[16px] leading-[28px] text-white/72 sm:mt-8 sm:text-[18px] sm:leading-[32px] lg:mt-[40px] lg:text-[20px] lg:leading-[38px]">
               Social Capital is the coordination layer — schedules, mandates,
               ledgers and reminders. Money moves peer-to-peer between members'
               own bank accounts — we never touch it.
@@ -139,7 +139,7 @@ export default function SocialCapitalChartSection() {
             viewport={{ once: true }}
             className="w-full">
             <div
-              className="relative overflow-hidden rounded-[34px] border border-white/10 p-[40px] backdrop-blur-[34px]"
+              className="relative overflow-hidden rounded-[34px] border border-white/10 p-6 backdrop-blur-[34px] sm:p-8 lg:p-[40px]"
               style={{ ...glassCardStyle, minHeight: 390 }}>
               {/* Top Reflection */}
               <div className="absolute left-0 right-0 top-0 h-[130px] bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
@@ -154,22 +154,22 @@ export default function SocialCapitalChartSection() {
               </div>
 
               {/* Title */}
-              <h3 className="relative mt-6 text-[26px] leading-[32px] font-semibold text-white">
+              <h3 className="relative mt-5 text-[20px] leading-[26px] font-semibold text-white sm:mt-6 sm:text-[23px] sm:leading-[29px] lg:text-[26px] lg:leading-[32px]">
                 No custody, by design.
               </h3>
 
               {/* Description */}
-              <p className="relative mt-4 max-w-[480px] text-[18px] leading-[36px] text-white/72">
+              <p className="relative mt-3 max-w-[480px] text-[15px] leading-[26px] text-white/72 sm:mt-4 sm:text-[16px] sm:leading-[30px] lg:text-[18px] lg:leading-[36px]">
                 Money moves directly between members' bank accounts on regulated
                 rails. We orchestrate the schedule — we don't initiate transfers
                 or hold balances.
               </p>
 
               {/* Payment Row */}
-              <div className="relative mt-8 flex flex-nowrap items-center gap-[28px]">
+              <div className="relative mt-6 flex flex-col gap-5 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-[28px]">
                 {/* Payment Card */}
                 <div
-                  className="relative flex h-[105px] w-[250px] shrink-0 items-center justify-between overflow-hidden rounded-[18px] border border-white/10 px-[18px]"
+                  className="relative flex h-[105px] w-full shrink-0 items-center justify-between overflow-hidden rounded-[18px] border border-white/10 px-[18px] sm:w-[250px]"
                   style={{
                     background: `
                       linear-gradient(
@@ -222,8 +222,8 @@ export default function SocialCapitalChartSection() {
                 </div>
 
                 {/* Description */}
-                <div className="w-[230px] flex items-center">
-                  <p className="text-[15px] leading-[26px] text-white/70">
+                <div className="w-full flex items-center sm:w-[230px]">
+                  <p className="text-[14px] leading-[24px] text-white/70 sm:text-[15px] sm:leading-[26px]">
                     Social Capital sits outside the money flow. We send the
                     instruction — your bank executes it.
                   </p>
@@ -234,7 +234,7 @@ export default function SocialCapitalChartSection() {
         </div>
 
         {/* ================= CONTENT ================= */}
-        <div className="mt-[18px] grid grid-cols-[42%_58%] gap-[40px]">
+        <div className="mt-8 grid grid-cols-1 gap-10 lg:mt-[18px] lg:grid-cols-[42%_58%] lg:gap-[40px]">
           {/* LEFT */}
           <div>
             {leftInfo.map((item, index) => (
@@ -245,7 +245,7 @@ export default function SocialCapitalChartSection() {
                 transition={{ duration: 0.6, delay: index * 0.08 }}
                 viewport={{ once: true }}
                 className="border-b border-white/[0.08] py-[18px] last:border-none">
-                <div className="grid grid-cols-[100px_1fr] gap-12 items-start">
+                <div className="grid grid-cols-1 gap-2 items-start sm:grid-cols-[100px_1fr] sm:gap-6 lg:gap-12">
                   <div>
                     <span className="inline-block rounded-full  border-white/10 bg-[#3557D6]/30 px-3 py-[6px] text-[10px] font-medium uppercase tracking-[0.28em] text-[#C8D5FF]">
                       {item.label}
@@ -265,7 +265,7 @@ export default function SocialCapitalChartSection() {
           </div>
 
           {/* RIGHT */}
-          <div className="grid grid-cols-2 gap-[18px]">
+          <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
             {smallCards.map((card, index) => {
               const Icon = card.icon;
               return (
@@ -275,7 +275,7 @@ export default function SocialCapitalChartSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
                   viewport={{ once: true }}
-                  className="group relative h-[250px] overflow-hidden rounded-[28px] border border-white/10 p-[24px]  backdrop-blur-[35px] transition-all duration-500 hover:-translate-y-1 hover:border-white/20"
+                  className="group relative h-auto min-h-[190px] overflow-hidden rounded-[28px] border border-white/10 p-5 backdrop-blur-[35px] transition-all duration-500 hover:-translate-y-1 hover:border-white/20 sm:h-[250px] sm:p-[24px]"
                   style={glassCardStyle}>
                   <div className="absolute left-0 right-0 top-0 h-[80px] bg-gradient-to-b from-white/10 to-transparent pointer-events-none " />
                   <div className="absolute right-[-60px] top-[-60px] h-[160px] w-[160px] rounded-full bg-[#5C7BFF]/15 blur-[70px]" />
@@ -286,12 +286,12 @@ export default function SocialCapitalChartSection() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="relative mt-4 text-[18px] font-semibold leading-[24px] text-white">
+                  <h3 className="relative mt-4 text-[17px] font-semibold leading-[22px] text-white sm:text-[18px] sm:leading-[24px]">
                     {card.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="relative mt-2 text-[15px] leading-[28px] text-white/72">
+                  <p className="relative mt-2 text-[14px] leading-[24px] text-white/72 sm:text-[15px] sm:leading-[28px]">
                     {card.desc}
                   </p>
                 </motion.div>
@@ -307,8 +307,8 @@ export default function SocialCapitalChartSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className="mt-10">
-          <div className="min-h-[72px] rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] backdrop-blur-xl px-10 py-6">
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
+          <div className="min-h-[72px] rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] backdrop-blur-xl px-5 py-5 sm:px-10 sm:py-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-4 sm:gap-x-10 sm:gap-y-5">
               {trustItems.map((item) => (
                 <div key={item} className="flex items-center gap-2">
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#34D399]">
