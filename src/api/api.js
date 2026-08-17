@@ -130,6 +130,7 @@ export const supportCategory = async () => {
   return apiService.get("masterType", {
     headers: {
       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNWMwMTdjNy1jZjVmLTQ1ZmQtOTUyZi04Mjg0NDdhNzNhZDciLCJlbWFpbCI6InN1cGVyYWRtaW5AeW9wbWFpbC5jb20iLCJyb2xlX2lkIjoxLCJpYXQiOjE3ODAwMzM4MTl9.QXX2bRb_9nj7GweYYdGtwgXoZ-xe2zD1E0Srr6-6AEw`,
+      "X-Service-Auth-Token": import.meta.env.VITE_SERVICE_AUTH_TOKEN,
     },
   });
 };
