@@ -83,6 +83,7 @@ const glassCardStyle = {
 export default function SocialCapitalChartSection() {
   return (
     <section
+      id="trust"
       className="relative overflow-hidden py-10 px-[130px]"
       // style={{
       //   background:

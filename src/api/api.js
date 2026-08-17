@@ -4,7 +4,7 @@ import localforage from "localforage";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: "https://devapi.socappglobal.com/api/v1/", // Your API base URL
+  baseURL: "https://api.socappglobal.com/api/v1/", // Your API base URL
   timeout: 10000, // Optional timeout
 });
 
@@ -14,6 +14,7 @@ axiosInstance.interceptors.request.use(async (config) => {
   if (user && user.token) {
     config.headers.Authorization = `Bearer ${user.token}`;
   }
+  config.headers["X-Service-Auth-Token"] = import.meta.env.VITE_SERVICE_AUTH_TOKEN;
   return config;
 });
 
@@ -168,20 +169,24 @@ export const getDashboardData = async (filters) => {
 export const getMasterTypes = async () => {
   return apiService.get("masterType");
 };
- 
+
 /* ─── Update a single master type record by id ─────────────────────────── */
 export const updateMasterType = async (id, body) => {
   return apiService.put(`masterType/${id}`, body);
 };
- 
+
 /* ─── Convenience wrappers (optional, but keeps call-sites readable) ───── */
 export const updateTotalMember = async (id, value) =>
   updateMasterType(id, { value: String(value) });
- 
+
 export const updateTotalGroups = async (id, value) =>
   updateMasterType(id, { value: String(value) });
- 
-export const updateCurrencyFundRange = async (id, minFundAmount, maxFundAmount) =>
+
+export const updateCurrencyFundRange = async (
+  id,
+  minFundAmount,
+  maxFundAmount,
+) =>
   updateMasterType(id, {
     min_fund_amount: minFundAmount,
     max_fund_amount: maxFundAmount,

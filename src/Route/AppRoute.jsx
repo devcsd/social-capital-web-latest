@@ -2,6 +2,8 @@ import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import Main from "../pages/MainPage";
+import TermsPage from "../pages/TermsPage";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import { AuthProvider } from "../Auth/AuthContext";
 
 import NotFound from "./Redirect";
@@ -39,6 +41,8 @@ const AppRoute = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}></Route>
+        <Route path="/terms&conditions" element={<TermsPage />}></Route>
+        <Route path="/privacypolicy" element={<PrivacyPolicyPage />}></Route>
         <Route path="/administrator" element={<LoginPage />}></Route>
 
         <Route

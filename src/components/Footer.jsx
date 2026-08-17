@@ -1,12 +1,18 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaPaperPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiCashapp } from "react-icons/si";
 import ContactPopup from "./contact";
 
 const Footer = () => {
-  const informationData = ["Terms", "Disclosures", "Disclosures", "Latest News"];
+  const informationData = [
+    { label: "Terms & Conditions", to: "/terms&conditions" },
+    { label: "Privacy Policy", to: "/privacypolicy" },
+    { label: "Disclosures", to: "/" },
+    { label: "Latest News", to: "/" },
+  ];
 
   return (
     <footer className="border-t border-white/10 bg-[linear-gradient(180deg,rgba(6,12,35,0.98),rgba(8,15,45,1))] px-4 py-10 sm:px-6 md:px-10 lg:px-12">
@@ -43,9 +49,9 @@ const Footer = () => {
             <ul className="space-y-3">
               {informationData.map((info, index) => (
                 <li key={index}>
-                  <a href="/" className="font-inter text-sm text-white/70 transition hover:text-[#ffc72c]">
-                    {info}
-                  </a>
+                  <Link to={info.to} className="font-inter text-sm text-white/70 transition hover:text-[#ffc72c]">
+                    {info.label}
+                  </Link>
                 </li>
               ))}
             </ul>
