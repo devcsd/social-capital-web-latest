@@ -15,8 +15,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1" />
       <circle cx="9" cy="7" r="3.2" />
       <path d="M22 19v-1a4 4 0 0 0-3-3.8" />
@@ -30,8 +29,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
@@ -43,8 +41,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <polyline points="3 17 9 11 13 15 21 7" />
       <polyline points="15 7 21 7 21 13" />
     </svg>
@@ -56,8 +53,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="5" />
       <circle cx="12" cy="12" r="1.4" fill="currentColor" />
@@ -70,8 +66,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M5 13c-1.5 1-2 5-2 5s4-.5 5-2" />
       <path d="M14 4c4 1 6 4 6 9-2 2-5 4-8 4-1-2-2-3-4-4 0-3 2-6 4-8 .7-.7 1.3-1 2-1Z" />
       <circle cx="14.5" cy="9.5" r="1.5" />
@@ -84,8 +79,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2.4"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <line x1="5" y1="12" x2="19" y2="12" />
       <polyline points="12 5 19 12 12 19" />
     </svg>
@@ -97,8 +91,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <rect x="3" y="11" width="18" height="10" rx="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
@@ -110,8 +103,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -123,8 +115,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M2 9L12 4L22 9L12 14L2 9Z" />
       <path d="M6 11V16C6 17.5 8.7 19 12 19C15.3 19 18 17.5 18 16V11" />
       <path d="M22 9V15" />
@@ -137,8 +128,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <rect x="4" y="6" width="16" height="14" rx="2" />
       <path d="M9 6V4H15V6" />
       <path d="M12 10V16" />
@@ -152,8 +142,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M3 10L12 3L21 10" />
       <path d="M5 10V20H19V10" />
       <path d="M10 20V14H14V20" />
@@ -166,8 +155,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M22 2L11 13" />
       <path d="M22 2L15 22L11 13L2 9L22 2Z" />
     </svg>
@@ -179,8 +167,7 @@ const HIcon = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <rect x="3" y="7" width="18" height="13" rx="2" />
       <path d="M8 7V5C8 3.9 8.9 3 10 3H14C15.1 3 16 3.9 16 5V7" />
       <path d="M3 12H21" />
@@ -201,8 +188,7 @@ const Phone = () => {
         style={{
           boxShadow:
             "0 40px 90px -30px rgba(2,6,28,0.8), 0 0 0 2px rgba(255,255,255,0.06), 0 0 0 11px #0a0f2e",
-        }}
-      >
+        }}>
         {/* dynamic island */}
         <div className="absolute top-5 left-1/2 -translate-x-1/2 w-[92px] h-[26px] bg-[#05091f] rounded-full z-[5]" />
 
@@ -217,8 +203,7 @@ const Phone = () => {
               height: "100%",
               display: "block",
               objectFit: "cover",
-            }}
-          ></img>
+            }}></img>
         </div>
       </div>
     </div>
@@ -278,8 +263,7 @@ const Hero = ({ gradient = "aurora" }) => {
   return (
     <section
       className="relative overflow-hidden isolate pt-7 pb-14 "
-      style={{ background: GRADIENTS[gradient] || GRADIENTS.aurora }}
-    >
+      style={{ background: GRADIENTS[gradient] || GRADIENTS.aurora }}>
       {/* local keyframes (Tailwind has no built-in "floaty" animation) */}
       <style>{`
         @keyframes lhero-floaty {
@@ -302,21 +286,41 @@ const Hero = ({ gradient = "aurora" }) => {
         style={{ background: "linear-gradient(180deg, transparent, #1e4fe5)" }}
       />
 
-      <div className="elative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
+      <div className="relative z-10 mx-auto max-w-[1300px] px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-2 items-center pt-6 pb-2 lg:grid-cols-[1fr_1.05fr] lg:gap-9">
           {/* ---------- COPY ---------- */}
-          <div className="max-w-[560px] mx-auto text-center lg:mx-0 lg:text-left">
-            <h1 className="[font-family:var(--ff-display)] font-bold leading-[0.9] tracking-[-0.04em] m-0 flex flex-col items-center lg:items-start">
-              <span className="text-white text-[clamp(52px,16vw,80px)] sm:text-[clamp(64px,9vw,132px)]">
+          <div className="max-w-[560px] mx-auto text-center lg:mx-0 lg:text-left overflow-visible">
+            <h1
+              className="
+                [font-family:var(--ff-display)]
+                font-bold
+                leading-[0.98]
+                tracking-[-0.04em]
+                m-0
+                flex
+                flex-col
+                items-center
+                lg:items-start
+                overflow-visible
+              ">
+              <span className="block overflow-visible text-white text-[clamp(52px,16vw,80px)] sm:text-[clamp(64px,9vw,132px)]">
                 Social
               </span>
+
               <span
-                className="text-[clamp(52px,16vw,80px)] sm:text-[clamp(64px,9vw,132px)] bg-clip-text text-transparent"
+                className="
+                  block
+                  overflow-visible
+                  pb-[0.08em]
+                  text-[clamp(52px,16vw,80px)]
+                  sm:text-[clamp(64px,9vw,132px)]
+                  bg-clip-text
+                  text-transparent
+                "
                 style={{
                   backgroundImage:
                     "linear-gradient(96deg, #4072ff 0%, #a78bfa 38%, #f472b6 64%, #ffc72c 100%)",
-                }}
-              >
+                }}>
                 Capital
               </span>
             </h1>
@@ -350,8 +354,7 @@ const Hero = ({ gradient = "aurora" }) => {
                   style={{
                     background: "linear-gradient(135deg, #2f6bff, #1e4fe5)",
                     boxShadow: "0 8px 20px -8px rgba(30,79,229,0.8)",
-                  }}
-                >
+                  }}>
                   <HIcon.group />
                 </div>
                 <div>
@@ -370,8 +373,7 @@ const Hero = ({ gradient = "aurora" }) => {
                   style={{
                     background: "linear-gradient(135deg, #8b5cf6, #6d3bd4)",
                     boxShadow: "0 8px 20px -8px rgba(124,58,212,0.8)",
-                  }}
-                >
+                  }}>
                   <HIcon.eye />
                 </div>
                 <div>
@@ -390,8 +392,7 @@ const Hero = ({ gradient = "aurora" }) => {
                   style={{
                     background: "linear-gradient(135deg, #ffb13c, #e8870b)",
                     boxShadow: "0 8px 20px -8px rgba(232,135,11,0.8)",
-                  }}
-                >
+                  }}>
                   <HIcon.shield />
                 </div>
                 <div>
@@ -420,8 +421,7 @@ const Hero = ({ gradient = "aurora" }) => {
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.boxShadow =
                     "0 14px 34px -12px rgba(255,155,61,0.9)")
-                }
-              >
+                }>
                 Get Started Free <HIcon.arrow />
               </button>
               <div className="inline-flex items-center gap-2 text-[13px] text-white/[0.82] [font-family:var(--ff-display)] font-medium [&>svg]:w-[15px] [&>svg]:h-[15px] [&>svg]:text-[#9fe3c0]">
@@ -436,8 +436,7 @@ const Hero = ({ gradient = "aurora" }) => {
               className="absolute inset-0 w-full h-full z-[1]"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
-              aria-hidden="true"
-            >
+              aria-hidden="true">
               {ORBIT.map((o, i) => (
                 <line
                   key={i}
@@ -459,8 +458,7 @@ const Hero = ({ gradient = "aurora" }) => {
                 background: "linear-gradient(135deg, #8b5cf6, #6d3bd4)",
                 boxShadow: "0 12px 30px -8px rgba(124,58,212,0.9)",
                 animation: "lhero-floaty 5s ease-in-out infinite",
-              }}
-            >
+              }}>
               <HIcon.shield />
             </div>
             <div
@@ -470,8 +468,7 @@ const Hero = ({ gradient = "aurora" }) => {
                 boxShadow: "0 12px 30px -8px rgba(30,79,229,0.9)",
                 animation: "lhero-floaty 5s ease-in-out infinite",
                 animationDelay: "-1.6s",
-              }}
-            >
+              }}>
               <HIcon.group />
             </div>
             <div
@@ -481,8 +478,7 @@ const Hero = ({ gradient = "aurora" }) => {
                 boxShadow: "0 12px 30px -8px rgba(232,135,11,0.9)",
                 animation: "lhero-floaty 5s ease-in-out infinite",
                 animationDelay: "-3.1s",
-              }}
-            >
+              }}>
               <HIcon.trend />
             </div>
 
@@ -496,8 +492,7 @@ const Hero = ({ gradient = "aurora" }) => {
                   left: `clamp(24px, ${o.left}%, calc(100% - 24px))`,
                   boxShadow:
                     "0 10px 28px -8px rgba(0,0,0,0.5), 0 0 0 3px rgba(255,255,255,0.55)",
-                }}
-              >
+                }}>
                 <img
                   src={o.src}
                   id={o.id}
@@ -510,8 +505,7 @@ const Hero = ({ gradient = "aurora" }) => {
                     display: "block",
                     borderRadius: "9999px",
                     overflow: "hidden",
-                  }}
-                ></img>
+                  }}></img>
               </div>
             ))}
 
@@ -545,16 +539,14 @@ const Hero = ({ gradient = "aurora" }) => {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[18px] bg-[#0000]/40 backdrop-blur-xl px-4 py-4 flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
-              >
+                className="rounded-[18px] bg-[#0000]/40 backdrop-blur-xl px-4 py-4 flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
                 <div
                   className="w-10 h-10 rounded-[8px] flex items-center justify-center"
                   style={{
                     background: "#14121f",
                     boxShadow: `0 0 16px ${item.color}35, inset 0 0 0 1px ${item.color}40`,
-                    border: `1px solid ${item.color}`
-                  }}
-                >
+                    border: `1px solid ${item.color}`,
+                  }}>
                   <div className="w-6 h-6" style={{ color: item.color }}>
                     {item.icon}
                   </div>

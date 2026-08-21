@@ -65,8 +65,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-005",
           question: "Is Social Capital responsible for payments?",
-          short_answer:
-            "No. That's between you and your group.",
+          short_answer: "No. That's between you and your group.",
           full_answer:
             "Social Capital coordinates and tracks — it doesn't enforce or guarantee payments. Every member is personally responsible for sending and receiving money within their group. That's why trust is everything here. Only group with people you genuinely trust.",
           tags: ["responsibility", "payments", "trust"],
@@ -91,8 +90,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-007",
           question: "Can I use this with strangers?",
-          short_answer:
-            "This isn't that kind of app.",
+          short_answer: "This isn't that kind of app.",
           full_answer:
             "Social Capital runs on real trust between real people. Your network is your power here — the stronger the trust, the better it works. We're not a marketplace or a lending platform. We're your private group, your rules, your people.",
           tags: ["trust", "strangers", "private"],
@@ -162,8 +160,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-012",
           question: "How do I join a group?",
-          short_answer:
-            "Through an invite link shared by your group manager.",
+          short_answer: "Through an invite link shared by your group manager.",
           full_answer:
             "Your group manager shares a private invite link. Only people with that link can join. It's your private space — no one gets in unless your group lets them in.",
           tags: ["joining", "invite", "groups"],
@@ -181,8 +178,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-014",
           question: "Can I be in multiple groups?",
-          short_answer:
-            "Yes — as many as you can handle.",
+          short_answer: "Yes — as many as you can handle.",
           full_answer:
             "You can be part of multiple groups at the same time. Maybe one with family, one with colleagues, one with friends. Each group runs independently.",
           tags: ["multiple groups", "membership"],
@@ -214,13 +210,11 @@ const KNOWLEDGE_BASE = {
             {
               name: "Auction Group",
               how_it_works: "Members bid for the payout each round",
-              best_for:
-                "Groups where urgency varies and flexibility matters",
+              best_for: "Groups where urgency varies and flexibility matters",
             },
             {
               name: "Predefined Group",
-              how_it_works:
-                "Members choose their payout slot upfront",
+              how_it_works: "Members choose their payout slot upfront",
               best_for:
                 "Groups who want certainty — you know your turn from day one",
               plain_language: "Choose When You Get Paid",
@@ -254,8 +248,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-018",
           question: "When do I receive money?",
-          short_answer:
-            "When it's your turn — based on your group type.",
+          short_answer: "When it's your turn — based on your group type.",
           full_answer:
             "Depending on your group type, your turn could be set in advance, decided by the group, or won through a bid. Either way, when your turn comes, the full group goes to you. That's your moment — the lump sum your group built together.",
           tags: ["payout", "receiving", "turn"],
@@ -293,10 +286,8 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-022",
-          question:
-            "Can I change my contribution amount later?",
-          short_answer:
-            "Usually no — it affects the whole group.",
+          question: "Can I change my contribution amount later?",
+          short_answer: "Usually no — it affects the whole group.",
           full_answer:
             "Contribution amounts are set at the start. Changing them mid-cycle affects every member's plan and expectations. If something changes in your situation, talk to your group manager.",
           tags: ["contribution amount", "changes", "rules"],
@@ -327,8 +318,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-024",
           question: "Can I see who has paid?",
-          short_answer:
-            "Yes — full visibility for everyone.",
+          short_answer: "Yes — full visibility for everyone.",
           full_answer:
             "Every member can see the full payment status in real time. Who's paid, who hasn't, and where the group stands. Transparency is the foundation.",
           tags: ["visibility", "payments", "transparency"],
@@ -336,10 +326,8 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-025",
-          question:
-            "What if someone marks a payment incorrectly?",
-          short_answer:
-            "Other members can flag it within the group.",
+          question: "What if someone marks a payment incorrectly?",
+          short_answer: "Other members can flag it within the group.",
           full_answer:
             "Since everything is visible to all members, incorrect records get noticed fast. If something doesn't look right, members can raise it within the group. Transparency keeps everyone honest.",
           tags: ["disputes", "incorrect records", "transparency"],
@@ -348,8 +336,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-026",
           question: "Can the manager change records?",
-          short_answer:
-            "No. Records are shared and visible to everyone.",
+          short_answer: "No. Records are shared and visible to everyone.",
           full_answer:
             "No single person — including the manager — can unilaterally change records. Everything is visible to all members. That's what makes Social Capital trustworthy.",
           tags: ["records", "manager", "transparency"],
@@ -374,8 +361,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-028",
           question: "What if there's a dispute?",
-          short_answer:
-            "Disputes are resolved within the group.",
+          short_answer: "Disputes are resolved within the group.",
           full_answer:
             "Disagreements happen. When they do, the group — led by the manager — works it out. Social Capital provides the visibility and records to help, but the resolution lives within your group. That's the nature of a trust-based system.",
           tags: ["disputes", "conflict", "resolution"],
@@ -384,8 +370,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-029",
           question: "Does the app guarantee payments?",
-          short_answer:
-            "No. Your trust in each other is the guarantee.",
+          short_answer: "No. Your trust in each other is the guarantee.",
           full_answer:
             "Social Capital doesn't and can't guarantee payments. That's not how this works. The guarantee is the trust between your people — and the track record you build together every time your group shows up.",
           tags: ["guarantee", "risk", "payments"],
@@ -425,8 +410,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-032",
           question: "Who is the group manager?",
-          short_answer:
-            "The person who creates and coordinates the group.",
+          short_answer: "The person who creates and coordinates the group.",
           full_answer:
             "The manager is the one who sets things up — creates the group, invites members, defines the rules, and keeps the group moving. They're the anchor of the group. Not a boss, but a coordinator everyone can count on.",
           tags: ["manager", "role", "groups"],
@@ -445,8 +429,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-034",
           question: "Can the manager take a fee?",
-          short_answer:
-            "Only if the group agrees upfront.",
+          short_answer: "Only if the group agrees upfront.",
           full_answer:
             "If the group decides the manager's coordination work deserves a fee, that's the group's call. It should be agreed on transparently before the group starts — not decided unilaterally.",
           tags: ["manager", "fee", "rules"],
@@ -454,8 +437,7 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-035",
-          question:
-            "What should a manager do if someone doesn't pay?",
+          question: "What should a manager do if someone doesn't pay?",
           short_answer:
             "Step in early, have the conversation, and keep the group informed.",
           full_answer:
@@ -488,8 +470,7 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-037",
           question: "What if my payout is delayed?",
-          short_answer:
-            "Check in with your group members and manager.",
+          short_answer: "Check in with your group members and manager.",
           full_answer:
             "If your payout is delayed, reach out to the members who owe contributions and loop in the manager. Use the app's activity log to see exactly what's outstanding. Stay calm, stay visible, and follow up.",
           tags: ["delayed payout", "edge case"],
@@ -507,10 +488,8 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-039",
-          question:
-            "Can rules be changed after the group starts?",
-          short_answer:
-            "Only if everyone in the group agrees.",
+          question: "Can rules be changed after the group starts?",
+          short_answer: "Only if everyone in the group agrees.",
           full_answer:
             "Rules are set at the start for a reason — they protect every member equally. Changing them mid-cycle requires full group agreement. No one person, including the manager, can change the rules unilaterally.",
           tags: ["rules", "changes", "governance"],
@@ -551,8 +530,7 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-042",
-          question:
-            "Why use Social Capital instead of chats or spreadsheets?",
+          question: "Why use Social Capital instead of chats or spreadsheets?",
           short_answer:
             "Because your goals deserve more than a WhatsApp thread.",
           full_answer:
@@ -572,7 +550,6 @@ const FAQS = KNOWLEDGE_BASE.knowledge_base.flatMap((section) =>
   section.entries.map((entry) => ({
     ...entry,
     section: section.section,
-
     keywords: [
       ...(entry.tags || []),
       ...(entry.examples || []),
@@ -581,24 +558,21 @@ const FAQS = KNOWLEDGE_BASE.knowledge_base.flatMap((section) =>
       ...(entry.tips || []),
       ...(entry.does_not || []),
     ],
-  }))
+  })),
 );
 
 /* =========================================================
-   NORMALIZE TEXT
+   TEXT NORMALIZATION / MATCHING
    ========================================================= */
 
 function normalizeText(text = "") {
   return text
     .toLowerCase()
-    .replace(/[^\w\s]/g, " ")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9₹$]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
-
-/* =========================================================
-   TOKENIZE
-   ========================================================= */
 
 const STOP_WORDS = new Set([
   "what",
@@ -615,6 +589,9 @@ const STOP_WORDS = new Set([
   "do",
   "does",
   "can",
+  "could",
+  "would",
+  "should",
   "i",
   "we",
   "you",
@@ -632,9 +609,6 @@ const STOP_WORDS = new Set([
   "about",
   "tell",
   "please",
-  "could",
-  "would",
-  "should",
   "be",
   "it",
   "there",
@@ -646,152 +620,328 @@ const STOP_WORDS = new Set([
   "which",
   "will",
   "did",
+  "just",
+  "really",
+  "actually",
+  "than",
+  "then",
+  "into",
+  "instead",
+  "they",
+  "them",
+  "their",
+  "our",
+  "us",
+  "as",
+  "at",
+  "by",
+  "after",
+  "before",
+  "through",
+  "more",
+  "much",
+  "many",
+  "me",
+  "than",
 ]);
 
 function tokenize(text = "") {
   return normalizeText(text)
     .split(" ")
-    .filter(
-      (word) =>
-        word.length > 2 &&
-        !STOP_WORDS.has(word)
-    );
+    .filter(Boolean)
+    .filter((word) => word.length > 2 && !STOP_WORDS.has(word));
+}
+
+function uniqueTokens(text = "") {
+  return [...new Set(tokenize(text))];
 }
 
 /* =========================================================
-   SCORE FAQ
-   ========================================================= */
+   APPROVED PARAPHRASES
 
-function scoreFAQMatch(query, faq) {
+   These aliases ONLY point to an existing client KB entry.
+   They never create a new answer.
+   ========================================================= */
+const FAQ_ALIASES = {
+  "SC-008": [
+    "how is social capital different from chit funds",
+    "how is social capital different from a chit fund",
+    "what is the difference between social capital and chit funds",
+    "social capital vs chit funds",
+    "why use social capital instead of a chit fund",
+  ],
+
+  "SC-009": [
+    "how is social capital different from asking friends for money",
+    "why use social capital instead of asking friends for money",
+    "is social capital like borrowing money from friends",
+    "why not just ask my friends for money",
+  ],
+
+  "SC-010": [
+    "how is social capital different from splitwise",
+    "how is social capital different from payment apps",
+    "what is the difference between social capital and splitwise",
+    "what is the difference between social capital and payment apps",
+    "why use social capital instead of splitwise",
+    "why use social capital instead of payment apps",
+    "is social capital like splitwise",
+    "what makes social capital different from payment apps",
+  ],
+
+  "SC-017": [
+    "how do contributions work",
+    "how does contribution work",
+    "how does the contribution work",
+    "what happens with contributions each round",
+    "how much does everyone contribute",
+  ],
+
+  "SC-042": [
+    "why use social capital instead of chats",
+    "why use social capital instead of whatsapp",
+    "why use social capital instead of spreadsheets",
+    "why not use whatsapp",
+    "why not use a spreadsheet",
+    "what is the benefit over whatsapp",
+    "what is the benefit over spreadsheets",
+    "why should i use social capital instead of whatsapp",
+    "why should i use social capital instead of spreadsheets",
+  ],
+};
+
+const FAQ_INDEX = FAQS.map((faq) => ({
+  faq,
+  question: normalizeText(faq.question),
+  questionTokens: new Set(uniqueTokens(faq.question)),
+  aliases: [faq.question, ...(FAQ_ALIASES[faq.id] || [])].map(normalizeText),
+}));
+
+function getFAQById(id) {
+  return FAQS.find((faq) => faq.id === id) || null;
+}
+
+function containsPhrase(text, phrase) {
+  const normalizedText = normalizeText(text);
+  const normalizedPhrase = normalizeText(phrase);
+
+  if (!normalizedPhrase) return false;
+
+  return (
+    normalizedText === normalizedPhrase ||
+    normalizedText.includes(` ${normalizedPhrase} `) ||
+    normalizedText.startsWith(`${normalizedPhrase} `) ||
+    normalizedText.endsWith(` ${normalizedPhrase}`)
+  );
+}
+
+/* =========================================================
+   DISTINCTIVE INTENT TERMS
+
+   These are used to separate similar KB entries.
+   Example:
+   Splitwise/payment apps MUST NOT fall into
+   friends-for-money or contributions.
+   ========================================================= */
+const DISTINCTIVE_TERMS = [
+  "splitwise",
+  "payment app",
+  "payment apps",
+  "whatsapp",
+  "spreadsheet",
+  "spreadsheets",
+  "chit fund",
+  "chit funds",
+  "auction",
+  "rotation",
+  "predefined",
+  "payout",
+  "contribution",
+  "contributions",
+  "manager",
+  "strangers",
+  "dispute",
+  "risk",
+  "reputation",
+  "invite",
+  "upi",
+  "zelle",
+  "paypal",
+  "miss payment",
+  "missed payment",
+  "delayed payout",
+];
+
+function getDistinctiveTerms(text) {
+  const normalized = normalizeText(text);
+
+  return DISTINCTIVE_TERMS.filter((term) =>
+    normalized.includes(normalizeText(term)),
+  );
+}
+
+/* =========================================================
+   SCORE A QUESTION
+
+   IMPORTANT:
+   - Never inspect short_answer/full_answer for matching.
+   - The question is the source of intent.
+   - Tags are NOT used to override question intent.
+   ========================================================= */
+function scoreFAQMatch(query, index) {
   const normalizedQuery = normalizeText(query);
 
-  if (!normalizedQuery) return 0;
+  if (!normalizedQuery || !index) return 0;
 
-  const queryTokens = tokenize(normalizedQuery);
+  if (normalizedQuery === index.question) return 10000;
 
-  if (queryTokens.length === 0) {
-    return 0;
-  }
+  if (index.aliases.includes(normalizedQuery)) return 9000;
 
-  const question = normalizeText(faq.question);
-  const answer = normalizeText(faq.full_answer || "");
-  const shortAnswer = normalizeText(faq.short_answer || "");
-  const section = normalizeText(faq.section || "");
+  const queryTokens = uniqueTokens(normalizedQuery);
+  const questionTokens = [...index.questionTokens];
 
-  const tags = (faq.tags || []).map(normalizeText);
+  if (!queryTokens.length || !questionTokens.length) return 0;
+
+  const querySet = new Set(queryTokens);
+  const questionSet = new Set(questionTokens);
+
+  const matchedTokens = queryTokens.filter((token) => questionSet.has(token));
+
+  if (!matchedTokens.length) return 0;
+
+  const queryCoverage = matchedTokens.length / queryTokens.length;
+  const questionCoverage = matchedTokens.length / questionTokens.length;
 
   let score = 0;
-  let matchedQuestionTokens = 0;
 
-  /* Exact question */
-  if (question === normalizedQuery) {
-    score += 100;
-  }
+  // Strong signal: words actually appearing in the KB question.
+  matchedTokens.forEach((token) => {
+    score += token.length >= 8 ? 95 : token.length >= 5 ? 70 : 45;
+  });
 
-  /* Question phrase */
-  if (
-    normalizedQuery.length > 5 &&
-    question.includes(normalizedQuery)
-  ) {
-    score += 40;
-  }
+  // Query coverage is more important than raw word count.
+  score += queryCoverage * 220;
 
-  /* Meaningful word matching */
-  queryTokens.forEach((token) => {
-    if (question.includes(token)) {
-      score += 12;
-      matchedQuestionTokens++;
-    }
+  // A candidate that covers much of its own question is stronger.
+  score += questionCoverage * 80;
 
-    if (
-      tags.some((tag) => tag.includes(token))
-    ) {
-      score += 8;
-    }
+  // Strong bonus for exact multi-word phrases shared by query/question.
+  const queryDistinctive = getDistinctiveTerms(normalizedQuery);
+  const questionDistinctive = getDistinctiveTerms(index.question);
 
-    if (shortAnswer.includes(token)) {
-      score += 2;
-    }
-
-    if (answer.includes(token)) {
-      score += 1;
-    }
-
-    if (section.includes(token)) {
-      score += 1;
+  queryDistinctive.forEach((term) => {
+    if (questionDistinctive.includes(term)) {
+      score += 320;
     }
   });
 
-  /* Multiple meaningful matches */
-  if (queryTokens.length >= 2) {
-    const matchRatio =
-      matchedQuestionTokens / queryTokens.length;
+  // If the user supplied a distinctive concept and this FAQ does not
+  // contain it, penalize the candidate heavily.
+  const unmatchedDistinctive = queryDistinctive.filter(
+    (term) => !questionDistinctive.includes(term),
+  );
 
-    if (matchRatio >= 0.7) {
-      score += 10;
-    }
+  score -= unmatchedDistinctive.length * 220;
 
-    if (matchRatio >= 0.5) {
-      score += 5;
-    }
+  // A single generic overlap must never answer a long question.
+  if (matchedTokens.length === 1 && queryTokens.length >= 3) {
+    score *= 0.25;
   }
 
-  return score;
+  return Math.max(0, score);
 }
 
 /* =========================================================
-   BEST FAQ
+   FIND BEST FAQ
    ========================================================= */
-
 function findBestFAQ(query) {
-  let bestFAQ = null;
-  let bestScore = 0;
+  const normalizedQuery = normalizeText(query);
 
-  FAQS.forEach((faq) => {
-    const score = scoreFAQMatch(query, faq);
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestFAQ = faq;
-    }
-  });
-
-  /* Reject weak/unrelated matches */
-  if (bestScore < 8) {
+  if (!normalizedQuery) {
     return {
       faq: null,
       score: 0,
+      confidence: 0,
+      ambiguous: false,
+    };
+  }
+
+  // 1. Exact question / approved alias.
+  const exact = FAQ_INDEX.find((index) =>
+    index.aliases.includes(normalizedQuery),
+  );
+
+  if (exact) {
+    return {
+      faq: exact.faq,
+      score: 10000,
+      confidence: 1,
+      ambiguous: false,
+      type: "exact",
+    };
+  }
+
+  // 2. Intent scoring.
+  const ranked = FAQ_INDEX.map((index) => ({
+    faq: index.faq,
+    score: scoreFAQMatch(normalizedQuery, index),
+  }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!ranked.length) {
+    return {
+      faq: null,
+      score: 0,
+      confidence: 0,
+      ambiguous: false,
+    };
+  }
+
+  const best = ranked[0];
+  const second = ranked[1] || { score: 0 };
+  const margin = best.score - second.score;
+
+  // Conservative threshold. Kubera must prefer "I don't know"
+  // over a wrong KB answer.
+  const strongEnough = best.score >= 170;
+  const clearlyBetter =
+    best.score >= 520 || margin >= 130 || best.score >= second.score * 1.45;
+
+  if (!strongEnough || !clearlyBetter) {
+    return {
+      faq: null,
+      score: best.score,
+      confidence: Math.min(1, best.score / 650),
+      ambiguous: true,
+      alternatives: ranked.slice(0, 3).map((item) => item.faq),
     };
   }
 
   return {
-    faq: bestFAQ,
-    score: bestScore,
+    faq: best.faq,
+    score: best.score,
+    confidence: Math.min(1, best.score / 650),
+    ambiguous: false,
+    type: "matched",
   };
 }
 
 /* =========================================================
    BASIC CHAT RESPONSES
    ========================================================= */
-
 function getBasicResponse(query) {
   const q = normalizeText(query);
 
-  if (
-    ["hi", "hello", "hey", "hai"].includes(q)
-  ) {
+  if (["hi", "hello", "hey", "hai"].includes(q)) {
     return "Hi! I'm Kubera, your Social Capital assistant. Ask me anything about groups, contributions, payments, payouts, or how Social Capital works.";
   }
 
-  if (
-    ["thanks", "thank you", "thank", "thx"].includes(q)
-  ) {
+  if (["thanks", "thank you", "thank", "thx"].includes(q)) {
     return "You're welcome! I'm here whenever you need help understanding Social Capital.";
   }
 
-  if (
-    ["bye", "goodbye", "see you", "see ya"].includes(q)
-  ) {
+  if (["bye", "goodbye", "see you", "see ya"].includes(q)) {
     return "See you! Keep your people close and your group transparent. 👋";
   }
 
@@ -799,202 +949,197 @@ function getBasicResponse(query) {
 }
 
 /* =========================================================
-   FIND ANSWER
+   FOLLOW-UP / RESPONSE MODE
+
+   IMPORTANT:
+   These are ONLY pure follow-up commands.
+
+   "explain detailed" => follow-up
+   "explain more"    => follow-up
+
+   But:
+   "Why use Social Capital instead of WhatsApp?"
+   => NEW QUESTION, NOT follow-up.
    ========================================================= */
+const DETAIL_FOLLOW_UP_PATTERNS = [
+  // Explain
+  "explain",
+  "explain more",
+  "explain further",
+  "explain again",
+  "explain detailed",
+  "explain in detail",
+  "explain it",
+  "explain this",
+  "explain that",
 
-// function getBotAnswer(query) {
-//   const basicResponse = getBasicResponse(query);
+  // More
+  "more",
+  "more details",
+  "more detail",
+  "more detailed",
+  "tell me more",
+  "tell me more about this",
+  "tell me in detail",
+  "give me more details",
+  "give me more detail",
+  "give me more information",
+  "give more details",
+  "give more detail",
+  "give me a detailed explanation",
 
-//   if (basicResponse) {
-//     return basicResponse;
-//   }
+  // Detailed
+  "detailed",
+  "detailed explanation",
+  "detailed answer",
+  "detailed version",
+  "detailed information",
+  "in detail",
+  "in more detail",
+  "in more details",
 
-//   const { faq, score } = findBestFAQ(query);
+  // Elaborate
+  "elaborate",
+  "elaborate more",
+  "elaborate on this",
+  "elaborate on that",
 
-//   /*
-//    * Minimum confidence.
-//    */
-//   if (!faq || score < 3) {
-//     return "🤔 I'm not sure about that yet. Try asking me about Social Capital, groups, contributions, payments, payouts, transparency, risk, or the group manager.";
-//   }
+  // Natural requests
+  "please explain",
+  "please explain more",
+  "please explain in detail",
+  "can you explain",
+  "can you explain more",
+  "can you explain in detail",
+  "can you give more details",
+  "can you tell me more",
+];
 
-//   return faq.full_answer || faq.short_answer;
-// }
-function isFollowUpQuestion(query) {
-  const normalizedQuery = normalizeText(query);
+const STEP_FOLLOW_UPS = new Set([
+  "steps",
+  "step by step",
+  "what are the steps",
+  "show me the steps",
+  "give me the steps",
+  "the process",
+  "show me the process",
+]);
 
-  const followUpPatterns = [
-    "explain",
-    "explain more",
-    "tell me more",
-    "more details",
-    "more detail",
-    "in detail",
-    "details",
-    "elaborate",
-    "why",
-    "how",
-  ];
+function isPureDetailFollowUp(query = "") {
+  const normalized = normalizeText(query);
 
-  return followUpPatterns.some((pattern) =>
-    normalizedQuery === pattern ||
-    normalizedQuery.includes(pattern)
+  return DETAIL_FOLLOW_UP_PATTERNS.some(
+    (pattern) => normalizeText(pattern) === normalized,
   );
+}
+
+function isStepFollowUp(query) {
+  return STEP_FOLLOW_UPS.has(normalizeText(query));
 }
 
 function formatSteps(faq) {
-  let response = faq.short_answer || "";
-
-  if (faq.steps && faq.steps.length > 0) {
-    response += "\n\n";
-
-    faq.steps.forEach((step, index) => {
-      response += `${index + 1}. ${step}\n`;
-    });
+  if (!faq?.steps?.length) {
+    return faq?.full_answer || faq?.short_answer || "";
   }
 
-  return response.trim();
+  return [
+    faq.short_answer || "",
+    "",
+    ...faq.steps.map((step, index) => `${index + 1}. ${step}`),
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 function formatTips(faq) {
-  let response = faq.short_answer || "";
-
-  if (faq.tips && faq.tips.length > 0) {
-    response += "\n\n";
-
-    faq.tips.forEach((tip, index) => {
-      response += `${index + 1}. ${tip}\n`;
-    });
+  if (!faq?.tips?.length) {
+    return faq?.full_answer || faq?.short_answer || "";
   }
 
-  return response.trim();
+  return [
+    faq.short_answer || "",
+    "",
+    ...faq.tips.map((tip, index) => `${index + 1}. ${tip}`),
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
+const FALLBACK_MESSAGE =
+  "🤔 I'm not sure about that yet. I can help with Social Capital, groups, contributions, payments, payouts, transparency, risk, and the group manager.";
 
+/* =========================================================
+   GET BOT ANSWER
+   ========================================================= */
 function getBotAnswer(query, previousFAQ = null) {
   const basicResponse = getBasicResponse(query);
 
- if (basicResponse) {
-    return basicResponse;
+  if (basicResponse) {
+    return {
+      text: basicResponse,
+      faq: null,
+      mode: "basic",
+    };
   }
 
-  /* Follow-up question */
-  if (
-    previousFAQ &&
-    isFollowUpQuestion(query)
-  ) {
-    return (
-      previousFAQ.full_answer ||
-      previousFAQ.short_answer
-    );
-  }
-  const { faq, score } = findBestFAQ(query);
+  /* =====================================================
+     1. DETAIL FOLLOW-UP
+     ===================================================== */
 
-  /* Unknown question */
-  if (!faq || score < 8) {
-    return "🤔 I'm not sure about that yet. Try asking me about Social Capital, groups, contributions, payments, payouts, transparency, risk, or the group manager.";
+  if (previousFAQ && isPureDetailFollowUp(query)) {
+    return {
+      text: previousFAQ.full_answer || previousFAQ.short_answer,
+      faq: previousFAQ,
+      mode: "detailed",
+    };
   }
 
-  const normalizedQuery = normalizeText(query);
+  /* =====================================================
+     2. STEPS FOLLOW-UP
+     ===================================================== */
 
-  /* Questions requiring detailed answers */
-  const detailPatterns = [
-    "explain",
-    "explain more",
-    "tell me more",
-    "more details",
-    "detailed",
-    "in detail",
-    "how does",
-    "how do",
-    "how can",
-    "why",
-    "what happens",
-    "what if",
-    "difference",
-    "different from",
-    "compare",
-    "comparison",
-    "risk",
-    "problem",
-    "issue",
-    "dispute",
-  ];
-
-  const wantsDetailedAnswer =
-    detailPatterns.some((pattern) =>
-      normalizedQuery.includes(pattern)
-    );
-
-  /* Step-by-step questions */
-  const stepPatterns = [
-    "how do i",
-    "how can i",
-    "how to",
-    "steps",
-    "process",
-    "get started",
-    "create",
-    "join",
-    "send",
-    "reduce risk",
-  ];
-
-  const wantsSteps =
-    stepPatterns.some((pattern) =>
-      normalizedQuery.includes(pattern)
-    );
-
-  /* Full answer */
-  if (wantsDetailedAnswer) {
-    return (
-      faq.full_answer ||
-      faq.short_answer
-    );
+  if (previousFAQ && isStepFollowUp(query)) {
+    return {
+      text: previousFAQ.steps?.length
+        ? formatSteps(previousFAQ)
+        : previousFAQ.tips?.length
+          ? formatTips(previousFAQ)
+          : previousFAQ.full_answer || previousFAQ.short_answer,
+      faq: previousFAQ,
+      mode: "steps",
+    };
   }
 
-  /* Steps */
-  if (wantsSteps) {
-    if (
-      faq.steps &&
-      faq.steps.length > 0
-    ) {
-      return formatSteps(faq);
-    }
+  /* =====================================================
+     3. NEW QUESTION → KNOWLEDGE BASE
+     ===================================================== */
 
-    if (
-      faq.tips &&
-      faq.tips.length > 0
-    ) {
-      return formatTips(faq);
-    }
+  const match = findBestFAQ(query);
 
-    return (
-      faq.short_answer ||
-      faq.full_answer
-    );
+  /* =====================================================
+     4. NO CONFIDENT MATCH → NEVER GUESS
+     ===================================================== */
+
+  if (!match.faq) {
+    return {
+      text: FALLBACK_MESSAGE,
+      faq: null,
+      mode: "fallback",
+    };
   }
 
-  /* Complex sections */
-  const complexSections = [
-    "Trust, Risk and Responsibility",
-    "Edge Cases",
-  ];
+  const faq = match.faq;
 
-  if (
-    complexSections.includes(faq.section)
-  ) {
-    return (
-      faq.short_answer ||
-      faq.full_answer
-    );
-  }
+  /* =====================================================
+     5. DEFAULT = SHORT ANSWER
+     ===================================================== */
 
-  /* Default: short answer */
-  return (
-    faq.short_answer ||
-    faq.full_answer
-  );
+  return {
+    text: faq.short_answer || faq.full_answer || "",
+    faq,
+    mode: "short",
+    confidence: match.confidence,
+  };
 }
 
 /* =========================================================
@@ -1007,8 +1152,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text:
-        "👋 Hello! I'm Kubera — your Social Capital assistant. Ask me anything about groups, contributions, payments, or payouts!",
+      text: "👋 Hello! I'm Kubera — your Social Capital assistant. Ask me anything about groups, contributions, payments, or payouts!",
     },
   ]);
 
@@ -1039,11 +1183,11 @@ const Chatbot = () => {
       return;
     }
 
-    const ranked = FAQS.map((faq) => ({
-      faq,
-      score: scoreFAQMatch(query, faq),
+    const ranked = FAQ_INDEX.map((index) => ({
+      faq: index.faq,
+      score: scoreFAQMatch(query, index),
     }))
-      .filter((item) => item.score > 0)
+      .filter((item) => item.score >= 95)
       .sort((a, b) => b.score - a.score)
       .slice(0, 5)
       .map((item) => item.faq);
@@ -1056,80 +1200,57 @@ const Chatbot = () => {
      ======================================================= */
 
   const sendMessage = (text = input) => {
-  const userMessage = text.trim();
+    const userMessage = text.trim();
 
-  if (!userMessage) return;
+    if (!userMessage) return;
 
-  /* =========================================
-     ADD USER MESSAGE
-     ========================================= */
-
-  setMessages((prev) => [
-    ...prev,
-    {
-      from: "user",
-      text: userMessage,
-    },
-  ]);
-
-  /* =========================================
-     FIND FAQ FOR CURRENT QUESTION
-     ========================================= */
-
-  const { faq } = findBestFAQ(userMessage);
-
-  /* =========================================
-     GET BOT RESPONSE
-
-     Pass the previously matched FAQ so that:
-
-     User: What is Social Capital?
-     Bot:  Short answer
-
-     User: explain
-     Bot:  Full answer
-     ========================================= */
-
-  const reply = getBotAnswer(
-    userMessage,
-    lastFAQ
-  );
-
-  /* =========================================
-     SAVE CURRENT FAQ
-
-     Only update lastFAQ when the current
-     message actually matches an FAQ.
-
-     This is important for follow-up questions
-     like "explain".
-     ========================================= */
-
-  if (faq) {
-    setLastFAQ(faq);
-  }
-
-  /* =========================================
-     BOT RESPONSE
-     ========================================= */
-
-  setTimeout(() => {
+    /* =========================================
+       ADD USER MESSAGE
+       ========================================= */
     setMessages((prev) => [
       ...prev,
       {
-        from: "bot",
-        text: reply,
+        from: "user",
+        text: userMessage,
       },
     ]);
-  }, 500);
 
-  /* =========================================
-     CLEAR INPUT
-     ========================================= */
+    /* =========================================
+       GET RESPONSE
 
-  setInput("");
-  setSuggestions([]);
-};
+       Important:
+       - Pure detail follow-up uses lastFAQ.
+       - Every real question is matched again.
+       - Unknown questions never get a random FAQ.
+       ========================================= */
+    const result = getBotAnswer(userMessage, lastFAQ);
+
+    /* =========================================
+       SAVE FAQ CONTEXT
+
+       Only a real KB match updates lastFAQ.
+       A fallback or basic response does not.
+       ========================================= */
+    if (result.faq) {
+      setLastFAQ(result.faq);
+    }
+
+    /* =========================================
+       BOT RESPONSE
+       ========================================= */
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          from: "bot",
+          text: result.text,
+        },
+      ]);
+    }, 500);
+
+    setInput("");
+    setSuggestions([]);
+  };
 
   /* =======================================================
      ENTER KEY
@@ -1170,16 +1291,14 @@ const Chatbot = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setChatOpen(true)}
-        className="fixed bottom-6 right-12 z-50 bg-transparent border-none outline-none p-0 m-0"
-      >
+        className="fixed bottom-6 right-12 z-50 bg-transparent border-none outline-none p-0 m-0">
         <motion.div
           className="relative group"
           animate={{ rotate: [0, 10, -10, 0] }}
           transition={{
             repeat: Infinity,
             duration: 2,
-          }}
-        >
+          }}>
           {/* Tooltip */}
 
           <span
@@ -1189,18 +1308,13 @@ const Chatbot = () => {
               bg-black/80 text-white text-xs px-2 py-1 rounded-lg
               transition-all duration-300 whitespace-nowrap
               pointer-events-none
-            "
-          >
+            ">
             Chat with Kubera
           </span>
 
           {/* Image */}
 
-          <img
-            src={KuberaBot}
-            alt="Kubera Bot"
-            className="w-16 h-16"
-          />
+          <img src={KuberaBot} alt="Kubera Bot" className="w-16 h-16" />
         </motion.div>
       </motion.button>
 
@@ -1243,19 +1357,14 @@ const Chatbot = () => {
               from-[#2d2390]/95
               to-[#120b55]/90
               overflow-hidden
-            "
-          >
+            ">
             {/* =================================================
                 HEADER
                 ================================================= */}
 
             <div className="flex items-center justify-between p-4 bg-white/10 border-b border-white/20">
               <div className="flex items-center gap-2">
-                <img
-                  src={KuberaBot}
-                  alt="Kubera Bot"
-                  className="w-8 h-8"
-                />
+                <img src={KuberaBot} alt="Kubera Bot" className="w-8 h-8" />
 
                 <h3 className="font-semibold text-white text-sm">
                   Chat with Kubera
@@ -1264,8 +1373,7 @@ const Chatbot = () => {
 
               <button
                 onClick={() => setChatOpen(false)}
-                className="text-gray-300 hover:text-white text-xl"
-              >
+                className="text-gray-300 hover:text-white text-xl">
                 &times;
               </button>
             </div>
@@ -1293,8 +1401,7 @@ const Chatbot = () => {
                     msg.from === "bot"
                       ? "bg-white/10 backdrop-blur-md self-start text-white"
                       : "bg-yellow-400 text-gray-900 self-end"
-                  }`}
-                >
+                  }`}>
                   {msg.text}
                 </motion.div>
               ))}
@@ -1314,14 +1421,12 @@ const Chatbot = () => {
                 animate={{
                   opacity: 1,
                 }}
-                className="bg-white/10 border-t border-white/10 text-white text-sm max-h-28 overflow-y-auto backdrop-blur-md absolute bottom-14 w-full"
-              >
+                className="bg-white/10 border-t border-white/10 text-white text-sm max-h-28 overflow-y-auto backdrop-blur-md absolute bottom-14 w-full">
                 {suggestions.map((faq, i) => (
                   <button
                     key={faq.id || i}
                     onClick={() => sendMessage(faq.question)}
-                    className="block w-full text-left px-4 py-2 hover:bg-white/20 transition-all"
-                  >
+                    className="block w-full text-left px-4 py-2 hover:bg-white/20 transition-all">
                     {faq.question}
                   </button>
                 ))}
@@ -1350,4 +1455,3 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
-
