@@ -136,7 +136,7 @@ export default function Dashboard() {
           tint: "bg-indigo-50 text-indigo-600",
         },
         {
-          title: "Group Managers",
+          title: "Group Admins",
           value: dashboard.totalFundManager,
           icon: FiUsers,
           tint: "bg-violet-50 text-violet-600",
@@ -565,10 +565,10 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Top Group Managers */}
+            {/* Top Group Admins */}
             <div className="lg:col-span-6 bg-white rounded-2xl p-5 shadow-sm ring-1 ring-slate-100">
               <h2 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <FiTrendingUp className="text-indigo-500" /> Top Group Managers
+                <FiTrendingUp className="text-indigo-500" /> Top Group Admins
               </h2>
               <div className="space-y-3">
                 {(dashboard.topGroupManagers ?? []).map((mgr) => (

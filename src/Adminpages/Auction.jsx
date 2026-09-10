@@ -10,7 +10,7 @@ const FundManager = () => {
           <ManagerDetails />
         </div>
       ) : (
-        <EmptyState message="No Manager Found" />
+        <EmptyState message="No Admin Found" />
       )}
     </>
   );

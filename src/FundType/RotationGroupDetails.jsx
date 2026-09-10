@@ -161,7 +161,7 @@ export default function RotationGroupDetails() {
                 {group?.admin?.profileImage ? (
                   <img
                     src={group.admin.profileImage}
-                    alt="Group Manager"
+                    alt="Group Admin"
                     className="w-12 h-12 rounded-full object-cover border"
                   />
                 ) : (

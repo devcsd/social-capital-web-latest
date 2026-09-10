@@ -153,10 +153,10 @@ export default function ManagerDetails() {
       <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-primary tracking-tight">
-            Group managers overview
+            Group Admins overview
           </h1>
           <p className="text-sm text-slate-500 mt-0.5">
-            Manage and monitor all group managers
+            Manage and monitor all group admins
           </p>
         </div>
         {!loading && (
@@ -319,7 +319,7 @@ export default function ManagerDetails() {
 
         {!loading && currentData.length === 0 && (
           <div className="sm:col-span-2 lg:col-span-3">
-            <EmptyState message="No group managers match your filters" />
+            <EmptyState message="No group Admins match your filters" />
           </div>
         )}
 

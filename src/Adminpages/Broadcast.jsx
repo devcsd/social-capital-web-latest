@@ -189,7 +189,7 @@ export default function BroadcastStyled() {
               <div className="p-2 ">
                 <h1 className="text-3xl font-bold text-slate-800">Broadcast</h1>
                 <div className="hidden sm:block text-sm text-gray-600">
-                  Create and send announcements to users, groups or managers.
+                  Create and send announcements to users, groups or admins.
                 </div>
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function BroadcastStyled() {
                     value="ALL_FUND_MANAGERS"
                     checked={audience === "ALL_FUND_MANAGERS"}
                     onChange={(e) => handleAudienceChange(e.target.value)}>
-                    All Group Managers
+                    All Group Admins
                   </Radio>
 
                   <Radio

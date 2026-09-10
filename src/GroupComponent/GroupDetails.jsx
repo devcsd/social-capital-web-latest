@@ -259,7 +259,7 @@ export const GroupDetails = () => {
                     </span>{" "}
                     {fund.fundDistributionType ===
                     "Member → Group Manager → Winner"
-                      ? "Member → Manager → Winner"
+                      ? "Member → Admin → Winner"
                       : "Member → Winner"}
                   </div>
                 </div>

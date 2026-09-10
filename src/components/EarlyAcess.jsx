@@ -84,7 +84,7 @@ Message: ${form.message}`;
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-gray-300 text-sm mb-1 block">
-                    Company / Manager Name
+                    Company / Admin Name
                   </label>
                   <input
                     type="text"

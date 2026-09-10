@@ -5,6 +5,13 @@ import { FaGooglePlay } from "react-icons/fa";
 import screen from "../images/screens.png";
 import EarlyAccessPopup from "../components/EarlyAcess";
 
+const handleGooglePlayClick = () => {
+  window.open(
+    "https://play.google.com/store/apps/details?id=com.socialcapital",
+    "_blank"
+  );
+};
+
 const Platform = () => {
   return (
     <section className="relative w-full py-10 px-6 sm:py-20 sm:px-8">
@@ -33,7 +40,7 @@ const Platform = () => {
                   App Store
                 </button>
 
-                <button className="group flex items-center justify-center sm:justify-start px-6 py-2 bg-secondary text-black hover:bg-white hover:text-black rounded-[15px] font-inter font-semibold w-full sm:w-auto">
+                <button className="group flex items-center justify-center sm:justify-start px-6 py-2 bg-secondary text-black hover:bg-white hover:text-black rounded-[15px] font-inter font-semibold w-full sm:w-auto" onClick={handleGooglePlayClick}>
                   <FaGooglePlay className="text-2xl mr-2 group-hover:text-black transition-all" />
                   Google Play
                 </button>

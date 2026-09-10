@@ -207,7 +207,7 @@ export default function FundManagerGroups() {
         className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
       >
         <ArrowLeftOutlined />
-        <Text strong>Back to Group Managers</Text>
+        <Text strong>Back to Group Admins</Text>
       </button>
 
       {/* <pre>Groups : {JSON.stringify(managerInfo, null, 2)}</pre> */}
@@ -274,7 +274,7 @@ export default function FundManagerGroups() {
           <Col span={24}>
             <EmptyState
               message="No Groups Found"
-              subtitle="This Group manager has not created any groups yet."
+              subtitle="This Group Admin has not created any groups yet."
             />
           </Col>
         )}

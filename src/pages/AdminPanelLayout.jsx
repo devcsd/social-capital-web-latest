@@ -65,7 +65,7 @@ const menuItems = [
   },
   {
     key: "FundManager",
-    label: "Group Manager",
+    label: "Group Admin",
     icon: <LuBriefcaseBusiness />,
     to: "/adminPanel/FundManager",
   },

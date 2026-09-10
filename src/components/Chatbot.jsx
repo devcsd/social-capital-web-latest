@@ -160,9 +160,9 @@ const KNOWLEDGE_BASE = {
         {
           id: "SC-012",
           question: "How do I join a group?",
-          short_answer: "Through an invite link shared by your group manager.",
+          short_answer: "Through an invite link shared by your group Admin.",
           full_answer:
-            "Your group manager shares a private invite link. Only people with that link can join. It's your private space — no one gets in unless your group lets them in.",
+            "Your group Admin shares a private invite link. Only people with that link can join. It's your private space — no one gets in unless your group lets them in.",
           tags: ["joining", "invite", "groups"],
         },
 
@@ -171,8 +171,8 @@ const KNOWLEDGE_BASE = {
           question: "Can I create my own group?",
           short_answer: "Yes. You're in charge.",
           full_answer:
-            "You can create a group, invite your people, set the contribution amount, and decide how the group works. You're the manager — you set the rules, coordinate the group, and keep things moving.",
-          tags: ["create", "manager", "groups"],
+            "You can create a group, invite your people, set the contribution amount, and decide how the group works. You're the admin — you set the rules, coordinate the group, and keep things moving.",
+          tags: ["create", "Admin", "groups"],
         },
 
         {
@@ -188,9 +188,9 @@ const KNOWLEDGE_BASE = {
           id: "SC-015",
           question: "Can I leave a group after joining?",
           short_answer:
-            "It depends on your group rules — and it affects everyone, so talk to your manager first.",
+            "It depends on your group rules — and it affects everyone, so talk to your admin first.",
           full_answer:
-            "Since the whole group depends on everyone showing up, leaving midway impacts the people who trust you. Always check with your group manager before making any decisions. Your group, your responsibility.",
+            "Since the whole group depends on everyone showing up, leaving midway impacts the people who trust you. Always check with your group Admin before making any decisions. Your group, your responsibility.",
           tags: ["leaving", "exit", "groups"],
         },
 
@@ -289,7 +289,7 @@ const KNOWLEDGE_BASE = {
           question: "Can I change my contribution amount later?",
           short_answer: "Usually no — it affects the whole group.",
           full_answer:
-            "Contribution amounts are set at the start. Changing them mid-cycle affects every member's plan and expectations. If something changes in your situation, talk to your group manager.",
+            "Contribution amounts are set at the start. Changing them mid-cycle affects every member's plan and expectations. If something changes in your situation, talk to your group Admin.",
           tags: ["contribution amount", "changes", "rules"],
         },
       ],
@@ -335,11 +335,11 @@ const KNOWLEDGE_BASE = {
 
         {
           id: "SC-026",
-          question: "Can the manager change records?",
+          question: "Can the admin change records?",
           short_answer: "No. Records are shared and visible to everyone.",
           full_answer:
-            "No single person — including the manager — can unilaterally change records. Everything is visible to all members. That's what makes Social Capital trustworthy.",
-          tags: ["records", "manager", "transparency"],
+            "No single person — including the admin — can unilaterally change records. Everything is visible to all members. That's what makes Social Capital trustworthy.",
+          tags: ["records", "admin", "transparency"],
         },
       ],
     },
@@ -354,7 +354,7 @@ const KNOWLEDGE_BASE = {
           short_answer:
             "The group handles it — Social Capital doesn't enforce payments.",
           full_answer:
-            "If a member doesn't pay, the group needs to address it internally. The manager should step in, have the conversation, and find a resolution. Social Capital doesn't enforce payments — that's why you only group with people you genuinely trust. Your network is your guarantee.",
+            "If a member doesn't pay, the group needs to address it internally. The admin should step in, have the conversation, and find a resolution. Social Capital doesn't enforce payments — that's why you only group with people you genuinely trust. Your network is your guarantee.",
           tags: ["non-payment", "risk", "enforcement"],
         },
 
@@ -363,7 +363,7 @@ const KNOWLEDGE_BASE = {
           question: "What if there's a dispute?",
           short_answer: "Disputes are resolved within the group.",
           full_answer:
-            "Disagreements happen. When they do, the group — led by the manager — works it out. Social Capital provides the visibility and records to help, but the resolution lives within your group. That's the nature of a trust-based system.",
+            "Disagreements happen. When they do, the group — led by the admin — works it out. Social Capital provides the visibility and records to help, but the resolution lives within your group. That's the nature of a trust-based system.",
           tags: ["disputes", "conflict", "resolution"],
         },
 
@@ -404,51 +404,51 @@ const KNOWLEDGE_BASE = {
     },
 
     {
-      section: "Manager Role",
+      section: "Admin Role",
 
       entries: [
         {
           id: "SC-032",
-          question: "Who is the group manager?",
+          question: "Who is the group Admin?",
           short_answer: "The person who creates and coordinates the group.",
           full_answer:
-            "The manager is the one who sets things up — creates the group, invites members, defines the rules, and keeps the group moving. They're the anchor of the group. Not a boss, but a coordinator everyone can count on.",
-          tags: ["manager", "role", "groups"],
+            "The admin is the one who sets things up — creates the group, invites members, defines the rules, and keeps the group moving. They're the anchor of the group. Not a boss, but a coordinator everyone can count on.",
+          tags: ["admin", "role", "groups"],
         },
 
         {
           id: "SC-033",
-          question: "Does the manager handle money?",
+          question: "Does the admin handle money?",
           short_answer:
             "Not necessarily. Money flows directly between members.",
           full_answer:
-            "The manager coordinates, not controls. Money moves directly between members — the manager doesn't collect or hold it unless the group has specifically agreed to that arrangement.",
-          tags: ["manager", "money", "coordination"],
+            "The admin coordinates, not controls. Money moves directly between members — the admin doesn't collect or hold it unless the group has specifically agreed to that arrangement.",
+          tags: ["admin", "money", "coordination"],
         },
 
         {
           id: "SC-034",
-          question: "Can the manager take a fee?",
+          question: "Can the admin take a fee?",
           short_answer: "Only if the group agrees upfront.",
           full_answer:
-            "If the group decides the manager's coordination work deserves a fee, that's the group's call. It should be agreed on transparently before the group starts — not decided unilaterally.",
-          tags: ["manager", "fee", "rules"],
+            "If the group decides the admin's coordination work deserves a fee, that's the group's call. It should be agreed on transparently before the group starts — not decided unilaterally.",
+          tags: ["admin", "fee", "rules"],
         },
 
         {
           id: "SC-035",
-          question: "What should a manager do if someone doesn't pay?",
+          question: "What should a admin do if someone doesn't pay?",
           short_answer:
             "Step in early, have the conversation, and keep the group informed.",
           full_answer:
-            "Don't wait for it to spiral. If a payment is missed, the manager should reach out to the member directly and privately first. If it's not resolved, the group needs to know — transparency protects everyone. Document what happened in the app and work toward a resolution together. The group's trust is worth protecting.",
+            "Don't wait for it to spiral. If a payment is missed, the admin should reach out to the member directly and privately first. If it's not resolved, the group needs to know — transparency protects everyone. Document what happened in the app and work toward a resolution together. The group's trust is worth protecting.",
           steps: [
             "Reach out to the member directly and privately",
             "If unresolved, inform the group transparently",
             "Document everything in the app",
             "Work toward a group resolution together",
           ],
-          tags: ["manager", "non-payment", "dispute resolution"],
+          tags: ["admin", "non-payment", "dispute resolution"],
         },
       ],
     },
@@ -463,16 +463,16 @@ const KNOWLEDGE_BASE = {
           short_answer:
             "Tell your group immediately and sort it out as fast as you can.",
           full_answer:
-            "Life happens. If you miss a payment, don't go quiet — communicate with your group right away. Let the manager know, explain the situation, and make the payment as soon as possible. Your reputation in this group — and in future groups — depends on how you handle it.",
+            "Life happens. If you miss a payment, don't go quiet — communicate with your group right away. Let the admin know, explain the situation, and make the payment as soon as possible. Your reputation in this group — and in future groups — depends on how you handle it.",
           tags: ["missed payment", "edge case", "responsibility"],
         },
 
         {
           id: "SC-037",
           question: "What if my payout is delayed?",
-          short_answer: "Check in with your group members and manager.",
+          short_answer: "Check in with your group members and admin.",
           full_answer:
-            "If your payout is delayed, reach out to the members who owe contributions and loop in the manager. Use the app's activity log to see exactly what's outstanding. Stay calm, stay visible, and follow up.",
+            "If your payout is delayed, reach out to the members who owe contributions and loop in the admin. Use the app's activity log to see exactly what's outstanding. Stay calm, stay visible, and follow up.",
           tags: ["delayed payout", "edge case"],
         },
 
@@ -482,7 +482,7 @@ const KNOWLEDGE_BASE = {
           short_answer:
             "It impacts the whole group and needs to be handled together.",
           full_answer:
-            "When someone leaves mid-cycle, it affects every other member's plan. The manager should convene the group to decide how to handle it — whether that's redistributing contributions, finding a replacement member, or adjusting the group. There's no one-size-fits-all answer, but transparency and quick action protect everyone.",
+            "When someone leaves mid-cycle, it affects every other member's plan. The admin should convene the group to decide how to handle it — whether that's redistributing contributions, finding a replacement member, or adjusting the group. There's no one-size-fits-all answer, but transparency and quick action protect everyone.",
           tags: ["leaving", "exit", "edge case", "impact"],
         },
 
@@ -491,7 +491,7 @@ const KNOWLEDGE_BASE = {
           question: "Can rules be changed after the group starts?",
           short_answer: "Only if everyone in the group agrees.",
           full_answer:
-            "Rules are set at the start for a reason — they protect every member equally. Changing them mid-cycle requires full group agreement. No one person, including the manager, can change the rules unilaterally.",
+            "Rules are set at the start for a reason — they protect every member equally. Changing them mid-cycle requires full group agreement. No one person, including the admin, can change the rules unilaterally.",
           tags: ["rules", "changes", "governance"],
         },
       ],
@@ -758,7 +758,7 @@ const DISTINCTIVE_TERMS = [
   "payout",
   "contribution",
   "contributions",
-  "manager",
+  "admin",
   "strangers",
   "dispute",
   "risk",
@@ -1066,7 +1066,7 @@ function formatTips(faq) {
 }
 
 const FALLBACK_MESSAGE =
-  "🤔 I'm not sure about that yet. I can help with Social Capital, groups, contributions, payments, payouts, transparency, risk, and the group manager.";
+  "🤔 I'm not sure about that yet. I can help with Social Capital, groups, contributions, payments, payouts, transparency, risk, and the group Admin.";
 
 /* =========================================================
    GET BOT ANSWER

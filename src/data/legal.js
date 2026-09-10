@@ -39,8 +39,8 @@ export const TERMS_CONTENT = {
     },
     {
       type: "paragraph",
-      heading: "Group manager",
-      body: "The group manager creates and coordinates the group. The manager must provide correct information, explain the group details, keep members informed, and use platform controls responsibly. The manager is not an employee, partner, or representative of Social Capital.",
+      heading: "Group Admin",
+      body: "The group Admin creates and coordinates the group. The Admin must provide correct information, explain the group details, keep members informed, and use platform controls responsibly. The Admin is not an employee, partner, or representative of Social Capital.",
     },
     {
       type: "list",
@@ -75,7 +75,7 @@ export const TERMS_CONTENT = {
     {
       type: "paragraph",
       heading: "Charges",
-      body: "A platform charge or manager charge, when available, must be clearly shown before a user accepts it. Do not use hidden or misleading charges.",
+      body: "A platform charge or admin charge, when available, must be clearly shown before a user accepts it. Do not use hidden or misleading charges.",
     },
     {
       type: "list",
@@ -177,7 +177,7 @@ export const PRIVACY_CONTENT = {
     {
       type: "paragraph",
       heading: "Information we do not need",
-      body: "Social Capital does not need your bank password, card PIN, UPI PIN, one-time payment code, or full card security code. Never share a payment PIN or one-time code with Social Capital support, a group manager, or another member.",
+      body: "Social Capital does not need your bank password, card PIN, UPI PIN, one-time payment code, or full card security code. Never share a payment PIN or one-time code with Social Capital support, a group Admin, or another member.",
     },
     {
       type: "list",
