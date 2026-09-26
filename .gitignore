@@ -24,7 +24,8 @@ pnpm-debug.log*
 
 # vite
 vite.svg
-.env
+.env.development
+.env.production
 # cache
 .cache
 .temp
