@@ -3,9 +3,8 @@
    (Ported from custom-CSS Hero; visuals preserved 1:1)
    ========================================================= */
 
-import { useState, useEffect } from "react";
 import screenshot from "../screenshots/DashboardEmpty.jpeg";
-import JoinPlatformPopup from "../components/JoinPlatform";
+import StoreButtons from "../components/StoreButtons";
 
 const HIcon = {
   group: () => (
@@ -259,7 +258,6 @@ const GRADIENTS = {
 };
 
 const Hero = ({ gradient = "aurora" }) => {
-  const [showModal, setShowModal] = useState(false);
   return (
     <section
       className="relative overflow-hidden isolate pt-7 pb-14 "
@@ -407,29 +405,12 @@ const Hero = ({ gradient = "aurora" }) => {
             </div>
 
             <div className="flex items-center gap-5 flex-wrap mt-[30px] justify-center lg:justify-start">
-              <button
-                onClick={() => setShowModal(true)}
-                className="inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl [font-family:var(--ff-display)] font-semibold text-base text-[#2a1c02] transition-transform transition-shadow duration-200 hover:-translate-y-0.5 [&>svg]:w-[18px] [&>svg]:h-[18px]"
-                style={{
-                  background: "linear-gradient(135deg, #ffd152, #ff9b3d)",
-                  boxShadow: "0 14px 34px -12px rgba(255,155,61,0.9)",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.boxShadow =
-                    "0 18px 40px -12px rgba(255,155,61,1)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.boxShadow =
-                    "0 14px 34px -12px rgba(255,155,61,0.9)")
-                }>
-                Get Started Free <HIcon.arrow />
-              </button>
+              <StoreButtons />
               <div className="inline-flex items-center gap-2 text-[13px] text-white/[0.82] [font-family:var(--ff-display)] font-medium [&>svg]:w-[15px] [&>svg]:h-[15px] [&>svg]:text-[#9fe3c0]">
                 <HIcon.lock /> Secure. Trusted. Community Driven.
               </div>
             </div>
           </div>
-          <JoinPlatformPopup open={showModal} setOpen={setShowModal} />
           {/* ---------- VISUAL STAGE ---------- */}
           <div className="relative min-h-[660px] mt-14 lg:mt-0">
             <svg

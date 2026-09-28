@@ -12,6 +12,13 @@ const handleGooglePlayClick = () => {
   );
 };
 
+const handleAppStoreClick = () => {
+  window.open(
+    "https://apps.apple.com/in/app/social-capital/id6748279308",
+    "_blank"
+  );
+};
+
 const Platform = () => {
   return (
     <section className="relative w-full py-10 px-6 sm:py-20 sm:px-8">
@@ -35,7 +42,7 @@ const Platform = () => {
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4">
-                <button className="group flex items-center justify-center sm:justify-start px-3 py-2 bg-black rounded-[15px] text-white hover:bg-white hover:text-black transition-all font-inter w-full sm:w-auto">
+                <button className="group flex items-center justify-center sm:justify-start px-3 py-2 bg-black rounded-[15px] text-white hover:bg-white hover:text-black transition-all font-inter w-full sm:w-auto" onClick={handleAppStoreClick}>
                   <FaApple className="text-2xl mr-2 group-hover:text-black transition-all" />
                   App Store
                 </button>
