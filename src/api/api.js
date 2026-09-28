@@ -129,7 +129,7 @@ export const getRotationGroups = async () => {
 export const supportCategory = async () => {
   return apiService.get("masterType", {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjYjI2MDA0Ny05ZThjLTRjZDgtOThhYi1mYTljN2NiZGUyYjMiLCJlbWFpbCI6Imxha3NobWFuYW4uY3NkQGdtYWlsLmNvbSIsInJvbGVfaWQiOjEsImlhdCI6MTc4Njk2MDQ2OH0.D0kebbczyhFfwwzuY1OnrlF4R_J_lq1EolDb22eDNxA`,
+      Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`,
       "X-Service-Auth-Token": import.meta.env.VITE_SERVICE_AUTH_TOKEN,
     },
   });
