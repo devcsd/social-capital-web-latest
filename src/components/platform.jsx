@@ -8,20 +8,23 @@ import EarlyAccessPopup from "../components/EarlyAcess";
 const handleGooglePlayClick = () => {
   window.open(
     "https://play.google.com/store/apps/details?id=com.socialcapital",
-    "_blank"
+    "_blank",
   );
 };
 
 const handleAppStoreClick = () => {
   window.open(
     "https://apps.apple.com/in/app/social-capital/id6748279308",
-    "_blank"
+    "_blank",
   );
 };
 
 const Platform = () => {
   return (
-    <section className="relative w-full py-10 px-6 sm:py-20 sm:px-8">
+    <section
+      id="platform"
+      className="relative w-full py-10 px-6 sm:py-20 sm:px-8 scroll-mt-[72px]"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Dark translucent card */}
         <div className="bg-highlight backdrop-blur-sm border border-highlight rounded-3xl p-6 sm:p-10 lg:p-16">
@@ -36,18 +39,34 @@ const Platform = () => {
 
               {/* Subtitle */}
               <p className="text-gray-300 text-base sm:text-lg md:text-xl font-inter leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-4 sm:mb-6">
-                Our platform helps communities save, grow, and access money
-                through trusted, transparent group funding.
+                <span className="block text-white font-semibold mb-2">
+                  Your community. Your group. Your shared capital.
+                </span>
+                Social Capital makes it simple to join, manage, and grow trusted
+                group funds — with transparent contributions, secure payments,
+                and easy tracking.
+              </p>
+
+              {/* CTA description */}
+              <p className="text-gray-400 text-sm sm:text-base font-inter leading-relaxed max-w-xl mx-auto lg:mx-0 mb-4 sm:mb-6">
+                Download the Social Capital App to get started and connect with
+                your group.
               </p>
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4">
-                <button className="group flex items-center justify-center sm:justify-start px-3 py-2 bg-black rounded-[15px] text-white hover:bg-white hover:text-black transition-all font-inter w-full sm:w-auto" onClick={handleAppStoreClick}>
+                <button
+                  className="group flex items-center justify-center sm:justify-start px-3 py-2 bg-black rounded-[15px] text-white hover:bg-white hover:text-black transition-all font-inter w-full sm:w-auto"
+                  onClick={handleAppStoreClick}
+                >
                   <FaApple className="text-2xl mr-2 group-hover:text-black transition-all" />
                   App Store
                 </button>
 
-                <button className="group flex items-center justify-center sm:justify-start px-6 py-2 bg-secondary text-black hover:bg-white hover:text-black rounded-[15px] font-inter font-semibold w-full sm:w-auto" onClick={handleGooglePlayClick}>
+                <button
+                  className="group flex items-center justify-center sm:justify-start px-6 py-2 bg-secondary text-black hover:bg-white hover:text-black rounded-[15px] font-inter font-semibold w-full sm:w-auto"
+                  onClick={handleGooglePlayClick}
+                >
                   <FaGooglePlay className="text-2xl mr-2 group-hover:text-black transition-all" />
                   Google Play
                 </button>

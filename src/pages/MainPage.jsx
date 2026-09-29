@@ -12,8 +12,23 @@ import Chatbot from "../components/Chatbot";
 import Globalsection from "../components/Global"
 import YouCAnDoSection from "../components/YouCanDoSection"
 import "../index.css";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function Main() {
+  const { groupId } = useParams();
+
+  // /groups/:groupId → smooth scroll to the "Powered by the Social Capital App" section
+  useEffect(() => {
+    if (!groupId) return;
+    const timer = setTimeout(() => {
+      document
+        .getElementById("platform")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [groupId]);
+
   return (
     <div className="min-h-screen bg-primary scrollbar-hide">
       <Header />
