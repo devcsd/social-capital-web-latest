@@ -41,7 +41,7 @@ const AppRoute = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}></Route>
-        <Route path="/groups/:groupId" element={<Main />}></Route>
+        <Route path="/group/:groupId" element={<Main />}></Route>
         <Route path="/terms&conditions" element={<TermsPage />}></Route>
         <Route path="/privacypolicy" element={<PrivacyPolicyPage />}></Route>
         <Route path="/administrator" element={<LoginPage />}></Route>
