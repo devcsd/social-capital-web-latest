@@ -36,7 +36,7 @@ const Header = () => {
         >
           {/* ---------------- Logo ---------------- */}
 
-          <a href="#" className="flex items-center gap-1 shrink-0">
+          <a href="/" className="flex items-center gap-0 shrink-0">
             <SiCashapp className="h-8 w-8 text-white" />
 
             <div className="leading-none">
