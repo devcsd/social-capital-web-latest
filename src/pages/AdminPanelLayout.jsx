@@ -8,6 +8,7 @@ import {
   FaUser,
   FaChartLine,
   FaSignOutAlt,
+  FaBars,
 } from "react-icons/fa";
 import { matchPath } from "react-router-dom";
 import { SiCashapp } from "react-icons/si";
@@ -16,9 +17,14 @@ import { PiSpinnerBallDuotone } from "react-icons/pi";
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { FaListCheck } from "react-icons/fa6";
 import { IoMdMegaphone } from "react-icons/io";
-import { MdHelpOutline } from "react-icons/md";
+import { MdHelpOutline, MdHeadsetMic } from "react-icons/md";
 import { Layout, Menu, Button, Typography, Drawer } from "antd";
 import { RiAuctionFill } from "react-icons/ri";
+import {
+  HiChevronDoubleLeft,
+  HiChevronDoubleRight,
+  HiArrowRight,
+} from "react-icons/hi";
 import { useAuth } from "../Auth/AuthContext";
 
 import "./layout.css";
@@ -29,6 +35,7 @@ const { Title, Text } = Typography;
 const pathKeyMap = {
   "/dashboard": "Dashboard",
   "/adminPanel/GroupCategories": "Groups",
+  "/adminPanel/GroupSettings": "GroupSettings",
   "/adminPanel/Members": "Members",
   "/adminPanel/FundManager": "FundManager",
   "/adminPanel/FundManager/:managerId": "FundManager",
@@ -58,6 +65,12 @@ const menuItems = [
     to: "/adminPanel/GroupCategories",
   },
   {
+    key: "GroupSettings",
+    label: "Group Settings",
+    icon: <FaCog />,
+    to: "/adminPanel/GroupSettings",
+  },
+  {
     key: "Members",
     label: "Members",
     icon: <FaUser />,
@@ -85,7 +98,7 @@ const menuItems = [
   // { key: "Reports", label: "Reports", icon: <FaChartLine /> },
   {
     key: "Boardcast",
-    label: "Boardcast",
+    label: "Broadcast",
     icon: <IoMdMegaphone />,
     to: "/adminPanel/Boardcast",
   },
@@ -96,7 +109,6 @@ const menuItems = [
     to: "/adminPanel/supportEnquiry",
   },
   // { key: "Settings", label: "Settings", icon: <FaCog /> },
-  { key: "Logout", label: "Logout", icon: <FaSignOutAlt /> },
 ];
 
 const LayoutDrawer = ({ children }) => {
@@ -147,12 +159,8 @@ const LayoutDrawer = ({ children }) => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const handleMenuClick = async ({ key }) => {
-    if (key === "Logout") {
-      setLogoutPopup(true);
-    } else {
-      if (isMobile) setDrawerOpen(false);
-    }
+  const handleMenuClick = () => {
+    if (isMobile) setDrawerOpen(false);
   };
 
   const renderMenuItems = (menuItems) => {
@@ -182,13 +190,66 @@ const LayoutDrawer = ({ children }) => {
       onClick={handleMenuClick}
       items={renderMenuItems(menuItems)}
       style={{
-        height: "100%",
         borderRight: 0,
         background: "transparent",
-        padding: "8px 10px",
+        padding: "0 12px",
       }}
-      className="custom-menu bg-primary"
+      className="custom-menu"
     />
+  );
+
+  const Brand = ({ showText = true }) => (
+    <div className="flex items-center gap-3 min-w-0">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sc-gold-500 to-sc-gold-600 shadow-lg shadow-black/20">
+        <SiCashapp size={22} className="text-sc-blue-900" />
+      </div>
+      {showText && (
+        <div className="leading-tight min-w-0">
+          <div className="text-[17px] font-bold tracking-wide text-white whitespace-nowrap">
+            Social<span className="text-sc-gold-500">Capital</span>
+          </div>
+          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/50">
+            Admin Panel
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const HelpCard = () => (
+    <div className="px-3 pb-3">
+      <div className="px-1 pt-3 text-[11px] leading-relaxed text-white/45">
+        © {new Date().getFullYear()} SocialCapital
+      
+        v1.0.0
+      </div>
+    </div>
+  );
+
+  const LogoutButton = ({ collapsed = false }) => (
+    <div className="px-3 pb-4 pt-3 border-t border-white/10">
+      <button
+        onClick={() => setLogoutPopup(true)}
+        title="Logout"
+        className={`group flex w-full items-center gap-3 rounded-xl py-2.5 text-[15px] font-medium text-white/75 transition-all duration-200 hover:bg-red-500/15 hover:text-red-300 ${
+          collapsed ? "justify-center px-0" : "px-4"
+        }`}
+      >
+        <FaSignOutAlt className="text-[17px] transition-transform duration-200 group-hover:-translate-x-0.5" />
+        {!collapsed && <span>Logout</span>}
+      </button>
+    </div>
+  );
+
+  const MenuSection = ({ collapsed = false }) => (
+    <div className="flex-1 overflow-y-auto no-scrollbar py-4">
+      {!collapsed && (
+        <div className="px-7 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
+          Main Menu
+        </div>
+      )}
+      {MenuNode}
+    </div>
   );
 
   const UserProfile = ({
@@ -221,14 +282,17 @@ const LayoutDrawer = ({ children }) => {
         </div>
       )}
 
-      <span
-        className={`
-        text-sm font-semibold whitespace-nowrap tracking-wide
-        ${textClass}
-      `}
-      >
-        {user?.fullName}
-      </span>
+      <div className="leading-tight">
+        <div
+          className={`
+          text-sm font-semibold whitespace-nowrap
+          ${textClass}
+        `}
+        >
+          {user?.fullName}
+        </div>
+        <div className={`text-[11px] opacity-60 ${textClass}`}>Admin</div>
+      </div>
     </div>
   );
 
@@ -291,52 +355,66 @@ const LayoutDrawer = ({ children }) => {
             collapsed={!isSidebarOpen}
             onCollapse={handleCollapse}
             width={256}
-            className="fixed bg-primary left-0 h-full"
+            collapsedWidth={80}
+            className="sidebar-sider"
             style={{
-              boxShadow: "2px 0 12px rgba(1, 44, 114, 0.18)",
-              background: "linear-gradient(180deg, #0154D8 0%, #013EA6 100%)",
-              transition: "width 0.25s ease",
+              position: "fixed",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              height: "100vh",
+              zIndex: 100,
+              background:
+                "linear-gradient(180deg, #1b3fc4 0%, #0a1f6b 100%)",
+              boxShadow: "4px 0 24px rgba(10, 31, 107, 0.25)",
             }}
           >
-            <div
-              className="flex items-center justify-between p-4"
-              style={{ borderBottom: "1px solid rgba(255,255,255,0.12)" }}
-            >
-              <Button
-                type="text"
-                onClick={toggleSidebarBtn}
-                icon={
-                  <FaHome
-                    className="text-secondary text-3xl transition-transform duration-200 hover:scale-110"
-                    style={{ color: "#ffc404" }}
-                  />
-                }
-              />
-            </div>
-            <div
-              className="absolute bottom-0 left-4 flex items-center gap-2 p-4 cursor-pointer transition-opacity duration-150 hover:opacity-80"
-              onClick={async () => {
-                await logout();
-                navigate("/administrator");
-              }}
-            >
-              <SiCashapp size={32} className="text-white drop-shadow-sm" />
-              {isSidebarOpen && (
-                <Text style={{ color: "white", fontWeight: 600, fontSize: 16, letterSpacing: "0.02em" }}>
-                  <span style={{ color: "white" }}>ocial</span>
-                  <span style={{ color: "#ffc404" }}>Capital</span>
-                </Text>
-              )}
-            </div>
+            <div className="flex h-full flex-col">
+              <div
+                className={`flex h-[72px] shrink-0 items-center border-b border-white/10 ${
+                  isSidebarOpen ? "justify-between px-5" : "justify-center px-0"
+                }`}
+              >
+                {isSidebarOpen ? (
+                  <>
+                    <Brand />
+                    <button
+                      onClick={toggleSidebarBtn}
+                      title="Collapse sidebar"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      <HiChevronDoubleLeft size={18} />
+                    </button>
+                  </>
+                ) : (
+                  <button onClick={toggleSidebarBtn} title="Expand sidebar">
+                    <Brand showText={false} />
+                  </button>
+                )}
+              </div>
 
-            {MenuNode}
+              <MenuSection collapsed={!isSidebarOpen} />
+
+              {!isSidebarOpen && (
+                <button
+                  onClick={toggleSidebarBtn}
+                  title="Expand sidebar"
+                  className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <HiChevronDoubleRight size={18} />
+                </button>
+              )}
+
+              {isSidebarOpen && <HelpCard />}
+              <LogoutButton collapsed={!isSidebarOpen} />
+            </div>
           </Sider>
           <div className="px-4 py-4 border-none absolute right-5 ">
-            <div className="rounded-full bg-white/90 backdrop-blur-sm px-3 py-1.5 shadow-sm">
+            <div className="rounded-2xl bg-white px-3 py-2 pr-5 shadow-sm ring-1 ring-slate-100">
               <UserProfile
                 avatarBgClass="bg-primary"
                 avatarTextClass="text-white"
-                textClass="text-primary"
+                textClass="text-slate-900"
               />
             </div>
           </div>
@@ -354,14 +432,14 @@ const LayoutDrawer = ({ children }) => {
             top: 0,
             left: 0,
             right: 0,
-            background: "linear-gradient(90deg, #0154D8 0%, #013EA6 100%)",
-            boxShadow: "0 2px 10px rgba(1, 44, 114, 0.25)",
+            background: "linear-gradient(90deg, #1b3fc4 0%, #0a1f6b 100%)",
+            boxShadow: "0 2px 12px rgba(10, 31, 107, 0.3)",
           }}
         >
           <Button
             type="text"
             onClick={() => setDrawerOpen(true)}
-            icon={<FaHome style={{ color: "#ffc404", fontSize: 24 }} />}
+            icon={<FaBars style={{ color: "#ffc72c", fontSize: 22 }} />}
           />
          
           <div className="scale-90">
@@ -377,37 +455,26 @@ const LayoutDrawer = ({ children }) => {
       {/* Drawer for mobile */}
       <Drawer
         placement="left"
-        closable={true}
+        closable={false}
         onClose={() => setDrawerOpen(false)}
         open={drawerOpen}
-        bodyStyle={{ padding: 0, height: "100%" }}
         width={280}
         styles={{
-          body: { background: "#0154D8", color: "white" },
-          header: {
-            background: "#0154D8",
-            color: "white",
-            borderBottom: "1px solid rgba(255,255,255,0.12)",
-          },
+          body: { padding: 0, height: "100%", color: "white" },
         }}
       >
-        <div className="bg-gradient-to-b from-primary to-[#012C72] h-full">
-          {MenuNode}
-
-          <div
-            className="absolute bottom-0 left-2 flex items-center gap-2 p-4 cursor-pointer transition-opacity duration-150 hover:opacity-80"
-            onClick={async () => {
-              await logout();
-              setDrawerOpen(false);
-              navigate("/administrator");
-            }}
-          >
-            <SiCashapp size={48} className="text-white h-8 w-8 drop-shadow-sm" />
-            <Text style={{ color: "white", fontWeight: "600", fontSize: 16, letterSpacing: "0.02em" }}>
-              <span style={{ color: "white" }}>ocial</span>
-              <span style={{ color: "#ffc404" }}>Capital</span>
-            </Text>
+        <div
+          className="flex h-full flex-col"
+          style={{
+            background: "linear-gradient(180deg, #1b3fc4 0%, #0a1f6b 100%)",
+          }}
+        >
+          <div className="flex h-[72px] shrink-0 items-center px-5 border-b border-white/10">
+            <Brand />
           </div>
+          <MenuSection />
+          <HelpCard />
+          <LogoutButton />
         </div>
       </Drawer>
 

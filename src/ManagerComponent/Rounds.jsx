@@ -1,11 +1,17 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { Row, Col, Card, Avatar, Tag, Badge, Space, Typography } from "antd";
 import {
-  CalendarOutlined,
-  TrophyOutlined,
-  BarChartOutlined,
-  ArrowLeftOutlined,
-} from "@ant-design/icons";
+  ArrowLeft,
+  ArrowRight,
+  BarChart3,
+  CalendarDays,
+  CheckCircle2,
+  Clock,
+  Coins,
+  Gavel,
+  Layers,
+  RefreshCw,
+  Trophy,
+} from "lucide-react";
 import { currencyMeta } from "../utils/currencyMeta";
 import ReactCountryFlag from "react-country-flag";
 import EmptyState from "../AdminComponent/EmptyState";
@@ -23,6 +29,7 @@ import {
   LineElement,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -32,146 +39,183 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Legend,
+  Filler,
 );
 
-const { Text, Title } = Typography;
-
 /* ---------------- GROUP CARD ---------------- */
+
+/* decorative laurel + trophy */
+const LaurelTrophy = ({ muted }) => (
+  <div className="relative w-16 h-14 shrink-0 flex items-center justify-center">
+    <svg
+      viewBox="0 0 64 56"
+      className={`absolute inset-0 w-full h-full ${muted ? "text-slate-300" : "text-green-400/80"}`}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      {[0, 1, 2, 3, 4].map((i) => (
+        <g key={i}>
+          <ellipse cx={10 + i * 1.2} cy={44 - i * 8} rx="3" ry="6" transform={`rotate(${-35 + i * 12} ${10 + i * 1.2} ${44 - i * 8})`} />
+          <ellipse cx={54 - i * 1.2} cy={44 - i * 8} rx="3" ry="6" transform={`rotate(${35 - i * 12} ${54 - i * 1.2} ${44 - i * 8})`} />
+        </g>
+      ))}
+    </svg>
+    <Trophy
+      size={26}
+      strokeWidth={2}
+      className={`relative ${muted ? "text-slate-400" : "text-amber-500 fill-amber-400"}`}
+    />
+  </div>
+);
 
 const RoundCard = ({ round, index }) => {
   const isCompleted = round.status === "completed";
   const navigate = useNavigate();
 
   return (
-    <Card
-      className="rounded-2xl relative"
-      bodyStyle={{ padding: 24 }}
+    <div
+      className="rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 p-5 cursor-pointer flex flex-col gap-2"
       onClick={() => navigate(`/adminPanel/GroupsRound/${round.id}`)}
     >
       {/* Round Header */}
-      <div className="flex justify-between items-center mb-4">
-        <Title level={4} className="m-0">
-          Round {index + 1}
-        </Title>
+      <div className="flex justify-between items-center mb-1">
+        <h3 className="text-lg font-bold text-sc-ink-900">Round {index + 1}</h3>
 
-        <Tag
-          className={`rounded-full px-4 py-1 text-sm font-semibold border-0 shadow-sm ${
+        <span
+          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
             isCompleted
-              ? "bg-green-100 text-green-700"
-              : "bg-blue-100 text-blue-700"
+              ? "bg-green-50 text-green-700"
+              : "bg-sc-blue-100 text-primary"
           }`}
         >
+          {isCompleted ? (
+            <CheckCircle2 size={15} className="fill-green-600 text-white" />
+          ) : (
+            <Clock size={14} />
+          )}
           {isCompleted ? "Completed" : "Upcoming"}
-        </Tag>
+        </span>
       </div>
 
       {/* Date */}
-      <Card className="bg-indigo-50 rounded-xl mb-4" bordered={false}>
-        <Space>
-          <CalendarOutlined className="text-primary" />
-          <div>
-            <Text type="secondary">Group Date</Text>
-            <br />
-            <Text strong>
-              {round.date
-                ? new Date(round.date).toLocaleDateString()
-                : "Not Scheduled"}
-            </Text>
-          </div>
-        </Space>
-      </Card>
-
-      {/* Winner */}
-      <div
-        className={`p-6 rounded-2xl mb-4 border overflow-hidden relative shadow-md ${
-          isCompleted
-            ? "bg-gradient-to-r from-emerald-500 to-green-600 border-white/20 text-white"
-            : "bg-gradient-to-r from-gray-100 to-gray-200 border-gray-300 text-gray-700"
-        }`}
-      >
-        {/* Glow Effect */}
-        {isCompleted && (
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
-        )}
-
-        <div className="relative flex items-center gap-4">
-          {/* Avatar */}
-          {isCompleted ? (
-            round?.winnerImage ? (
-              <img
-                src={round.winnerImage}
-                alt="Winner"
-                className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-lg"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur border-4 border-white flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                {round?.profileName || "W"}
-              </div>
-            )
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-md">
-              <TrophyOutlined className="text-3xl text-[#11B981]" />
-            </div>
-          )}
-
-          {/* Content */}
-          <div>
-            <p
-              className={`text-sm font-medium ${
-                isCompleted ? "text-white/80" : "text-gray-500"
-              }`}
-            >
-              {isCompleted ? "Round Winner" : "Winner Status"}
-            </p>
-
-            <h3 className="text-xl font-bold mt-1">
-              {isCompleted && round?.winnerName
-                ? round.winnerName
-                : "This round is not completed "}
-            </h3>
-          </div>
+      <div className="rounded-xl bg-sc-blue-100/70 px-3 py-2.5 flex items-center gap-4">
+        <div className="w-10 h-10 rounded-xl bg-white/80 flex items-center justify-center shrink-0">
+          <CalendarDays size={18} className="text-primary" />
+        </div>
+        <div>
+          <p className="text-xs text-slate-500">Group Date</p>
+          <p className="text-sm font-bold text-sc-ink-900">
+            {round.date
+              ? new Date(round.date).toLocaleDateString()
+              : "Not Scheduled"}
+          </p>
         </div>
       </div>
 
-      {/* Settlement */}
-      <div className="bg-[#FFC600] p-6 rounded-xl" bordered={false}>
-        <Text type="secondary">Payout Amount</Text>
-        <h1 level={5} className="m-0 font-bold text-2xl text-black">
-          {formatCurrency(round.currencyLabel, round.payoutAmount)}
-        </h1>
+      {/* Winner */}
+      <div
+        className={`rounded-xl px-3 py-2.5 flex items-center gap-4 ${
+          isCompleted
+            ? "bg-gradient-to-r from-green-50 to-emerald-100/80"
+            : "bg-slate-50"
+        }`}
+      >
+        {isCompleted ? (
+          round?.winnerImage ? (
+            <img
+              src={round.winnerImage}
+              alt="Winner"
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-white shadow-sm shrink-0"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-full bg-green-600 ring-2 ring-white flex items-center justify-center text-white font-bold text-lg shadow-sm shrink-0">
+              {round?.profileName || "W"}
+            </div>
+          )
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
+            <Trophy size={24} className="text-slate-400" />
+          </div>
+        )}
+
+        <div className="flex-1 min-w-0">
+          <p className="text-xs text-slate-600">
+            {isCompleted ? "Round Winner" : "Winner Status"}
+          </p>
+          <h3
+            className={`font-bold truncate mt-0.5 ${
+              isCompleted ? "text-base text-sc-ink-900" : "text-sm text-slate-500"
+            }`}
+          >
+            {isCompleted && round?.winnerName
+              ? round.winnerName
+              : "This round is not completed "}
+          </h3>
+        </div>
+
+        <LaurelTrophy muted={!isCompleted} />
       </div>
-      <button className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:opacity-90 transition mt-5">
+
+      {/* Settlement */}
+      <div className="rounded-xl bg-gradient-to-r from-amber-50 to-amber-100/80 px-3 py-2.5 flex items-center gap-4">
+        <div className="w-10 h-10 rounded-xl bg-white/80 flex items-center justify-center shrink-0">
+          <Coins size={20} className="text-sc-gold-600" />
+        </div>
+        <div>
+          <p className="text-xs text-slate-600">Payout Amount</p>
+          <p className="text-xl font-bold text-sc-ink-900 leading-tight">
+            {formatCurrency(round.currencyLabel, round.payoutAmount)}
+          </p>
+        </div>
+      </div>
+
+      <button className="w-full mt-1 bg-primary hover:bg-sc-blue-700 text-white py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
         View Details
+        <ArrowRight size={16} />
       </button>
-    </Card>
+    </div>
   );
 };
 
 const GroupHeaderSkeleton = () => (
-  <div className="rounded-2xl mb-8 bg-white p-6 animate-pulse">
-    <div className="h-8 w-1/3 bg-gray-200 rounded mb-2" />
-    <div className="h-4 w-1/4 bg-gray-200 rounded mb-4" />
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+  <div className="mb-5 animate-pulse">
+    <div className="h-9 w-1/3 bg-slate-200 rounded mb-2" />
+    <div className="h-4 w-1/4 bg-slate-200 rounded mb-5" />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="h-24 rounded-xl bg-gray-200" />
+        <div key={i} className="h-[84px] rounded-2xl bg-slate-200" />
       ))}
     </div>
   </div>
 );
 
 const RoundCardSkeleton = () => (
-  <div className="rounded-2xl bg-white p-6 shadow animate-pulse">
-    <div className="flex justify-between mb-4">
-      <div className="h-6 w-24 bg-gray-200 rounded" />
-      <div className="h-6 w-20 bg-gray-200 rounded-full" />
+  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-sm animate-pulse space-y-2">
+    <div className="flex justify-between mb-2">
+      <div className="h-6 w-24 bg-slate-200 rounded" />
+      <div className="h-6 w-24 bg-slate-200 rounded-full" />
     </div>
+    <div className="h-14 bg-slate-200 rounded-xl" />
+    <div className="h-[72px] bg-slate-200 rounded-xl" />
+    <div className="h-16 bg-slate-200 rounded-xl" />
+    <div className="h-10 bg-slate-300 rounded-xl" />
+  </div>
+);
 
-    <div className="h-20 bg-gray-200 rounded-xl mb-4" />
-    <div className="h-20 bg-gray-300 rounded-xl mb-4" />
-    <div className="h-16 bg-gray-200 rounded-xl mb-4" />
-
-    <div className="h-12 bg-gray-300 rounded-xl mt-4" />
+/* summary stat tile */
+const StatTile = ({ bg, iconBg, icon, label, value }) => (
+  <div className={`rounded-2xl px-5 py-4 flex items-center gap-5 ${bg}`}>
+    <div
+      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${iconBg}`}
+    >
+      {icon}
+    </div>
+    <div className="min-w-0">
+      <p className="text-sm text-slate-600">{label}</p>
+      <p className="text-2xl font-bold text-sc-ink-900 leading-tight mt-0.5 truncate">
+        {value}
+      </p>
+    </div>
   </div>
 );
 
@@ -193,11 +237,16 @@ export default function FundManagerGroupRound() {
       {
         label: "Payout Amount",
         data: chartData.map((item) => item.payout),
-        borderColor: "#3f51b5",
-        backgroundColor: "rgba(63, 81, 181, 0.15)",
+        borderColor: "#1e4fe5",
+        backgroundColor: "rgba(30, 79, 229, 0.10)",
+        borderWidth: 2.5,
         tension: 0.4,
         fill: true,
         pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#ffffff",
+        pointBorderColor: "#1e4fe5",
+        pointBorderWidth: 2,
       },
     ],
   };
@@ -207,18 +256,27 @@ export default function FundManagerGroupRound() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top",
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: (ctx) => `₹ ${ctx.parsed.y}`,
+          label: (ctx) => ` ${ctx.parsed.y}`,
         },
       },
     },
     scales: {
+      x: {
+        grid: { color: "#eef2f7" },
+        border: { display: false },
+        ticks: { color: "#64748b", font: { size: 12 } },
+      },
       y: {
+        grid: { color: "#eef2f7" },
+        border: { display: false },
         ticks: {
-          callback: (value) => `₹ ${value}`,
+          color: "#64748b",
+          font: { size: 12 },
+          callback: (value) => `${value.toLocaleString()}`,
         },
       },
     },
@@ -271,6 +329,9 @@ export default function FundManagerGroupRound() {
     canGoBackRef.current = window.history.state && window.history.state.idx > 0;
   }, []);
 
+  const typeIsAuction = group?.groupType === "Auction";
+  const TypeIcon = typeIsAuction ? Gavel : RefreshCw;
+
   return (
     <div className="min-h-screen p-4 md:p-6">
       {/* Back */}
@@ -279,88 +340,92 @@ export default function FundManagerGroupRound() {
         onClick={() =>
           navigate(`/adminPanel/FundManager/${group.groupData.fund_manager_id}`)
         }
-        className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
+        className="flex items-center gap-2.5 text-sm font-semibold text-sc-ink-900 hover:text-primary mb-4 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-default"
       >
-        <ArrowLeftOutlined />
-        <Text strong>Back to Groups</Text>
+        <ArrowLeft size={16} className="text-primary" />
+        Back to Groups
       </button>
-      {/* <pre>Groups : {JSON.stringify(group, null, 2)}</pre> */}
 
       {loading ? (
         <GroupHeaderSkeleton />
       ) : (
-        <Card className="rounded-2xl mb-8" bodyStyle={{ padding: 24 }}>
-          <div className="flex flex-col gap-6">
-            {/* Header */}
-            <div className="flex justify-between items-start">
-              {/* Left: Group Info */}
-              <div>
-                <Title level={2} className="mb-1">
-                  {group?.groupName}
-                </Title>
-                <Text type="secondary">{group?.transactionType}</Text>
-              </div>
+        <div className="mb-5">
+          {/* Header */}
+          <div className="flex justify-between items-start gap-4 mb-5">
+            <div className="min-w-0">
+              <h1 className="text-3xl font-bold text-sc-ink-900 tracking-tight">
+                {group?.groupName}
+              </h1>
+              <p className="text-base text-slate-500 mt-1">
+                {group?.transactionType}
+              </p>
+            </div>
 
-              {/* Right: Group Type + Flag */}
-              <div className="flex items-center gap-3">
-                <Badge>{group?.groupType}</Badge>
-
+            {group?.groupType && (
+              <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-100 shadow-sm px-3 py-2 shrink-0">
+                <div
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                    typeIsAuction ? "bg-purple-50" : "bg-sc-blue-100"
+                  }`}
+                >
+                  <TypeIcon
+                    size={16}
+                    className={typeIsAuction ? "text-purple-600" : "text-primary"}
+                  />
+                </div>
+                <span className="text-sm font-semibold text-sc-ink-900">
+                  {group.groupType}
+                </span>
                 {currencyMeta?.[group?.currencyLabel]?.flag && (
                   <ReactCountryFlag
                     svg
                     countryCode={currencyMeta[group.currencyLabel].flag}
-                    style={{ fontSize: "2em" }}
+                    style={{ width: "1.7em", height: "1.25em", borderRadius: 2 }}
                   />
                 )}
               </div>
-            </div>
-
-            {/* Stats */}
-            <Row gutter={16}>
-              <Col xs={24} md={8}>
-                <Card className="rounded-xl bg-indigo-50">
-                  <Text>Total Rounds</Text>
-                  <h1 level={3} className="text-primary text-3xl font-bold">
-                    {rounds.length}
-                  </h1>
-                </Card>
-              </Col>
-
-              <Col xs={24} md={8}>
-                <div className="rounded-xl bg-[#FFC600] text-white p-6">
-                  <Text className="text-black">Total Group Value</Text>
-                  <h1 level={3} className="text-black text-3xl font-bold">
-                    {formatCurrency(group?.currencyLabel, group?.totalFund)}
-                  </h1>
-                </div>
-              </Col>
-
-              <Col xs={24} md={8}>
-                <div className="rounded-xl bg-[#11B981] text-white p-6">
-                  <Text className="text-white">Completed Rounds</Text>
-                  <h1 level={3} className="text-white text-3xl font-bold">
-                    {group?.completedRoundCount}
-                  </h1>
-                </div>
-              </Col>
-            </Row>
+            )}
           </div>
-        </Card>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatTile
+              bg="bg-sc-blue-100/80"
+              iconBg="bg-white"
+              icon={<Layers size={24} className="text-primary" />}
+              label="Total Rounds"
+              value={rounds.length}
+            />
+            <StatTile
+              bg="bg-amber-100/70"
+              iconBg="bg-white"
+              icon={<Coins size={24} className="text-sc-gold-600" />}
+              label="Total Group Value"
+              value={formatCurrency(group?.currencyLabel, group?.totalFund)}
+            />
+            <StatTile
+              bg="bg-green-100/60"
+              iconBg="bg-white"
+              icon={
+                <CheckCircle2 size={28} className="fill-green-600 text-white" />
+              }
+              label="Completed Rounds"
+              value={group?.completedRoundCount}
+            />
+          </div>
+        </div>
       )}
-      <Row gutter={[24, 24]}>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {loading ? (
-          [...Array(6)].map((_, index) => (
-            <Col xs={24} md={12} xl={8} key={index}>
-              <RoundCardSkeleton />
-            </Col>
-          ))
+          [...Array(6)].map((_, index) => <RoundCardSkeleton key={index} />)
         ) : rounds.length === 0 ? (
-          <Col span={24}>
+          <div className="md:col-span-2 xl:col-span-3">
             <EmptyState
               message="No rounds available"
               subtitle="Rounds will appear once they are created"
             />
-          </Col>
+          </div>
         ) : (
           [...rounds]
             .sort((a, b) => {
@@ -370,21 +435,42 @@ export default function FundManagerGroupRound() {
               return roundA - roundB;
             })
             .map((round, index) => (
-              <Col xs={24} md={12} xl={8} key={round.id}>
-                <RoundCard round={round} index={index} />
-              </Col>
+              <RoundCard key={round.id} round={round} index={index} />
             ))
         )}
-      </Row>
+      </div>
       {console.log("Round data", rounds)}
 
-      <div className="h-[300px] mt-8">
-        {loading ? (
-          <div className="h-full w-full rounded-xl bg-gray-200 animate-pulse" />
-        ) : rounds.length ? (
-          <Line data={chartJsData} options={chartOptions} />
-        ) : null}
-      </div>
+      {loading ? (
+        <div className="h-[300px] mt-5 w-full rounded-2xl bg-slate-200 animate-pulse" />
+      ) : rounds.length ? (
+        <div className="mt-5 bg-white rounded-2xl border border-slate-100 shadow-sm px-5 py-4">
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-sc-blue-100 flex items-center justify-center shrink-0">
+                <BarChart3 size={18} className="text-primary" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-sc-ink-900">
+                  Payout Trend
+                </p>
+                <p className="text-xs text-slate-500">
+                  Payout amount across rounds
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span className="relative w-8 h-0.5 bg-primary rounded">
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-primary" />
+              </span>
+              Payout Amount
+            </div>
+          </div>
+          <div className="h-[220px]">
+            <Line data={chartJsData} options={chartOptions} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

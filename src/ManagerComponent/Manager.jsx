@@ -2,14 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Select } from "antd";
 import {
-  User,
+  Search,
   Mail,
   Phone,
   Globe,
   MapPin,
   Building2,
   Coins,
-  X,
+  RotateCcw,
+  Briefcase,
   Users,
   SlidersHorizontal,
   ChevronRight,
@@ -19,7 +20,6 @@ import { formatCurrency } from "../utils/formatCurrency";
 import { getAllFundManager } from "../api/api";
 import ReactCountryFlag from "react-country-flag";
 import EmptyState from "../AdminComponent/EmptyState";
-import ManualPagination from "../AdminComponent/Pagination";
 import { getInitials } from "../utils/getInitials";
 
 const { Option } = Select;
@@ -38,7 +38,7 @@ const ALL_CURRENCIES = ["INR", "AUD", "USD", "GBP", "CNY"];
 
 /* ── small reusable label ── */
 const FieldLabel = ({ children }) => (
-  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+  <label className="block text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
     {children}
   </label>
 );
@@ -47,12 +47,12 @@ const FieldLabel = ({ children }) => (
 const IconInput = ({ icon: Icon, ...props }) => (
   <div className="relative flex items-center group">
     <Icon
-      size={14}
+      size={16}
       className="absolute left-3 text-slate-400 group-focus-within:text-primary pointer-events-none z-10 transition-colors"
     />
     <Input
       {...props}
-      className="pl-8 rounded-lg border-slate-200 w-full hover:border-primary/50 focus:border-primary transition-colors"
+      className="pl-9 h-10 rounded-lg border-slate-200 w-full hover:border-primary/50 focus:border-primary transition-colors"
       allowClear
     />
   </div>
@@ -126,18 +126,38 @@ export default function ManagerDetails() {
     fetchFundManager();
   }, [fetchFundManager]);
 
+  /* ── derived summary (display only) ── */
+  const activeCount = fundManager.filter((fm) => fm.managedGroups > 0).length;
+  const earningsTotals = fundManager.reduce((acc, fm) => {
+    Object.entries(fm.earnings || {}).forEach(([currency, amount]) => {
+      if (!currencyMeta[currency]) return;
+      acc[currency] = (acc[currency] || 0) + (Number(amount) || 0);
+    });
+    return acc;
+  }, {});
+  const earningsEntries = Object.entries(earningsTotals).sort(
+    ([a], [b]) => (a === "INR" ? -1 : b === "INR" ? 1 : 0),
+  );
+  const totalPages = Math.ceil(filteredManagers.length / itemsPerPage);
+
   /* ── skeleton ── */
   const SkeletonCard = () => (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 overflow-hidden relative flex flex-col items-center">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 overflow-hidden relative">
       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-slate-100/70 to-transparent" />
-      <div className="w-20 h-20 rounded-full bg-slate-200 mb-4" />
-      <div className="h-4 w-32 bg-slate-200 rounded mb-2" />
-      <div className="h-3 w-20 bg-slate-200 rounded mb-4" />
-      <div className="w-full space-y-3 mt-4">
-        <div className="h-10 bg-slate-200 rounded-xl" />
-        <div className="h-10 bg-slate-200 rounded-xl" />
+      <div className="flex items-center gap-4">
+        <div className="w-[88px] h-[88px] rounded-full bg-slate-200 shrink-0" />
+        <div className="flex-1 space-y-2">
+          <div className="h-4 w-36 bg-slate-200 rounded" />
+          <div className="h-3 w-44 bg-slate-200 rounded" />
+          <div className="h-3 w-24 bg-slate-200 rounded" />
+          <div className="h-5 w-16 bg-slate-200 rounded-full" />
+        </div>
       </div>
-      <div className="w-full mt-4 h-20 bg-slate-200 rounded-xl" />
+      <div className="grid grid-cols-2 gap-3 mt-4">
+        <div className="h-11 bg-slate-200 rounded-xl" />
+        <div className="h-11 bg-slate-200 rounded-xl" />
+      </div>
+      <div className="mt-3 h-[60px] bg-slate-200 rounded-xl" />
       <style>{`
         @keyframes shimmer {
           100% { transform: translateX(100%); }
@@ -146,38 +166,95 @@ export default function ManagerDetails() {
     </div>
   );
 
+  /* ── summary stat card ── */
+  const StatCard = ({ icon, iconBg, label, children }) => (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-5 py-4 flex items-center gap-5">
+      <div
+        className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}
+      >
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm text-slate-500">{label}</p>
+        {children}
+      </div>
+    </div>
+  );
+
   /* ── UI ── */
   return (
-    <div className="p-0 max-w-7xl mx-auto min-h-screen">
+    <div className="mx-auto min-h-screen">
       {/* Page header */}
-      <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
+      <div className="mb-5 flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-primary tracking-tight">
-            Group Admins overview
+          <h1 className="text-3xl font-bold text-sc-ink-900 tracking-tight">
+            Group Admins
           </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-base text-slate-500 mt-1">
             Manage and monitor all group admins
           </p>
         </div>
-        {!loading && (
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-100 text-xs font-medium text-slate-500">
-            <Users size={13} className="text-primary" />
-            {filteredManagers.length} manager{filteredManagers.length !== 1 ? "s" : ""}
-            {hasAnyFilter && ` of ${fundManager.length}`}
-          </div>
-        )}
+      </div>
+
+      {/* Summary stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+        <StatCard
+          label="Total Admins"
+          iconBg="bg-sc-blue-100"
+          icon={<Users size={24} className="text-primary" />}
+        >
+          <p className="text-2xl font-bold text-sc-ink-900 leading-tight mt-0.5">
+            {loading ? "—" : fundManager.length}
+          </p>
+        </StatCard>
+
+        <StatCard
+          label="Active Admins"
+          iconBg="bg-green-50"
+          icon={<span className="w-5 h-5 rounded-full bg-green-600" />}
+        >
+          <p className="text-2xl font-bold text-sc-ink-900 leading-tight mt-0.5">
+            {loading ? "—" : activeCount}
+          </p>
+        </StatCard>
+
+        <StatCard
+          label="Total Earnings"
+          iconBg="bg-amber-50"
+          icon={<Coins size={24} className="text-sc-gold-600" />}
+        >
+          {loading ? (
+            <p className="text-2xl font-bold text-sc-ink-900 leading-tight mt-0.5">—</p>
+          ) : earningsEntries.length === 0 ? (
+            <p className="text-2xl font-bold text-sc-ink-900 leading-tight mt-0.5">0</p>
+          ) : (
+            <div className="flex items-baseline flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
+              <p className="text-2xl font-bold text-sc-ink-900 leading-tight">
+                {formatCurrency(earningsEntries[0][0], earningsEntries[0][1])}
+              </p>
+              {earningsEntries.slice(1).map(([currency, amount]) => (
+                <span
+                  key={currency}
+                  className="text-sm font-semibold text-slate-500"
+                >
+                  {formatCurrency(currency, amount)}
+                </span>
+              ))}
+            </div>
+          )}
+        </StatCard>
       </div>
 
       {/* ═══════════════════ FILTER PANEL ═══════════════════ */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-6 py-5 mb-8">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-5 py-4 mb-5">
         {/* Panel header */}
-        <div className="flex items-start justify-between mb-5">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-              <SlidersHorizontal size={14} className="text-primary" />
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-sc-blue-100 flex items-center justify-center shrink-0">
+              <SlidersHorizontal size={18} className="text-primary" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+              <p className="text-base font-semibold text-sc-ink-900 flex items-center gap-2">
                 Filter managers
                 {activeFilterCount > 0 && (
                   <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-white text-[10px] font-semibold">
@@ -185,23 +262,23 @@ export default function ManagerDetails() {
                   </span>
                 )}
               </p>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Search and filter managers by name, contact, location, and
                 currency.
               </p>
             </div>
           </div>
 
-          {hasAnyFilter && (
-            <button
-              onClick={() => setFilters(EMPTY_FILTERS)}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium
-                         bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 active:scale-95 transition-all"
-            >
-              <X size={12} />
-              Clear all
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setFilters(EMPTY_FILTERS)}
+            disabled={!hasAnyFilter}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-primary
+                       hover:bg-sc-blue-100 disabled:opacity-50 disabled:hover:bg-transparent disabled:cursor-default transition-colors"
+          >
+            <RotateCcw size={16} />
+            Reset filters
+          </button>
         </div>
 
         {/* Row 1 — Name · Email · Mobile */}
@@ -209,7 +286,7 @@ export default function ManagerDetails() {
           <div>
             <FieldLabel>Name</FieldLabel>
             <IconInput
-              icon={User}
+              icon={Search}
               placeholder="Search by name..."
               value={filters.name}
               onChange={setFEvent("name")}
@@ -273,13 +350,10 @@ export default function ManagerDetails() {
             <FieldLabel>Currencies</FieldLabel>
             <Select
               mode="multiple"
-              className="w-full"
-              placeholder={
-                <span className="flex items-center gap-2 text-slate-400">
-                  <Coins size={14} />
-                  All currencies
-                </span>
-              }
+              className="w-full fm-currency-select"
+              style={{ minHeight: 40 }}
+              prefix={<Coins size={15} className="text-slate-400 mr-1" />}
+              placeholder={<span className="text-slate-500">All currencies</span>}
               value={filters.currencies}
               onChange={setF("currencies")}
               allowClear
@@ -311,14 +385,14 @@ export default function ManagerDetails() {
       {/* ════════════════ END FILTER PANEL ════════════════ */}
 
       {/* Cards grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {loading &&
           Array.from({ length: itemsPerPage }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
 
         {!loading && currentData.length === 0 && (
-          <div className="sm:col-span-2 lg:col-span-3">
+          <div className="md:col-span-2 xl:col-span-3">
             <EmptyState message="No group Admins match your filters" />
           </div>
         )}
@@ -326,12 +400,15 @@ export default function ManagerDetails() {
         {!loading &&
           currentData.map((fm) => {
             const isActive = fm.managedGroups > 0;
+            const earnings = Object.entries(fm.earnings || {}).filter(
+              ([currency]) => currencyMeta[currency],
+            );
             return (
               <div
                 key={fm.fundManagerId}
                 className="group relative bg-white rounded-2xl border border-slate-100 shadow-sm
                            hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20 transition-all duration-200
-                           p-6 flex flex-col items-center text-center cursor-pointer"
+                           p-5 flex flex-col cursor-pointer"
                 onClick={() =>
                   navigate(`/adminPanel/FundManager/${fm.fundManagerId}`)
                 }
@@ -341,104 +418,100 @@ export default function ManagerDetails() {
                   className="absolute top-5 right-5 text-slate-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200"
                 />
 
-                {fm.profileImage ? (
-                  <img
-                    src={fm.profileImage}
-                    alt={fm.fundManagerName}
-                    className={`w-20 h-20 rounded-full object-cover mb-4 ring-2 ring-offset-2 transition-shadow ${
-                      isActive ? "ring-green-200" : "ring-slate-200"
-                    }`}
-                  />
-                ) : (
-                  <div
-                    className={`w-20 h-20 rounded-full mb-4 bg-primary text-white ring-2 ring-offset-2
-                                text-xl font-semibold flex items-center justify-center ${
-                                  isActive ? "ring-green-200" : "ring-slate-200"
-                                }`}
-                  >
-                    {getInitials(fm.fundManagerName)}
+                {/* Identity */}
+                <div className="flex items-center gap-5">
+                  {fm.profileImage ? (
+                    <img
+                      src={fm.profileImage}
+                      alt={fm.fundManagerName}
+                      className={`w-[88px] h-[88px] rounded-full object-cover shrink-0 ring-2 ring-offset-2 ${
+                        isActive ? "ring-green-300" : "ring-slate-200"
+                      }`}
+                    />
+                  ) : (
+                    <div
+                      className={`w-[88px] h-[88px] rounded-full shrink-0 bg-primary text-white ring-2 ring-offset-2
+                                  text-2xl font-semibold flex items-center justify-center ${
+                                    isActive ? "ring-green-300" : "ring-slate-200"
+                                  }`}
+                    >
+                      {getInitials(fm.fundManagerName)}
+                    </div>
+                  )}
+
+                  <div className="min-w-0 flex-1 pr-4">
+                    <h3 className="text-base font-bold text-sc-ink-900 truncate">
+                      {fm.fundManagerName}
+                    </h3>
+                    <p className="text-sm text-slate-600 truncate mt-0.5">
+                      {fm.emailId || "N/A"}
+                    </p>
+                    <p className="text-sm text-slate-600 mt-0.5">
+                      {fm.mobileNumber || "N/A"}
+                    </p>
+                    <span
+                      className={`mt-2 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold ${
+                        isActive
+                          ? "bg-green-50 text-green-700"
+                          : "bg-red-50 text-red-600"
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isActive ? "bg-green-600" : "bg-red-500"
+                        }`}
+                      />
+                      {isActive ? "Active" : "Inactive"}
+                    </span>
                   </div>
-                )}
-
-                <div className="space-y-1">
-                  {/* Fund Manager Name */}
-                  <h3 className="text-lg font-semibold text-primary-hover">
-                    {fm.fundManagerName}
-                  </h3>
-
-                  {/* Email */}
-                  <p className="text-sm text-gray-600 break-all">
-                    {fm.emailId || "N/A"}
-                  </p>
-
-                  {/* Mobile */}
-                  <p className="text-sm text-gray-500">
-                    {fm.mobileNumber || "N/A"}
-                  </p>
                 </div>
 
-                <span
-                  className={`mt-3 inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-xs font-medium ${
-                    isActive
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      isActive ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  />
-                  {isActive ? "Active" : "Inactive"}
-                </span>
-
-                <div className="w-full mt-6 space-y-3">
-                  <div className="flex items-center justify-between bg-blue-50 rounded-xl px-4 py-3">
-                    <span className="text-sm text-slate-600">Groups</span>
-                    <span className="font-semibold text-primary">
+                {/* Groups · Members */}
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  <div className="flex items-center gap-2.5 bg-slate-50 rounded-xl px-4 py-3">
+                    <Briefcase size={17} className="text-primary shrink-0" />
+                    <span className="text-sm text-slate-700">Groups</span>
+                    <span className="ml-auto text-base font-bold text-primary">
                       {fm.managedGroups}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between bg-blue-50 rounded-xl px-4 py-3">
-                    <span className="text-sm text-slate-600">Members</span>
-                    <span className="font-semibold text-primary">
+                  <div className="flex items-center gap-2.5 bg-slate-50 rounded-xl px-4 py-3">
+                    <Users size={17} className="text-primary shrink-0" />
+                    <span className="text-sm text-slate-700">Members</span>
+                    <span className="ml-auto text-base font-bold text-primary">
                       {fm.groupMembers}
                     </span>
                   </div>
                 </div>
 
-                <div className="w-full mt-4 bg-secondary rounded-xl px-4 py-3">
-                  <p className="text-sm font-medium text-primary-hover mb-2 text-left">
+                {/* Earnings */}
+                <div className="mt-3 bg-amber-100/60 rounded-xl px-4 py-3">
+                  <p className="text-sm font-semibold text-sc-ink-900 mb-1.5">
                     Earnings
                   </p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {fm.earnings && Object.keys(fm.earnings).length > 0 ? (
-                      Object.entries(fm.earnings).map(([currency, amount]) => {
-                        const meta = currencyMeta[currency];
-                        if (!meta) return null;
-                        return (
-                          <div
-                            key={currency}
-                            className="flex items-center justify-between
-                                       bg-white/70 rounded-lg px-3 py-2 hover:bg-white transition-colors"
-                          >
-                            <ReactCountryFlag
-                              svg
-                              countryCode={meta.flag}
-                              style={{ fontSize: "1.2em" }}
-                            />
-                            <span className="text-sm font-semibold text-primary">
-                              {formatCurrency(currency, amount)}
-                            </span>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <p className="text-xs text-slate-500 text-left">
+                  {earnings.length > 0 ? (
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5">
+                      {earnings.map(([currency, amount]) => (
+                        <div key={currency} className="flex items-center gap-3">
+                          <ReactCountryFlag
+                            svg
+                            countryCode={currencyMeta[currency].flag}
+                            style={{ width: "1.6em", height: "1.2em", borderRadius: 2 }}
+                          />
+                          <span className="text-xl font-bold text-sc-ink-900">
+                            {formatCurrency(currency, amount)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <Coins size={20} className="text-sc-gold-600" />
+                      <span className="text-sm text-slate-600">
                         No earnings yet
-                      </p>
-                    )}
-                  </div>
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -447,12 +520,31 @@ export default function ManagerDetails() {
 
       {/* Pagination */}
       {!loading && filteredManagers.length > itemsPerPage && (
-        <ManualPagination
-          total={filteredManagers.length}
-          pageSize={itemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <div className="flex justify-center items-center gap-6 mt-6 mb-2">
+          <button
+            type="button"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => p - 1)}
+            className="px-4 py-1.5 rounded-lg text-sm font-medium transition-colors
+                       bg-primary text-white hover:bg-sc-blue-700
+                       disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-sm font-medium text-sc-ink-900">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((p) => p + 1)}
+            className="px-5 py-1.5 rounded-lg text-sm font-medium transition-colors
+                       bg-primary text-white hover:bg-sc-blue-700
+                       disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,34 +1,62 @@
+/* -------------------- Sidebar -------------------- */
+
+.sidebar-sider,
+.sidebar-sider .ant-layout-sider-children {
+  height: 100%;
+}
+
 /* -------------------- Menu Styles -------------------- */
 
-/* Default unselected menu items */
+.custom-menu.ant-menu {
+  background: transparent !important;
+}
+
 .custom-menu .ant-menu-item {
-  color: white !important; /* white text */
-  font-size: 18px;
+  height: 44px !important;
+  line-height: 44px !important;
+  margin: 4px 0 !important;
+  width: 100% !important;
+  border-radius: 12px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-/* Unselected menu item links */
+.custom-menu .ant-menu-item .ant-menu-item-icon {
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
 .custom-menu .ant-menu-item a {
-  color: white !important;
-  font-size: 18px;
+  color: inherit !important;
 }
 
-/* Selected menu item */
+/* Hover (unselected) */
+.custom-menu .ant-menu-item:not(.ant-menu-item-selected):hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.custom-menu .ant-menu-item:not(.ant-menu-item-selected):hover .ant-menu-item-icon {
+  transform: scale(1.1);
+}
+
+/* Selected */
 .custom-menu .ant-menu-item-selected {
-  background-color: #ffc404 !important; /* Tailwind ffc404 */
-  color: white !important;
+  background: linear-gradient(90deg, #ffc72c 0%, #e8a90b 100%) !important;
+  color: #0a1f6b !important;
   font-weight: 600;
+  box-shadow: 0 6px 16px -6px rgba(232, 169, 11, 0.7);
 }
 
-/* Selected menu item link text */
 .custom-menu .ant-menu-item-selected a {
-  color: white !important;
-  font-weight: 600;
+  color: #0a1f6b !important;
 }
 
-/* Hover effect on menu items */
-.custom-menu .ant-menu-item:hover {
-  background-color: #ffc404 !important; /* subtle secondary hover */
-  color: white !important;
+/* Collapsed: center icons */
+.custom-menu.ant-menu-inline-collapsed > .ant-menu-item {
+  padding-inline: calc(50% - 9px) !important;
 }
 
 /* Hide scrollbar but keep scrolling */
