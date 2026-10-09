@@ -336,13 +336,13 @@ const Members = () => {
                   <div className="bg-red-50/70 rounded-xl p-3 text-center border border-red-100/50">
                     <p className="text-[11px] text-gray-500 mb-1 font-medium">Pending</p>
                     <p className="font-bold text-red-600 text-sm">
-                      ₹{member.pendingDueAmount?.toLocaleString() || "0"}
+                      {member.pendingDueAmount?.toLocaleString() || "0"}
                     </p>
                   </div>
                   <div className="bg-green-50/70 rounded-xl p-3 text-center border border-green-100/50">
                     <p className="text-[11px] text-gray-500 mb-1 font-medium">Paid</p>
                     <p className="font-bold text-green-600 text-sm">
-                      ₹{member.completedDueAmount?.toLocaleString() || "0"}
+                      {member.completedDueAmount?.toLocaleString() || "0"}
                     </p>
                   </div>
                 </div>

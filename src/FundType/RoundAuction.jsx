@@ -7,10 +7,23 @@ import {
 import { getTransactionByRoundID } from "../api/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  LuCircleCheck,
+  LuCrown,
+  LuWallet,
+  LuDatabase,
+  LuStar,
+  LuMapPin,
+  LuTrophy,
+  LuShuffle,
+  LuTrendingUp,
+  LuTrendingDown,
+} from "react-icons/lu";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  LineChart,
+  ComposedChart,
+  Area,
   Line,
   XAxis,
   YAxis,
@@ -374,7 +387,7 @@ export default function RoundAuction() {
 
   if (!transactionData) {
     return (
-      <div className="p-6 min-h-screen animate-pulse">
+      <div className="min-h-screen animate-pulse">
         {/* Header */}
         <div className="mb-6">
           <div className="h-8 w-64 bg-gray-200 rounded mb-3" />
@@ -531,13 +544,35 @@ export default function RoundAuction() {
   const isLastRound = totalMember && roundNumber === totalMember;
   const hasBidding = biddingHistory && biddingHistory.length > 0;
 
+  const bidAmounts = (biddingHistory || []).map((b) => Number(b.bidAmount) || 0);
+  const highestIdx = bidAmounts.length
+    ? bidAmounts.indexOf(Math.max(...bidAmounts))
+    : -1;
+  const lowestIdx = bidAmounts.length
+    ? bidAmounts.lastIndexOf(Math.min(...bidAmounts))
+    : -1;
+  const averageBid = bidAmounts.length
+    ? Math.round(bidAmounts.reduce((sum, n) => sum + n, 0) / bidAmounts.length)
+    : 0;
+  const money = (v) =>
+    `${currencySymbol} ${formatAmount(v, transactionData.currency)}`;
+
 const CustomDot = (props) => {
-  const { cx, cy, payload } = props;
+  const { cx, cy, payload, index } = props;
 
   if (!cx || !cy) return null;
 
-  const size = 60; // profile image diameter
+  const size = 26; // profile image diameter
   const radius = size / 2;
+  const isHigh = index === highestIdx;
+  const isLow = index === lowestIdx && lowestIdx !== highestIdx;
+  const ring = isHigh ? "#22c55e" : isLow ? "#8b5cf6" : "#fff";
+  const pillText = isHigh
+    ? `High ${money(payload.bid)}`
+    : isLow
+      ? `Low ${money(payload.bid)}`
+      : null;
+  const pillW = pillText ? pillText.length * 6.4 + 18 : 0;
 
   return (
     <g>
@@ -562,8 +597,8 @@ const CustomDot = (props) => {
             cy={cy}
             r={radius}
             fill="none"
-            stroke="#fff"
-            strokeWidth={2}
+            stroke={ring}
+            strokeWidth={isHigh || isLow ? 3 : 2}
           />
         </>
       ) : (
@@ -572,16 +607,16 @@ const CustomDot = (props) => {
             cx={cx}
             cy={cy}
             r={radius}
-            fill="#0154D8"
-            stroke="#fff"
-            strokeWidth={2}
+            fill="#4f46e5"
+            stroke={ring}
+            strokeWidth={isHigh || isLow ? 3 : 2}
           />
 
           <text
             x={cx}
-            y={cy + 5}
+            y={cy + 4}
             textAnchor="middle"
-            fontSize="14"
+            fontSize="10"
             fill="#fff"
             fontWeight="bold"
           >
@@ -592,6 +627,33 @@ const CustomDot = (props) => {
               .substring(0, 2)}
           </text>
         </>
+      )}
+
+      {pillText && (
+        <g>
+          <rect
+            x={cx - pillW / 2}
+            y={cy - radius - 30}
+            width={pillW}
+            height={22}
+            rx={11}
+            fill={isHigh ? "#16a34a" : "#2563eb"}
+          />
+          <path
+            d={`M${cx - 5} ${cy - radius - 9} L${cx + 5} ${cy - radius - 9} L${cx} ${cy - radius - 3} Z`}
+            fill={isHigh ? "#16a34a" : "#2563eb"}
+          />
+          <text
+            x={cx}
+            y={cy - radius - 15}
+            textAnchor="middle"
+            fontSize="11"
+            fontWeight="600"
+            fill="#fff"
+          >
+            {pillText}
+          </text>
+        </g>
       )}
     </g>
   );
@@ -605,157 +667,252 @@ const CustomDot = (props) => {
   );
 
   return (
-    <div className="p-6 min-h-screen ">
+    <div className="min-h-screen space-y-5">
       {/* Back */}
       <button
-        className="flex items-center text-sm text-indigo-600 mb-4"
+        className="flex items-center gap-2 text-[14px] font-medium text-blue-700 hover:text-blue-800 transition-colors"
         onClick={() => navigate(-1)}
       >
-        <FaArrowLeft className="mr-2" />
-        Back
+        <FaArrowLeft size={12} />
+        Back to Group Details
       </button>
 
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-2">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">Round {roundNumber} Overview</h1>
+          <h1 className="text-[30px] leading-tight font-extrabold text-slate-900 tracking-tight">
+            Round {roundNumber} Overview
+          </h1>
 
-          <p className="text-gray-500">
-            Status : {roundStatus}
-            {frequency && <span className="mx-2 text-gray-300">|</span>}
-            {frequency && <span>{frequency}</span>}
-          </p>
+          <div className="flex items-center gap-2 mt-2">
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[12px] font-semibold capitalize ring-1 ${
+                isCompleted
+                  ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
+                  : "bg-amber-50 text-amber-700 ring-amber-200"
+              }`}
+            >
+              {isCompleted ? (
+                <LuCircleCheck size={13} className="text-emerald-600" />
+              ) : (
+                <FaClock size={11} />
+              )}
+              {roundStatus}
+            </span>
+            {frequency && (
+              <span className="inline-flex items-center px-3 py-0.5 rounded-full text-[12px] font-semibold bg-blue-50 text-blue-700 ring-1 ring-blue-200">
+                {frequency}
+              </span>
+            )}
+          </div>
         </div>
 
         {roundStartDate && (
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <FaCalendarAlt className="text-indigo-400" />
-            Round started {roundStart.date} at {roundStart.time}
+          <div className="flex items-center gap-2.5 text-[13px] text-slate-600">
+            <FaCalendarAlt className="text-blue-600 text-[16px]" />
+            Auction Date : {roundStart.date}, {roundStart.time}
           </div>
         )}
       </div>
 
       {/* Winner Summary */}
-      <div className="bg-white rounded-xl border p-5 mb-6">
-        <h3 className="font-semibold mb-4">Winner Summary</h3>
+      {isCompleted ? (
+        <div className="relative overflow-hidden rounded-2xl ring-1 ring-amber-100 bg-gradient-to-r from-amber-50/80 via-amber-50/40 to-amber-50/80 shadow-sm px-5 py-4">
+          <p className="flex items-center gap-2 text-[15px] font-semibold text-amber-700 mb-2">
+            <LuCrown className="text-amber-500" size={18} />
+            Winner
+          </p>
 
-        {isCompleted ? (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="md:col-span-2 flex items-center gap-4">
-              <Avatar
-                name={winnerName}
-                imageUrl={winnerProfileImage}
-                size={14}
-              />
+          <div className="relative z-10 flex flex-col xl:flex-row xl:items-center gap-5 xl:pr-32">
+            <div className="flex items-center gap-4 xl:pr-6 xl:border-r xl:border-amber-200/60">
+              <div className="rounded-full p-1 bg-gradient-to-br from-amber-300 via-rose-300 to-violet-300">
+                <div className="rounded-full p-0.5 bg-white">
+                  <Avatar
+                    name={winnerName}
+                    imageUrl={winnerProfileImage}
+                    size={14}
+                  />
+                </div>
+              </div>
               <div>
-                <p className="text-sm text-gray-500">Winner Name</p>
-                <p className="font-semibold text-lg">{winnerName}</p>
-                <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-green-100 text-green-600">
-                  {roundStatus}
-                </span>
+                <div className="flex items-center gap-2">
+                  <p className="text-[22px] font-bold text-slate-900 leading-tight">
+                    {winnerName}
+                  </p>
+                  <span className="px-2.5 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-100 text-emerald-700">
+                    Winner
+                  </span>
+                </div>
               </div>
             </div>
 
-            <SummaryItem
-              label="Payout Amount"
-              value={`${currencySymbol}${formatAmount(settlementAmount, transactionData.currency)}`}
-            />
-            <SummaryItem
-              label="Total Fund"
-              value={`${currencySymbol}${formatAmount(totalFundValue, transactionData.currency)}`}
-            />
-            <SummaryItem
-              label="Bonus"
-              value={`${currencySymbol}${formatAmount(dividendAmount, transactionData.currency)}`}
-            />
-            <SummaryItem
-              label="Minimum Bid"
-              value={`${currencySymbol}${formatAmount(minimumBidAmount, transactionData.currency)}`}
-            />
+            <div className="grid grid-cols-2 md:grid-cols-4 flex-1 gap-4 md:divide-x md:divide-amber-200/60">
+              <SummaryItem
+                icon={LuWallet}
+                tint="bg-amber-100 text-amber-600"
+                label="Payout"
+                value={money(settlementAmount)}
+              />
+              <SummaryItem
+                icon={LuDatabase}
+                tint="bg-violet-100 text-violet-600"
+                label="Total Fund"
+                value={money(totalFundValue)}
+              />
+              <SummaryItem
+                icon={LuStar}
+                tint="bg-blue-100 text-blue-600"
+                label="Bonus"
+                value={money(dividendAmount)}
+              />
+              <SummaryItem
+                icon={LuMapPin}
+                tint="bg-violet-100 text-violet-600"
+                label="Minimum Bid"
+                value={money(minimumBidAmount)}
+              />
+            </div>
           </div>
-        ) : (
-          <div className="flex items-center gap-3 bg-yellow-50 text-yellow-700 rounded-lg p-4">
-            <span className="inline-block px-3 py-1 text-xs rounded-full bg-yellow-100 font-semibold">
+
+          <LuTrophy
+            className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 hidden xl:block text-amber-200 text-[96px]"
+            aria-hidden="true"
+          />
+        </div>
+      ) : (
+        <div className={`${cardCls} flex items-center gap-4 p-5`}>
+          <span className="h-11 w-11 shrink-0 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
+            <FaClock size={18} />
+          </span>
+          <div>
+            <span className="inline-block px-3 py-0.5 text-[12px] rounded-full bg-amber-100 text-amber-700 font-semibold capitalize">
               {roundStatus}
             </span>
-            <p className="text-sm">
+            <p className="text-[13px] text-slate-600 mt-1">
               This round hasn't completed yet — winner, payout and bonus will
               appear once it's settled.
             </p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {roundStatus !== "completed" ? (
-        <div className="bg-white rounded-xl border p-5 lg:col-span-2 flex flex-col items-center justify-center text-center py-16">
-          <FaClock className="text-4xl text-indigo-300 mb-3" />
-          <h3 className="font-semibold text-gray-700">
-            Round Still In Progress
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
+        <div className={`${cardCls} flex flex-col items-center justify-center text-center py-16`}>
+          <span className="h-14 w-14 rounded-full bg-indigo-50 text-indigo-400 flex items-center justify-center mb-3">
+            <FaClock size={24} />
+          </span>
+          <h3 className="font-bold text-slate-800">Round Still In Progress</h3>
+          <p className="text-sm text-slate-500 mt-1">
             Bidding summary and trend chart will appear once this round is
             completed.
           </p>
         </div>
       ) : isLastRound ? (
-        <div className="bg-white rounded-xl border p-5 lg:col-span-2 flex flex-col items-center justify-center text-center py-16">
-          <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
-            🏆
+        <div className={`${cardCls} flex flex-col items-center justify-center text-center py-16`}>
+          <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+            <LuTrophy size={26} />
           </div>
-          <h3 className="font-semibold text-gray-700">
+          <h3 className="font-bold text-slate-800">
             Last Round — Direct Selection
           </h3>
-          <p className="text-sm text-gray-500 mt-1 max-w-sm">
+          <p className="text-sm text-slate-500 mt-1 max-w-sm">
             This is the final round of the group. No bidding took place — the
             winner was allotted directly as the last remaining member.
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border p-5 lg:col-span-2">
-          <h3 className="font-semibold mb-4">Bidding Summary</h3>
+        <>
+          {/* Bidding Summary */}
+          <div className={`${cardCls} p-5`}>
+            <h3 className="text-[17px] font-bold text-slate-900 mb-4">
+              Bidding Summary
+            </h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Stat label="Total Bids" value={biddingHistory?.length} />
-            <Stat label="Members" value={totalMember} />
-            <Stat
-              label="Lowest Bid"
-              value={`${currencySymbol}${formatAmount(minimumBidAmount, transactionData.currency)}`}
-              color="text-green-600"
-            />
-            <Stat
-              label="Highest Bid"
-              value={`${currencySymbol}${formatAmount(maximumBidAmount, transactionData.currency)}`}
-              color="text-red-500"
-            />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <Stat
+                icon={LuShuffle}
+                tint="bg-blue-100 text-blue-700"
+                bg="bg-slate-50"
+                label="Total Bids"
+                value={biddingHistory?.length}
+              />
+              <Stat
+                icon={LuTrendingUp}
+                tint="bg-emerald-100 text-emerald-600"
+                bg="bg-emerald-50/50"
+                label="Highest Bid"
+                value={money(maximumBidAmount)}
+                color="text-emerald-600"
+              />
+              <Stat
+                icon={LuTrendingDown}
+                tint="bg-blue-100 text-blue-700"
+                bg="bg-blue-50/50"
+                label="Lowest Bid"
+                value={money(minimumBidAmount)}
+                color="text-blue-700"
+              />
+              <Stat
+                icon={LuCircleCheck}
+                tint="bg-violet-100 text-violet-600"
+                bg="bg-violet-50/50"
+                label="Average Bid"
+                value={money(averageBid)}
+                color="text-violet-700"
+              />
+            </div>
           </div>
 
           {/* Bidding Trend - Line Chart */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h4 className="text-lg font-semibold text-gray-800">
-                  Bidding Trend
-                </h4>
-                <p className="text-sm text-gray-500">
-                  Bid amount movement over time
-                </p>
-              </div>
+          <div className={`${cardCls} p-5`}>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+              <h3 className="text-[17px] font-bold text-slate-900">
+                Bidding Trend
+              </h3>
 
-              <div className="bg-indigo-100 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                {chartData?.length} Points
+              <div className="flex items-center gap-4 text-[11px] text-slate-600">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-blue-600" />
+                  Bid Amount
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  Highest Bid
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-violet-500" />
+                  Lowest Bid
+                </span>
               </div>
             </div>
 
-            <div className="h-[320px] w-full bg-gray-50 rounded-2xl p-4 border">
+            <div className="h-[220px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="time" tick={{ fontSize: 12 }} />
+                <ComposedChart
+                  data={chartData}
+                  margin={{ top: 36, right: 24, left: 4, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient id="bidFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" stopOpacity={0.22} />
+                      <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid stroke="#f1f5f9" vertical />
+                  <XAxis
+                    dataKey="time"
+                    tick={{ fontSize: 11, fill: "#64748b" }}
+                    axisLine={{ stroke: "#e2e8f0" }}
+                    tickLine={false}
+                  />
                   <YAxis
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 11, fill: "#64748b" }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={70}
                     domain={["dataMin - 500", "dataMax + 500"]}
                     tickFormatter={(v) =>
-                      formatAmount(v, transactionData.currency)
+                      `${currencySymbol} ${formatAmount(v, transactionData.currency)}`
                     }
                   />
                   <Tooltip
@@ -780,158 +937,166 @@ const CustomDot = (props) => {
                       );
                     }}
                   />
+                  <Area
+                    type="monotone"
+                    dataKey="bid"
+                    stroke="none"
+                    fill="url(#bidFill)"
+                    tooltipType="none"
+                    isAnimationActive={false}
+                  />
                   <Line
                     type="monotone"
                     dataKey="bid"
-                    stroke="#0154D8"
-                    strokeWidth={3}
+                    stroke="#2563eb"
+                    strokeWidth={2}
+                    strokeDasharray="0"
                     dot={<CustomDot />}
-                    activeDot={{ r: 8 }}
+                    activeDot={{ r: 6 }}
                   />
-                </LineChart>
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
-      )}
-
-      {isCompleted && !isLastRound && (
-        <div className="flex items-center justify-end gap-3 mb-5">
-          <Button
-            label="Download Receipt"
-            onClick={() => generateReceiptPDF(transactionData, currencySymbol)}
-          />
-        </div>
+        </>
       )}
 
       {isCompleted && (
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b bg-gray-50">
+        <div className={`${cardCls} p-5`}>
+          <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                Bid History
+              <h3 className="text-[17px] font-bold text-slate-900">
+                Bid History{" "}
+                <span className="text-[14px] font-semibold text-slate-700">
+                  ({biddingHistory?.length || 0} bids)
+                </span>
               </h3>
-              <p className="text-sm text-gray-500">
-                All bidding activities for this round
+              <p className="text-[13px] text-slate-500 mt-0.5">
+                All bids placed in this auction round.
               </p>
             </div>
-            <div className="bg-indigo-100 text-indigo-600 text-sm font-medium px-3 py-1 rounded-full">
-              {biddingHistory?.length || 0} Bids
-            </div>
+            {!isLastRound && (
+              <Button
+                label="Download Receipt"
+                onClick={() => generateReceiptPDF(transactionData, currencySymbol)}
+              />
+            )}
           </div>
 
           {hasBidding ? (
             <div className="overflow-x-auto">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[700px]">
-                  <thead className="bg-gray-50 border-b">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        #
-                      </th>
+              <table className="w-full min-w-[700px]">
+                <thead>
+                  <tr className="bg-slate-50">
+                    <th className="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wide rounded-l-xl">
+                      #
+                    </th>
 
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Member
-                      </th>
+                    <th className="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
+                      Member
+                    </th>
 
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Bid Amount
-                      </th>
+                    <th className="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
+                      Bid Amount
+                    </th>
 
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Bid Time
-                      </th>
+                    <th className="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
+                      Bid Time
+                    </th>
 
-                      <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
+                    <th className="px-4 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wide rounded-r-xl">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
 
-                  <tbody className="divide-y divide-gray-100">
-                    {biddingHistory?.map((item, index) => {
-                      const bidTime = formatDateTime(item.bidAskAt);
-                      const isWinningBid = index === winningBidIndex;
-                      return (
-                        <tr
-                          key={item.userId + item.bidAskAt}
-                          className={`transition-all duration-200 hover:bg-gray-50 ${
-                            isWinningBid ? "bg-yellow-50" : "bg-white"
-                          }`}
-                        >
-                          {/* Rank */}
-                          <td className="px-6 py-4">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
-                              {index + 1}
-                            </div>
-                          </td>
+                <tbody className="divide-y divide-slate-100">
+                  {biddingHistory?.map((item, index) => {
+                    const bidTime = formatDateTime(item.bidAskAt);
+                    const isWinningBid = index === winningBidIndex;
+                    return (
+                      <tr
+                        key={item.userId + item.bidAskAt}
+                        className={`transition-colors duration-200 ${
+                          isWinningBid
+                            ? "bg-amber-50/70"
+                            : "bg-white hover:bg-slate-50/70"
+                        }`}
+                      >
+                        {/* Rank */}
+                        <td className="px-4 py-2.5">
+                          <div
+                            className={`flex items-center justify-center w-7 h-7 rounded-lg text-[13px] font-semibold ring-1 ${
+                              rankStyles[index] ??
+                              "bg-white text-slate-700 ring-slate-200"
+                            }`}
+                          >
+                            {index + 1}
+                          </div>
+                        </td>
 
-                          {/* User */}
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-3">
-                              <Avatar
-                                name={item.userName}
-                                imageUrl={item.userProfileImage}
-                                size={10}
-                              />
+                        {/* User */}
+                        <td className="px-4 py-2.5">
+                          <div className="flex items-center gap-3">
+                            <Avatar
+                              name={item.userName}
+                              imageUrl={item.userProfileImage}
+                              size={9}
+                            />
 
-                              <div>
-                                <p className="font-medium text-gray-800">
-                                  {item.userName}
-                                </p>
-
-                                <p className="text-xs text-gray-400">
-                                  ID: {item.userId?.slice(0, 8)}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-
-                          {/* Amount */}
-                          <td className="px-6 py-4">
-                            <p className="font-semibold text-gray-900 text-base">
-                              {currencySymbol}
-                              {formatAmount(
-                                item.bidAmount,
-                                transactionData.currency,
-                              )}
-                            </p>
-                          </td>
-
-                          {/* Time */}
-                          <td className="px-6 py-4">
                             <div>
-                              <p className="text-sm font-medium text-gray-700">
-                                {bidTime.time}
+                              <p className="text-[13px] font-semibold text-slate-800">
+                                {item.userName}
                               </p>
 
-                              <p className="text-xs text-gray-400">
-                                {bidTime.date}
+                              <p className="text-[11px] text-slate-400">
+                                ID: {item.userId?.slice(0, 8)}
                               </p>
                             </div>
-                          </td>
+                          </div>
+                        </td>
 
-                          {/* Status */}
-                          <td className="px-6 py-4 text-center">
-                            {isWinningBid ? (
-                              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                🏆 Winner
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
-                                Participated
-                              </span>
+                        {/* Amount */}
+                        <td className="px-4 py-2.5">
+                          <p className="font-bold text-slate-900 text-[15px] tabular-nums">
+                            {currencySymbol}{" "}
+                            {formatAmount(
+                              item.bidAmount,
+                              transactionData.currency,
                             )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                          </p>
+                        </td>
+
+                        {/* Time */}
+                        <td className="px-4 py-2.5">
+                          <p className="text-[12px] text-slate-600 leading-snug">
+                            {bidTime.date},
+                            <br />
+                            {bidTime.time}
+                          </p>
+                        </td>
+
+                        {/* Status */}
+                        <td className="px-4 py-2.5">
+                          {isWinningBid ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-amber-100 text-amber-800">
+                              <LuCrown className="text-amber-500" size={13} />
+                              Won
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-3 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600">
+                              Participated
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           ) : (
-            <div className="px-6 py-10 text-center text-gray-500 text-sm">
+            <div className="px-6 py-10 text-center text-slate-500 text-sm">
               {isLastRound
                 ? "This was the final round — winner was selected directly, no bids were placed."
                 : "No bids recorded for this round."}
@@ -945,25 +1110,52 @@ const CustomDot = (props) => {
 
 /* ---------- Components ---------- */
 
-const SummaryItem = ({ label, value }) => (
-  <div>
-    <p className="text-sm text-gray-500">{label}</p>
+const cardCls =
+  "bg-white rounded-2xl ring-1 ring-slate-100 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.08)]";
 
-    <p className="font-semibold">{value}</p>
+const rankStyles = [
+  "bg-amber-100 text-amber-700 ring-amber-300",
+  "bg-white text-slate-700 ring-slate-300",
+  "bg-orange-50 text-orange-700 ring-orange-200",
+];
+
+const SummaryItem = ({ icon: Icon, tint, label, value }) => (
+  <div className="flex items-start gap-3 md:pl-4 first:pl-0">
+    <span
+      className={`h-9 w-9 shrink-0 rounded-lg flex items-center justify-center ${tint}`}
+    >
+      <Icon size={17} />
+    </span>
+    <div className="min-w-0">
+      <p className="text-[12px] text-slate-500">{label}</p>
+
+      <p className="text-[18px] font-bold text-slate-900 tabular-nums whitespace-nowrap">
+        {value}
+      </p>
+    </div>
   </div>
 );
 
-const Stat = ({ label, value, color = "text-gray-900" }) => (
-  <div className="bg-gray-50 rounded-lg p-3">
-    <p className="text-xs text-gray-500">{label}</p>
+const Stat = ({ icon: Icon, tint, bg, label, value, color = "text-slate-900" }) => (
+  <div className={`${bg} rounded-xl px-4 py-3.5 flex items-center gap-3`}>
+    <span
+      className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center ${tint}`}
+    >
+      <Icon size={18} />
+    </span>
+    <div className="min-w-0">
+      <p className="text-[12px] text-slate-600">{label}</p>
 
-    <p className={`font-semibold ${color}`}>{value}</p>
+      <p className={`text-[18px] font-bold tabular-nums truncate ${color}`}>
+        {value}
+      </p>
+    </div>
   </div>
 );
 
 const Button = ({ label, onClick }) => (
   <button
-    className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm"
+    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 h-10 rounded-xl text-[14px] font-semibold shadow-sm shadow-blue-200 transition-colors"
     onClick={onClick}
   >
     <FaDownload />
