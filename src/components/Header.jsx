@@ -18,9 +18,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-20 transition-all duration-500`}
-    >
+    <header className={`sticky top-0 z-20 transition-all duration-500`}>
       <div className="w-full">
         <div
           className={`
@@ -36,19 +34,16 @@ const Header = () => {
         >
           {/* ---------------- Logo ---------------- */}
 
-          <a href="/" className="flex items-center gap-0 shrink-0">
+          <a href="/" className="flex items-center gap-1 shrink-0">
             <SiCashapp className="h-8 w-8 text-white" />
 
-            <div className="leading-none">
-              <div
-                className="
-                  font-display
-                  text-[22px]
-                  font-semibold
-                  tracking-tight
-                  text-white
-                "
-              >ocial <span className="text-sc-gold-500">Capital</span>
+            <div className="flex flex-col">
+              <div className="font-display text-[22px] font-semibold tracking-tight text-white leading-none">
+                ocial <span className="text-sc-gold-500">Capital</span>
+              </div>
+
+              <div className="mt-1 text-[10px] font-medium tracking-[0.08em] text-white/60 leading-none">
+                Cloud Space Design App
               </div>
             </div>
           </a>

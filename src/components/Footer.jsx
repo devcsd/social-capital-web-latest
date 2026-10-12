@@ -87,7 +87,7 @@ const Footer = () => {
 
       <div className="mx-auto mt-8 max-w-7xl text-center">
         <p className="font-inter text-sm text-white/60">
-          Designed and Developed by{" "}
+          Powered by{" "}
           <a href="https://www.cloudspacedesign.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-[#ffc72c]">
             CloudSpaceDesign.com
           </a>
