@@ -24,6 +24,7 @@ import RotationGroupDetails from "../FundType/RotationGroupDetails"
 import RoundAuction from "../FundType/RoundAuction";
 import RoundRotation from "../FundType/RoundRotation";
 import SupportEnquiry from "../Adminpages/SupportEnquiry";
+import GroupSettings from "../Adminpages/GroupSettings";
 import { Toaster } from "react-hot-toast";
 
 const AppRoute = () => (
@@ -32,9 +33,27 @@ const AppRoute = () => (
       position="top-right"
       toastOptions={{
         style: {
-          background: "#1B1650",
-          color: "#fff",
-          border: "1px solid #fbbf24",
+          background: "#ffffff",
+          color: "#0b1233",
+          border: "1px solid #e2e8f0",
+          borderRadius: "12px",
+          padding: "12px 16px",
+          fontSize: "14px",
+          fontWeight: 500,
+          boxShadow:
+            "0 10px 25px -5px rgba(15, 23, 42, 0.10), 0 4px 10px -4px rgba(15, 23, 42, 0.06)",
+        },
+        success: {
+          iconTheme: { primary: "#16a34a", secondary: "#ffffff" },
+          style: { borderLeft: "4px solid #16a34a" },
+        },
+        error: {
+          iconTheme: { primary: "#ef4444", secondary: "#ffffff" },
+          style: { borderLeft: "4px solid #ef4444" },
+        },
+        loading: {
+          iconTheme: { primary: "#1e4fe5", secondary: "#e6ecff" },
+          style: { borderLeft: "4px solid #1e4fe5" },
         },
       }}
     />
@@ -78,6 +97,16 @@ const AppRoute = () => (
           element={
             <ProtectedRoute>
               <GroupRounds />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Group Settings  */}
+        <Route
+          path="/adminPanel/GroupSettings"
+          element={
+            <ProtectedRoute>
+              <GroupSettings />
             </ProtectedRoute>
           }
         />

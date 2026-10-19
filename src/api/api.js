@@ -4,7 +4,10 @@ import localforage from "localforage";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // from .env.development / .env.production
+  // In `vite` dev server, go through the local proxy (see vite.config.js) to avoid CORS.
+  baseURL: import.meta.env.DEV
+    ? "/api/v1/"
+    : import.meta.env.VITE_API_BASE_URL, // from .env.development / .env.production
   timeout: 10000, // Optional timeout
 });
 

@@ -1,6 +1,19 @@
 import { useState, useCallback, useEffect } from "react";
-import { Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowLeft,
+  BarChart3,
+  CalendarDays,
+  CalendarRange,
+  Clock,
+  Coins,
+  Crown,
+  Download,
+  FileText,
+  Info,
+  Trophy,
+  Users,
+  Wallet,
+} from "lucide-react";
 // import { getTransactionByRoundID } from "../data/adminpanel";
 import { useNavigate, useParams } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
@@ -17,8 +30,6 @@ import {
 } from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
-
-const { Text } = Typography;
 
 /* ---------------- PAGE ---------------- */
 
@@ -62,23 +73,50 @@ export default function GroupTranscation() {
         },
       },
     },
+    layout: {
+      padding: { right: 48 },
+    },
     scales: {
       x: {
-        grid: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: "Members",
-        },
-      },
-      y: {
+        beginAtZero: true,
+        grid: { color: "#eef2f7" },
+        border: { display: false },
+        ticks: { color: "#64748b", font: { size: 11 } },
         title: {
           display: true,
           text: "Time (Seconds)",
+          color: "#475569",
+          font: { size: 12 },
         },
-        beginAtZero: true,
       },
+      y: {
+        grid: { display: false },
+        border: { color: "#e2e8f0" },
+        ticks: { color: "#475569", font: { size: 11 } },
+      },
+    },
+  };
+
+  /* value label drawn at the end of each bar (display only) */
+  const barValueLabels = {
+    id: "barValueLabels",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      chart.data.datasets.forEach((dataset, di) => {
+        chart.getDatasetMeta(di).data.forEach((bar, i) => {
+          const seconds = dataset.data[i];
+          if (seconds == null) return;
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          const text = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+          ctx.save();
+          ctx.fillStyle = "#1e4fe5";
+          ctx.font = "600 12px sans-serif";
+          ctx.textBaseline = "middle";
+          ctx.fillText(text, bar.x + 8, bar.y);
+          ctx.restore();
+        });
+      });
     },
   };
 
@@ -143,9 +181,10 @@ export default function GroupTranscation() {
           label: "Payment Time",
           data,
           transactionDates, // <-- custom field
-          backgroundColor: "#3b2fb3",
-          borderRadius: 10,
-          barThickness: 40,
+          backgroundColor: "#2f5cf0",
+          hoverBackgroundColor: "#1b3fc4",
+          borderRadius: 4,
+          barThickness: 30,
         },
       ],
     };
@@ -220,124 +259,229 @@ export default function GroupTranscation() {
   const paidTransactions =
     transactions?.filter((t) => t.memberContributeAmount !== null) || [];
 
+  const isCompleted = Boolean(group?.winnerName);
+  const completionRate = getCompletionRate(
+    group?.completeContribution,
+    group?.totalMember,
+  );
+
+  /* CSV export of the transactions already shown in the table */
+  const downloadCsv = () => {
+    const header = ["#", "Member", "Transaction ID", "Amount", "Date", "Status"];
+    const rows = paidTransactions.map((t, i) => [
+      i + 1,
+      t.userName,
+      t.id,
+      t.memberContributeAmount,
+      formatDate(t.transactionDate),
+      t.status,
+    ]);
+    const csv = [header, ...rows]
+      .map((r) =>
+        r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(","),
+      )
+      .join("\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `round-${group?.roundNumber ?? ""}-transactions.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const SectionTitle = ({ icon: Icon, children, right }) => (
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-sc-blue-100 flex items-center justify-center shrink-0">
+          <Icon size={18} className="text-primary" />
+        </div>
+        <h2 className="text-base font-bold text-sc-ink-900">{children}</h2>
+      </div>
+      {right}
+    </div>
+  );
+
+  const Row = ({ label, children, last }) => (
+    <div
+      className={`flex items-center justify-between py-2.5 ${
+        last ? "" : "border-b border-slate-100"
+      }`}
+    >
+      <span className="text-slate-600">{label}</span>
+      {children}
+    </div>
+  );
+
+  const StatusPill = ({ large }) => (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full font-semibold ${
+        large ? "px-3 py-1 text-sm" : "px-3 py-0.5 text-xs"
+      } ${
+        isCompleted ? "bg-green-50 text-green-700" : "bg-sc-blue-100 text-primary"
+      }`}
+    >
+      <span
+        className={`w-1.5 h-1.5 rounded-full ${
+          isCompleted ? "bg-green-600" : "bg-primary"
+        }`}
+      />
+      {isCompleted ? "Completed" : "upcoming"}
+    </span>
+  );
+
+  const HeaderStat = ({ icon, iconBg, label, value }) => (
+    <div className="flex items-center gap-3 rounded-xl bg-white border border-slate-100 shadow-sm px-3 py-3">
+      <div
+        className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}
+      >
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <p className="text-xs text-slate-500">{label}</p>
+        <p className="text-lg font-bold text-sc-ink-900 leading-tight truncate">
+          {value}
+        </p>
+      </div>
+    </div>
+  );
+
+  const card = "rounded-2xl bg-white border border-slate-100 shadow-sm p-5";
+
   return (
-    <div className="min-h-screen bg-transparent p-4 md:p-8">
+    <div className="min-h-screen bg-transparent p-4 md:p-6">
       {/* Back */}
       <button
         disabled={!group}
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-primary mb-4 cursor-pointer"
+        className="flex items-center gap-3 text-sm font-semibold text-sc-ink-900 hover:text-primary mb-4 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-default"
       >
-        <ArrowLeftOutlined />
-        <Text strong>Back to rounds</Text>
+        <ArrowLeft size={18} className="text-primary" />
+        Back to rounds
       </button>
       {loading ? (
-        <div className="min-h-screen p-4 md:p-8 space-y-6">
+        <div className="space-y-5">
           {/* Header Skeleton */}
-          <div className="bg-white p-6 rounded-xl space-y-4">
-            <SkeletonText className="w-40" />
-            <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white p-5 rounded-2xl flex flex-wrap items-center gap-4">
+            <SkeletonBox className="h-16 w-16 rounded-full" />
+            <div className="space-y-2">
+              <SkeletonText className="w-40 h-6" />
+              <SkeletonText className="w-52" />
+            </div>
+            <div className="flex-1 grid grid-cols-3 gap-3 min-w-[300px]">
               <SkeletonBox className="h-16" />
               <SkeletonBox className="h-16" />
               <SkeletonBox className="h-16" />
             </div>
+            <SkeletonBox className="h-20 w-80" />
           </div>
 
-          {/* Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <SkeletonBox className="h-64" />
-            <SkeletonBox className="h-64 lg:col-span-2" />
-          </div>
-
-          {/* Table */}
-          <div className="bg-white rounded-xl p-6 space-y-3">
-            {[...Array(5)].map((_, i) => (
-              <SkeletonBox key={i} className="h-10 w-full" />
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div className="space-y-5">
+              <SkeletonBox className="h-56" />
+              <SkeletonBox className="h-56" />
+            </div>
+            <div className="lg:col-span-2 bg-white rounded-2xl p-5 space-y-3">
+              {[...Array(6)].map((_, i) => (
+                <SkeletonBox key={i} className="h-10 w-full" />
+              ))}
+            </div>
           </div>
         </div>
       ) : (
         <>
           {/* Header */}
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between bg-white p-6 mt-4 rounded-xl">
-            {/* Left: Title + Status */}
-            <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-semibold">
-                  Round {group?.roundNumber}
-                </h1>
-                <span
-                  className={`rounded-full px-3 py-1 text-sm font-medium ${
-                    group?.winnerName
-                      ? "bg-green-100 text-green-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}
-                >
-                  {group?.winnerName ? "Completed" : "upcoming"}
-                </span>
+          <div className="rounded-2xl bg-gradient-to-r from-white via-blue-50/60 to-sc-blue-100/60 border border-slate-100 shadow-sm p-5 flex flex-col xl:flex-row xl:items-center gap-5">
+            {/* Left: Badge + Title + Dates */}
+            <div className="flex items-center gap-4 shrink-0">
+              <div className="w-16 h-16 rounded-full bg-primary text-white text-xl font-bold flex items-center justify-center shadow-md shrink-0">
+                R{group?.roundNumber}
               </div>
-
-              {/* Stats */}
-              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-                <div className="rounded-xl bg-white p-4 shadow-sm">
-                  <p className="text-xs text-gray-500">Duration</p>
-                  <p className="mt-1 text-sm font-semibold">
-                    {formatDate(group?.timeLine?.transactionStartDate)} –{" "}
-                    {formatDate(group?.timeLine?.transactionEndDate)}
-                  </p>
+              <div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h1 className="text-2xl font-bold text-sc-ink-900">
+                    Round {group?.roundNumber}
+                  </h1>
+                  <StatusPill />
                 </div>
-
-                <div className="rounded-xl bg-white p-4 shadow-sm">
-                  <p className="text-xs text-gray-500">Members</p>
-                  <p className="mt-1 text-lg font-semibold">
-                    {group?.totalMember}
-                  </p>
-                </div>
-
-                <div className="rounded-xl bg-white p-4 shadow-sm">
-                  <p className="text-xs text-gray-500">Total Amount</p>
-                  <p className="mt-1 text-lg font-semibold text-primary">
-                    {formatCurrency(group?.currency, group?.totalFundValue)}
-                  </p>
-                </div>
+                <p className="mt-1.5 flex items-center gap-2 text-sm text-slate-600">
+                  <CalendarDays size={15} className="text-slate-500" />
+                  {formatDate(group?.timeLine?.transactionStartDate)} –{" "}
+                  {formatDate(group?.timeLine?.transactionEndDate)}
+                </p>
               </div>
             </div>
 
+            {/* Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
+              <HeaderStat
+                label="Members"
+                value={group?.totalMember}
+                iconBg="bg-sc-blue-100"
+                icon={<Users size={20} className="text-primary" />}
+              />
+              <HeaderStat
+                label="Total Amount"
+                value={formatCurrency(group?.currency, group?.totalFundValue)}
+                iconBg="bg-amber-100"
+                icon={<Coins size={20} className="text-sc-gold-600" />}
+              />
+              <HeaderStat
+                label="Duration"
+                value={formatDuration(group?.timeLine?.totalDuration)}
+                iconBg="bg-violet-100"
+                icon={<CalendarRange size={20} className="text-violet-600" />}
+              />
+            </div>
+
             {/* Right: Winner Card */}
-            <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-sm">
+            <div
+              className={`relative overflow-hidden flex items-center gap-4 rounded-2xl px-4 py-3 xl:min-w-[320px] ${
+                isCompleted
+                  ? "bg-gradient-to-r from-green-50 to-emerald-100/80"
+                  : "bg-slate-50"
+              }`}
+            >
               {group?.winnerName ? (
                 <>
                   {group?.winnerProfileImage ? (
                     <img
                       src={group.winnerProfileImage}
                       alt={group.winnerName}
-                      className="h-12 w-12 rounded-full object-cover"
+                      className="h-14 w-14 rounded-full object-cover ring-2 ring-white shadow-sm shrink-0"
                     />
                   ) : (
-                    <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+                    <div className="h-14 w-14 rounded-full bg-primary flex items-center justify-center text-white font-semibold ring-2 ring-white shrink-0">
                       {getInitials(group.winnerName)}
                     </div>
                   )}
 
-                  <div>
-                    <p className="text-xs text-gray-500">Winner</p>
-                    <p className="text-sm font-semibold">{group.winnerName}</p>
-                    <p className="text-xs text-gray-400">
+                  <div className="min-w-0 flex-1">
+                    <p className="flex items-center gap-1.5 text-xs text-slate-600">
+                      <Crown size={14} className="text-amber-500 fill-amber-400" />
+                      Round Winner
+                    </p>
+                    <p className="text-base font-bold text-sc-ink-900 truncate">
+                      {group.winnerName}
+                    </p>
+                    <p className="text-xs text-slate-500">
                       Round {group?.roundNumber}
                     </p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full bg-amber-100/80 flex items-center justify-center shrink-0">
+                    <Trophy size={24} className="text-amber-500 fill-amber-400" />
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
-                    🏆
+                  <div className="h-14 w-14 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
+                    <Trophy size={24} className="text-slate-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Winner</p>
-                    <p className="text-sm font-medium text-gray-400">
+                    <p className="text-xs text-slate-500">Winner</p>
+                    <p className="text-sm font-semibold text-slate-400">
                       Not selected yet
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-slate-400">
                       Round {group?.roundNumber}
                     </p>
                   </div>
@@ -347,238 +491,239 @@ export default function GroupTranscation() {
           </div>
 
           {/* Content */}
-          <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* Left Cards */}
-            <div className="space-y-6 mb-5">
+          <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
+            {/* Left column */}
+            <div className="space-y-5">
               {/* Round Overview */}
-              <div className="rounded-xl bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold">Round Overview</h2>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Round Number</span>
-                    <span className="font-medium">
-                      {" "}
+              <div className={card}>
+                <SectionTitle icon={FileText}>Round Overview</SectionTitle>
+                <div className="text-sm">
+                  <Row label="Round Number">
+                    <span className="font-semibold text-sc-ink-900">
                       Round {group?.roundNumber}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Status</span>
-                    <span
-                      className={`rounded-full px-3 py-1 text-sm font-medium ${
-                        group?.winnerName
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {group?.winnerName ? "Completed" : "upcoming"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Total Contributions</span>
-                    <span className="font-semibold text-primary">
+                  </Row>
+                  <Row label="Status">
+                    <StatusPill large />
+                  </Row>
+                  <Row label="Total Contributions">
+                    <span className="text-base font-bold text-primary">
                       {formatCurrency(group?.currency, group?.totalFundValue)}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Payout Amount</span>
-                    <span className="font-semibold text-primary">
+                  </Row>
+                  <Row label="Payout Amount" last>
+                    <span className="text-base font-bold text-primary">
                       {formatCurrency(group?.currency, group?.settlementAmount)}
                     </span>
-                  </div>
+                  </Row>
                 </div>
               </div>
 
               {/* Participation */}
-              <div className="rounded-xl bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold">Participation</h2>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Total Members</span>
-                    <span className="font-medium">{group?.totalMember}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">
-                      Contributions Received
+              <div className={card}>
+                <SectionTitle icon={Users}>Participation</SectionTitle>
+                <div className="text-sm">
+                  <Row label="Total Members">
+                    <span className="font-semibold text-sc-ink-900">
+                      {group?.totalMember}
                     </span>
-                    <span className="font-medium text-green-600">
+                  </Row>
+                  <Row label="Contributions Received">
+                    <span className="font-semibold text-green-600">
                       {group?.completeContribution}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Pending Members</span>
-                    <span className="font-medium text-red-600">
+                  </Row>
+                  <Row label="Pending Members">
+                    <span className="font-semibold text-red-600">
                       {group?.pendingContribution}
                     </span>
-                  </div>
-
-                  <div className="mt-4">
-                    <div className="mb-1 flex justify-between text-xs">
-                      <span>Completion Rate</span>
-                      <span>
-                        {getCompletionRate(
-                          group?.completeContribution,
-                          group?.totalMember,
-                        )}
-                        %
-                      </span>
-                    </div>
-                    <div className="h-2 w-full rounded-full bg-gray-200">
-                      <div
-                        className="h-2 rounded-full bg-primary transition-all"
-                        style={{
-                          width: `${getCompletionRate(
-                            group?.completeContribution,
-                            group?.totalMember,
-                          )}%`,
-                        }}
-                      />
-                    </div>
+                  </Row>
+                  <Row label="Completion Rate" last>
+                    <span className="font-semibold text-sc-ink-900">
+                      {completionRate}%
+                    </span>
+                  </Row>
+                  <div className="mt-1 h-2 w-full rounded-full bg-slate-100">
+                    <div
+                      className="h-2 rounded-full bg-primary transition-all"
+                      style={{ width: `${completionRate}%` }}
+                    />
                   </div>
                 </div>
               </div>
+
+              {/* Timeline */}
+              <div className={card}>
+                <SectionTitle icon={Clock}>Timeline</SectionTitle>
+                <ol className="relative ml-[7px] border-l-2 border-sc-blue-100 space-y-5 text-sm">
+                  {[
+                    {
+                      label: "Start Date",
+                      value: formatDate(group?.timeLine?.transactionStartDate),
+                    },
+                    {
+                      label: "End Date",
+                      value: formatDate(group?.timeLine?.transactionEndDate),
+                    },
+                    {
+                      label: "Total Duration",
+                      value: formatDuration(group?.timeLine?.totalDuration),
+                    },
+                  ].map((item) => (
+                    <li key={item.label} className="relative pl-7">
+                      <span className="absolute -left-[8px] top-1 w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-sc-blue-100" />
+                      <p className="text-slate-600">{item.label}</p>
+                      <p className="font-bold text-sc-ink-900 mt-0.5">
+                        {item.value}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
 
-            {/* Transactions */}
-            <div className="lg:col-span-2 rounded-xl bg-white p-6 shadow-sm mb-5">
-              <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <h2 className="text-lg font-semibold">Transaction Details</h2>
-                {/* <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Search transactions..."
-                    className="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <button className="rounded-lg border px-4 py-2 text-sm">
-                    Filter
-                  </button>
-                </div> */}
-              </div>
+            {/* Right column */}
+            <div className="lg:col-span-2 space-y-5">
+              {/* Transactions */}
+              <div className={card}>
+                <SectionTitle
+                  icon={FileText}
+                  right={
+                    <button
+                      type="button"
+                      onClick={downloadCsv}
+                      disabled={paidTransactions.length === 0}
+                      className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-sc-blue-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Download size={16} />
+                      Download CSV
+                    </button>
+                  }
+                >
+                  Transaction Details
+                </SectionTitle>
 
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gray-50 text-left text-gray-500">
-                      <th className="px-4 py-3">Member</th>
-                      <th className="px-4 py-3">Transaction ID</th>
-                      <th className="px-4 py-3">Amount</th>
-                      <th className="px-4 py-3">Date</th>
-                      <th className="px-4 py-3">Status</th>
-                      {/* <th className="px-4 py-3">Actions</th> */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paidTransactions.length > 0 ? (
-                      paidTransactions.map((t) => (
-                        <tr key={t.txnId} className="border-t hover:bg-gray-50">
-                          <td className="flex items-center gap-3 px-4 py-3">
-                            {t.userProfileImage ? (
-                              <img
-                                src={t.userProfileImage}
-                                className="h-12 w-12 rounded-full object-cover"
-                                alt={t.userName}
-                              />
-                            ) : (
-                              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-xs font-semibold text-white">
-                                {getInitials(t.userName)}
-                              </div>
-                            )}
-                            <span className="font-medium">{t.userName}</span>
-                          </td>
-
-                          <td className="px-4 py-3">{t.id}</td>
-
-                          <td className="px-4 py-3 font-semibold text-primary">
-                            {formatCurrency(
-                              group?.currency,
-                              t.memberContributeAmount,
-                            )}
-                          </td>
-
-                          <td className="px-4 py-3">
-                            {formatDate(t.transactionDate)}
-                          </td>
-
-                          <td className="px-4 py-3">
-                            <span
-                              className={`rounded-full px-3 py-1 text-xs ${
-                                statusStyles[t.status] ||
-                                "bg-gray-100 text-gray-700"
-                              }`}
-                            >
-                              {t.status}
-                            </span>
-                          </td>
-
-                          {/* <td className="px-4 py-3">
-                            <button className="rounded-lg bg-primary px-4 py-2 text-xs text-white hover:bg-indigo-700">
-                              View Details
-                            </button>
-                          </td> */}
-                        </tr>
-                      ))
-                    ) : (
-                      /* ✅ VALID EMPTY STATE */
-                      <tr>
-                        <td colSpan={6} className="py-10 text-center">
-                          <div className="flex flex-col items-center gap-2 text-gray-500">
-                            <span className="text-3xl">💸</span>
-                            <p className="text-sm font-medium">
-                              No one has started their payments
-                            </p>
-                            <p className="text-xs text-gray-400">
-                              Waiting for members to contribute
-                            </p>
-                          </div>
-                        </td>
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-sc-blue-100/50 text-left text-xs font-semibold text-slate-600">
+                        <th className="px-4 py-3 rounded-l-lg">#</th>
+                        <th className="px-4 py-3">Member</th>
+                        <th className="px-4 py-3">Transaction ID</th>
+                        <th className="px-4 py-3">Amount</th>
+                        <th className="px-4 py-3">Date</th>
+                        <th className="px-4 py-3 rounded-r-lg">Status</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {paidTransactions.length > 0 ? (
+                        paidTransactions.map((t, i) => (
+                          <tr
+                            key={t.txnId}
+                            className="border-b border-slate-100 last:border-0 hover:bg-slate-50/70"
+                          >
+                            <td className="px-4 py-3 text-slate-600">{i + 1}</td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-3">
+                                {t.userProfileImage ? (
+                                  <img
+                                    src={t.userProfileImage}
+                                    className="h-9 w-9 rounded-full object-cover shrink-0"
+                                    alt={t.userName}
+                                  />
+                                ) : (
+                                  <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-xs font-semibold text-white shrink-0">
+                                    {getInitials(t.userName)}
+                                  </div>
+                                )}
+                                <span className="font-semibold text-sc-ink-900 whitespace-nowrap">
+                                  {t.userName}
+                                </span>
+                              </div>
+                            </td>
+
+                            <td className="px-4 py-3 text-xs text-slate-700 font-mono">
+                              {t.id}
+                            </td>
+
+                            <td className="px-4 py-3 font-bold text-primary whitespace-nowrap">
+                              {formatCurrency(
+                                group?.currency,
+                                t.memberContributeAmount,
+                              )}
+                            </td>
+
+                            <td className="px-4 py-3 text-slate-700 whitespace-nowrap">
+                              {formatDate(t.transactionDate)}
+                            </td>
+
+                            <td className="px-4 py-3">
+                              <span
+                                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+                                  statusStyles[t.status] ||
+                                  "bg-gray-100 text-gray-700"
+                                }`}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                                {t.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={6} className="py-10 text-center">
+                            <div className="flex flex-col items-center gap-2 text-slate-500">
+                              <div className="w-12 h-12 rounded-full bg-sc-blue-100 flex items-center justify-center">
+                                <Wallet size={22} className="text-primary" />
+                              </div>
+                              <p className="text-sm font-semibold">
+                                No one has started their payments
+                              </p>
+                              <p className="text-xs text-slate-400">
+                                Waiting for members to contribute
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* LEFT – Timeline */}
-            <div className="rounded-xl bg-white p-6 shadow-sm">
-              <h2 className="mb-6 text-lg font-semibold">Timeline</h2>
+              {/* Chart */}
+              <div className={card}>
+                <SectionTitle
+                  icon={BarChart3}
+                  right={
+                    <span className="hidden md:flex items-center gap-2 rounded-lg bg-sc-blue-100/60 px-3 py-2 text-xs text-slate-600">
+                      <Info size={15} className="text-primary" />
+                      Shows time taken by each member to complete payment
+                    </span>
+                  }
+                >
+                  Payment Completion Time
+                </SectionTitle>
 
-              <div className="space-y-6 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Start Date</span>
-                  <span className="font-semibold">
-                    {formatDate(group?.timeLine?.transactionStartDate)}
-                  </span>
+                <div
+                  style={{
+                    height: Math.max(
+                      220,
+                      (chartData?.labels?.length || 0) * 40 + 70,
+                    ),
+                  }}
+                >
+                  {console.log("Chart Dataahsjahsjkahsjsajskj", chartData)}
+                  {chartData?.datasets?.length > 0 && (
+                    <Bar
+                      data={chartData}
+                      options={paymentChartOptions}
+                      plugins={[barValueLabels]}
+                    />
+                  )}
                 </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">End Date</span>
-                  <span className="font-semibold">
-                    {formatDate(group?.timeLine?.transactionEndDate)}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Total Duration</span>
-                  <span className="font-semibold">
-                    {formatDuration(group?.timeLine?.totalDuration)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT – Chart */}
-            <div className="lg:col-span-2 rounded-xl bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold">
-                Payment Completion Time
-              </h2>
-
-              <div className="h-[300px]">
-                {console.log("Chart Dataahsjahsjkahsjsajskj", chartData)}
-                {chartData?.datasets?.length > 0 && (
-                  <Bar data={chartData} options={paymentChartOptions} />
-                )}
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import ReactCountryFlag from "react-country-flag";
 import "react-toastify/dist/ReactToastify.css";
-import { getMasterTypes, updateTotalMember, updateTotalGroups, updateCurrencyFundRange } from "../api/api"; // adjust path as needed
+import { getMasterTypes, updateTotalMember, updateTotalGroups, updateCurrencyFundRange } from "../api/api";
 
 const currencyMeta = {
   inr: { symbol: "₹", flag: "IN", name: "Indian Rupee" },
@@ -59,7 +59,7 @@ const CurrencyFundCard = ({ code, data, onChange }) => {
   const step = code === "usd" || code === "aud" ? 1 : 100;
 
   return (
-    <div className="border border-gray-200 rounded-xl p-4 space-y-3 bg-white hover:shadow-md hover:border-primary/30 transition-all">
+    <div className="border border-gray-200 rounded-xl p-4 space-y-3 hover:shadow-md hover:border-primary/30 transition-all">
       {/* Header: flag badge + label, styled like the GroupCard currency pill */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
