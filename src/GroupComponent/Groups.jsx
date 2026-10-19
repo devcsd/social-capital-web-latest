@@ -36,7 +36,7 @@ import { GiDiamondRing, GiHeartEarrings, GiMagicHat } from "react-icons/gi";
 import { LuHouse, LuBriefcaseBusiness, LuBuilding2 } from "react-icons/lu";
 import { MdOutlineSavings, MdArrowForward, MdCurrencyRupee } from "react-icons/md";
 import { FaUsers, FaUserTie, FaTrophy } from "react-icons/fa";
-import { getAllGroupCategoriesData } from "../api/api";
+import { getAllGroupCategoriesData, getMasterTypes } from "../api/api";
 import ReactCountryFlag from "react-country-flag";
 import GroupCard from "./GroupCard";
 /* ─── Constants ───────────────────────────────────────────────────────────── */
@@ -77,6 +77,36 @@ const MEMBER_BUCKETS = [
   { label: "21–50 members", min: 21, max: 50, color: "#22c55e" },
   { label: "51+ members", min: 51, max: Infinity, color: "#10b981" },
 ];
+
+const BUCKET_COLORS = MEMBER_BUCKETS.map((b) => b.color);
+
+// Split 1..maxMembers (the "Total Member" value from Group Settings) into up
+// to 5 equal ranges. Falls back to the static buckets when it isn't set.
+const buildMemberBuckets = (maxMembers) => {
+  if (!maxMembers || maxMembers <= 0) return MEMBER_BUCKETS;
+  const count = Math.min(BUCKET_COLORS.length, maxMembers);
+  const step = Math.ceil(maxMembers / count);
+  const buckets = [];
+  for (let start = 1; start <= maxMembers; start += step) {
+    const end = Math.min(start + step - 1, maxMembers);
+    buckets.push({
+      label: start === end ? `${start} members` : `${start}–${end} members`,
+      min: buckets.length === 0 ? 0 : start,
+      max: end,
+      color: BUCKET_COLORS[buckets.length],
+    });
+  }
+  return buckets;
+};
+
+// masterType keys may contain zero-width chars and come grouped or flat.
+const cleanKey = (key) => String(key).replace(/[\u200B-\u200D\u2060\uFEFF]/g, "").trim();
+const getTotalMemberSetting = (data) => {
+  const rows = Array.isArray(data)
+    ? data.filter((r) => cleanKey(r.type ?? r.master_type ?? r.key ?? "") === "total_member")
+    : Object.entries(data || {}).find(([k]) => cleanKey(k) === "total_member")?.[1];
+  return parseInt(rows?.[0]?.value, 10) || 0;
+};
 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 const fmtINR = (n) =>
@@ -221,6 +251,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 /* ─── Main Component ──────────────────────────────────────────────────────── */
 const Groups = () => {
   const [responsedata, setResponseData] = useState(null);
+  const [maxMembers, setMaxMembers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     country: "",
@@ -245,6 +276,19 @@ const Groups = () => {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchMemberSetting = async () => {
+      try {
+        const res = await getMasterTypes();
+        const json = res?.data ?? res;
+        if (json?.success) setMaxMembers(getTotalMemberSetting(json.data));
+      } catch (error) {
+        console.error("Failed to fetch total member setting:", error);
+      }
+    };
+    fetchMemberSetting();
   }, []);
 
   /* ── Skeleton ── */
@@ -346,7 +390,7 @@ const Groups = () => {
   const chartFunds = filteredGroups.map((g) => g.totalFundAmount ?? 0);
 
   // Members per group, bucketed by group size
-  const memberBuckets = MEMBER_BUCKETS.map((b) => ({
+  const memberBuckets = buildMemberBuckets(maxMembers).map((b) => ({
     ...b,
     count: filteredGroups.filter((g) => {
       const m = g.totalMembers ?? 0;
@@ -740,7 +784,11 @@ const Groups = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <ChartCard
           title="Members per Group"
-          subtitle="Distribution of members across all active groups."
+          subtitle={
+            maxMembers
+              ? `Distribution of members across all active groups (max ${maxMembers} per group).`
+              : "Distribution of members across all active groups."
+          }
           icon={FiZap}
           tint="bg-violet-600 text-white"
         >
@@ -893,3 +941,4 @@ const ChartCard = ({ title, subtitle, icon: Icon, tint, children }) => (
 );
 
 export default Groups;
+
