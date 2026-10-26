@@ -12,6 +12,7 @@ import {
   LuHourglass,
   LuCircleCheck,
   LuUserRound,
+  LuChevronRight,
 } from "react-icons/lu";
 import { CiCreditCard1 } from "react-icons/ci";
 import { MdGavel } from "react-icons/md";
@@ -26,6 +27,7 @@ import {
   GiMoneyStack,
 } from "react-icons/gi";
 import { IoPeopleSharp } from "react-icons/io5";
+import GroupMembersDrawer from "../AdminComponent/GroupMembersDrawer";
 import { getGroupByID } from "../api/api";
 import { formatCurrency } from "../utils/formatCurrency";
 import { formatDateTimeByCurrency } from "../utils/formatDate";
@@ -102,6 +104,7 @@ export default function RotationGroupDetails() {
   const [currencyLabel, setCurrencyLabel] = useState("");
   const [rounds, setRounds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [membersOpen, setMembersOpen] = useState(false);
 
   useEffect(() => {
     const fetchGroupDetails = async () => {
@@ -121,11 +124,8 @@ export default function RotationGroupDetails() {
   }, []);
 
   useEffect(() => {
-    console.log("Group Data:", group);
     setGroupType(group?.groupType || "");
     setCurrencyLabel(group?.currencyLabel || "USD");
-    console.log("Group Type:", groupType);
-    console.log("Rounds Data:", rounds);
   }, [group]);
 
   const joined = group?.joinedMember || 0;
@@ -237,26 +237,40 @@ export default function RotationGroupDetails() {
               </div>
 
               {/* Members */}
-              <div className="flex items-center gap-4 bg-slate-50/80 ring-1 ring-slate-100 rounded-2xl p-5">
-                <IconTile Icon={IoPeopleSharp} tint="bg-rose-100 text-rose-500" />
-                <div className="shrink-0">
-                  <p className="text-[13px] text-slate-600">Members</p>
-                  <p className="text-[24px] font-bold text-slate-900 leading-tight tabular-nums">
-                    {group?.joinedMember || 0} / {group?.totalMember || 0}
-                  </p>
-                </div>
-                <div className="flex-1 min-w-0 pt-4">
-                  <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-violet-500 to-blue-500"
-                      style={{ width: `${fillPct}%` }}
-                    />
+              <div className="flex flex-col gap-3 bg-slate-50/80 ring-1 ring-slate-100 rounded-2xl p-5">
+                <div className="flex items-center gap-4">
+                  <IconTile Icon={IoPeopleSharp} tint="bg-rose-100 text-rose-500" />
+                  <div className="shrink-0">
+                    <p className="text-[13px] text-slate-600">Members</p>
+                    <p className="text-[24px] font-bold text-slate-900 leading-tight tabular-nums">
+                      {group?.joinedMember || 0} / {group?.totalMember || 0}
+                    </p>
                   </div>
-                  <p className="text-[12px] text-slate-500 mt-2">
+                  <div className="flex-1 min-w-0 pt-4">
+                    <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-violet-500 to-blue-500"
+                        style={{ width: `${fillPct}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slots left + View Members */}
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-[12px] text-slate-500">
                     {capacity && joined >= capacity
                       ? "Group is full"
-                      : `${Math.max(capacity - joined, 0)} spots left`}
+                      : `${Math.max(capacity - joined, 0)} slots left`}
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => setMembersOpen(true)}
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-semibold text-blue-700 bg-white ring-1 ring-blue-100 rounded-lg shadow-sm hover:bg-blue-50 transition-colors"
+                  >
+                    View Members
+                    <LuChevronRight size={15} />
+                  </button>
                 </div>
               </div>
 
@@ -487,6 +501,12 @@ export default function RotationGroupDetails() {
           </div>
         </>
       )}
+
+      <GroupMembersDrawer
+        open={membersOpen}
+        onClose={() => setMembersOpen(false)}
+        group={group}
+      />
     </div>
   );
 }

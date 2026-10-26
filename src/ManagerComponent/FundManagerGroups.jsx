@@ -309,13 +309,9 @@ export default function FundManagerGroups() {
   }, [managerId]);
 
   useEffect(() => {
-    console.log(managerId);
     fetchFundManagerGroups();
   }, [fetchFundManagerGroups]);
 
-  useEffect(() => {
-    console.log("response", managerInfo);
-  }, [managerInfo]);
   const totalPages = Math.ceil(fundManagerGroups.length / pageSize);
   const managerEmail = managerInfo?.fundManagerEmail ?? managerInfo?.emailId;
   const managerMobile =

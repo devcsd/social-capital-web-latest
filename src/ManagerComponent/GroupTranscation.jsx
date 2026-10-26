@@ -233,7 +233,6 @@ export default function GroupTranscation() {
     setLoading(true);
     try {
       const response = await getTransactionByRoundID(roundID);
-      console.log("Response", response);
       // ✅ correct level
       const Data = response.data.data;
 
@@ -251,11 +250,6 @@ export default function GroupTranscation() {
     fetchFundManagerGroupsMembers();
   }, [fetchFundManagerGroupsMembers]);
 
-  useEffect(() => {
-    console.log(roundID);
-    console.log("GRoup", group);
-    console.log("Transcation", transactions);
-  }, [group]);
   const paidTransactions =
     transactions?.filter((t) => t.memberContributeAmount !== null) || [];
 
@@ -715,7 +709,6 @@ export default function GroupTranscation() {
                     ),
                   }}
                 >
-                  {console.log("Chart Dataahsjahsjkahsjsajskj", chartData)}
                   {chartData?.datasets?.length > 0 && (
                     <Bar
                       data={chartData}

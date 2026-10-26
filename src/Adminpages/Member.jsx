@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaChevronLeft, FaChevronRight, FaMapMarkerAlt } from "react-icons/fa";
-import { FaPhone } from "react-icons/fa6";
 import {
   User,
   Mail,
@@ -11,6 +9,12 @@ import {
   X,
   SlidersHorizontal,
   Users,
+  Clock,
+  Coins,
+  RotateCcw,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { getAllMemberPageId } from "../api/api";
 import EmptyState from "../AdminComponent/EmptyState";
@@ -42,6 +46,71 @@ const FILTER_FIELDS = [
   { key: "city",         label: "City",          icon: Building2, placeholder: "Type city..."        },
 ];
 
+/* 6 card colour themes, cycled by card index (full class strings so Tailwind keeps them) */
+const CARD_THEMES = [
+  { // blue
+    bar: "from-sky-300 via-blue-400 to-sky-300",
+    bg: "from-white via-white to-blue-50/80",
+    avatar: "from-sky-400 to-blue-600",
+    ring: "ring-blue-100",
+    blob: "bg-blue-100/60",
+    icon: "text-blue-300",
+    wave: ["#bfdbfe", "#60a5fa"],
+  },
+  { // orange
+    bar: "from-amber-300 via-orange-400 to-amber-300",
+    bg: "from-white via-white to-orange-50/80",
+    avatar: "from-amber-400 to-orange-500",
+    ring: "ring-orange-100",
+    blob: "bg-orange-200/70",
+    icon: "text-white",
+    wave: ["#fed7aa", "#fb923c"],
+  },
+  { // purple
+    bar: "from-violet-300 via-indigo-400 to-violet-300",
+    bg: "from-white via-white to-violet-50/80",
+    avatar: "from-indigo-400 to-violet-600",
+    ring: "ring-violet-100",
+    blob: "bg-violet-100/60",
+    icon: "text-violet-200",
+    wave: ["#ddd6fe", "#a78bfa"],
+  },
+  { // green
+    bar: "from-emerald-300 via-green-400 to-emerald-300",
+    bg: "from-white via-white to-emerald-50/80",
+    avatar: "from-emerald-400 to-green-600",
+    ring: "ring-emerald-100",
+    blob: "bg-emerald-100/60",
+    icon: "text-emerald-300",
+    wave: ["#a7f3d0", "#34d399"],
+  },
+  { // pink
+    bar: "from-pink-300 via-rose-400 to-pink-300",
+    bg: "from-white via-white to-pink-50/80",
+    avatar: "from-orange-400 to-rose-500",
+    ring: "ring-pink-100",
+    blob: "bg-pink-100/60",
+    icon: "text-pink-200",
+    wave: ["#fbcfe8", "#f472b6"],
+  },
+  { // sky
+    bar: "from-blue-400 via-sky-400 to-blue-400",
+    bg: "from-white via-white to-sky-50/80",
+    avatar: "from-blue-500 to-sky-500",
+    ring: "ring-sky-100",
+    blob: "bg-sky-100/60",
+    icon: "text-sky-300",
+    wave: ["#bae6fd", "#38bdf8"],
+  },
+];
+
+const getInitials = (name = "") => {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "M";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 /* strip empty strings so payload stays clean */
 const buildPayload = (filters, page) => ({
   filters: Object.fromEntries(
@@ -51,7 +120,7 @@ const buildPayload = (filters, page) => ({
 });
 
 const FieldLabel = ({ children }) => (
-  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+  <label className="block text-sm font-semibold text-slate-800 mb-2">
     {children}
   </label>
 );
@@ -59,35 +128,154 @@ const FieldLabel = ({ children }) => (
 const IconInput = ({ icon: Icon, value, onChange, placeholder }) => (
   <div className="relative flex items-center group">
     <Icon
-      size={14}
-      className="absolute left-3 text-slate-400 pointer-events-none z-10 transition-colors group-focus-within:text-primary"
+      size={17}
+      className="absolute left-4 text-slate-500 pointer-events-none z-10 transition-colors group-focus-within:text-blue-600"
     />
     <input
       type="text"
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="w-full pl-8 pr-8 py-2.5 text-sm rounded-lg border border-slate-200
-                 bg-slate-50/60 text-slate-800 placeholder-slate-400
-                 focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary/40 focus:bg-white
+      className="w-full pl-11 pr-9 py-3 text-sm rounded-xl border border-slate-200
+                 bg-white text-slate-800 placeholder-slate-500
+                 focus:outline-none focus:ring-2 focus:ring-blue-500/15 focus:border-blue-400
                  hover:border-slate-300
                  transition-all duration-150"
     />
     {value && (
       <button
         onClick={() => onChange({ target: { value: "" } })}
-        className="absolute right-2 text-slate-300 hover:text-slate-500 transition-colors"
+        className="absolute right-3 text-slate-300 hover:text-slate-500 transition-colors"
       >
-        <X size={13} />
+        <X size={14} />
       </button>
     )}
   </div>
 );
 
+const StatBox = ({ icon: Icon, label, value, tone }) => {
+  const tones = {
+    blue:  { box: "bg-blue-50/80 border-blue-100",   icon: "text-blue-600",  value: "text-blue-600"  },
+    red:   { box: "bg-red-50/80 border-red-100",     icon: "text-red-500",   value: "text-red-600"   },
+    green: { box: "bg-green-50/80 border-green-100", icon: "text-green-600", value: "text-green-600" },
+  }[tone];
+
+  return (
+    <div className={`rounded-xl border px-3 py-3 ${tones.box}`}>
+      <div className="flex items-center gap-2">
+        <Icon size={18} className={tones.icon} />
+        <span className="text-xs font-medium text-slate-600">{label}</span>
+      </div>
+      <p className={`mt-1.5 text-center text-xl font-extrabold leading-tight truncate ${tones.value}`}>
+        {value}
+      </p>
+    </div>
+  );
+};
+
+const Wave = ({ colors, id }) => (
+  <svg
+    viewBox="0 0 200 60"
+    preserveAspectRatio="none"
+    className="absolute bottom-0 right-0 w-3/5 h-12 pointer-events-none"
+  >
+    <defs>
+      <linearGradient id={`wave-${id}`} x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0%" stopColor={colors[0]} stopOpacity="0" />
+        <stop offset="100%" stopColor={colors[1]} stopOpacity="0.85" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M0,60 C40,55 60,20 100,30 C130,38 150,55 175,35 C185,27 195,15 200,12 L200,60 Z"
+      fill={colors[0]}
+      opacity="0.45"
+    />
+    <path
+      d="M20,60 C60,58 90,30 125,38 C150,44 165,56 185,40 C192,34 197,28 200,26 L200,60 Z"
+      fill={`url(#wave-${id})`}
+    />
+  </svg>
+);
+
+const MemberCard = ({ member, index }) => {
+  const theme = CARD_THEMES[index % CARD_THEMES.length];
+  const location =
+    [member.city, member.state, member.country].filter(Boolean).join(", ") ||
+    "Location Not Available";
+
+  return (
+    <div
+      className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${theme.bg} border border-slate-100
+                  shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}
+    >
+      {/* Top accent */}
+      <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${theme.bar}`} />
+
+      {/* Decorative blob + icon */}
+      <div className={`absolute -top-10 -right-10 w-40 h-40 rounded-full ${theme.blob} pointer-events-none`} />
+      <Users
+        size={52}
+        strokeWidth={0}
+        fill="currentColor"
+        className={`absolute top-6 right-7 ${theme.icon} opacity-90 pointer-events-none`}
+      />
+
+      <div className="relative p-5 pb-0">
+        {/* Profile */}
+        <div className="flex items-center gap-4 pr-16">
+          {member.profileImage ? (
+            <img
+              src={member.profileImage}
+              alt={member.name}
+              className={`w-[72px] h-[72px] rounded-full object-cover ring-4 ${theme.ring} shadow-md flex-shrink-0`}
+            />
+          ) : (
+            <div
+              className={`w-[72px] h-[72px] rounded-full bg-gradient-to-br ${theme.avatar} ring-4 ${theme.ring}
+                          text-white flex items-center justify-center font-bold text-2xl shadow-md flex-shrink-0`}
+            >
+              {getInitials(member.name)}
+            </div>
+          )}
+
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-slate-900 truncate text-lg">{member.name}</h3>
+            <p className="text-sm text-slate-500 truncate flex items-center gap-2 mt-0.5">
+              <Mail size={14} className="text-slate-400 flex-shrink-0" />
+              <span className="truncate">{member.emailId}</span>
+            </p>
+            <p className="text-sm text-slate-500 flex items-center gap-2 mt-0.5">
+              <Phone size={14} className="text-slate-400 flex-shrink-0" />
+              {member.mobileNumber || "NA"}
+            </p>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          <StatBox icon={Users} label="Groups"  tone="blue"  value={member.participateGroup || 0} />
+          <StatBox icon={Clock} label="Pending" tone="red"   value={member.pendingDueAmount?.toLocaleString() || "0"} />
+          <StatBox icon={Coins} label="Paid"    tone="green" value={member.completedDueAmount?.toLocaleString() || "0"} />
+        </div>
+      </div>
+
+      {/* Location */}
+      <div className="relative mt-4 border-t border-slate-100 px-5 py-3.5">
+        <Wave colors={theme.wave} id={`${member.userId}-${index}`} />
+        <p className="relative text-sm text-slate-700 flex items-center gap-2 pr-24">
+          <MapPin size={16} className="text-red-500 fill-red-500 [&>circle]:fill-white flex-shrink-0" />
+          <span className="truncate">{location}</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const Members = () => {
   const [members, setMembers]       = useState([]);
   const [page, setPage]             = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalMembers, setTotalMembers] = useState(null);
   const [loading, setLoading]       = useState(false);
 
   /* draft = what user is typing; applied = what was last searched */
@@ -104,9 +292,11 @@ const Members = () => {
       const payload = buildPayload(filters, pageNumber);
       const response = await getAllMemberPageId(pageNumber, payload.filters);
       const data = response.data.data;
+      
       setMembers(data.members || []);
       setTotalPages(data.totalPages || 1);
       setPage(data.currentPage || pageNumber);
+      setTotalMembers(data.totalMembers ?? data.totalCount ?? data.total ?? null);
     } catch (error) {
       console.error("Error fetching members:", error);
     } finally {
@@ -144,7 +334,7 @@ const Members = () => {
     <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm p-5 animate-pulse">
       <div className="absolute top-0 left-0 w-full h-1 bg-slate-200" />
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-2xl bg-slate-200" />
+        <div className="w-[72px] h-[72px] rounded-full bg-slate-200" />
         <div className="flex-1">
           <div className="h-4 w-32 bg-slate-200 rounded mb-2" />
           <div className="h-3 w-40 bg-slate-100 rounded mb-2" />
@@ -159,26 +349,43 @@ const Members = () => {
           </div>
         ))}
       </div>
+      <div className="h-3 w-28 bg-slate-100 rounded mt-6" />
     </div>
   );
 
+  const subtitle = `${hasAnyFilter ? "Filtered results" : "All registered members"}${
+    totalMembers != null ? ` (${totalMembers})` : ""
+  }`;
+
   return (
-    <div className="h-[96vh] p-2 md:p-6 flex flex-col">
+    <div className="h-[96vh] p-2 md:p-6 flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
 
       {/* Page header */}
-      <div className="flex justify-between items-center mb-5 flex-shrink-0">
-        {loading ? (
-          <div className="h-8 w-56 rounded-md bg-slate-200 animate-pulse" />
-        ) : (
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white shadow-sm">
-              <Users size={18} />
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-5 flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+            <Users size={30} fill="currentColor" strokeWidth={1.5} />
+          </div>
+          <div>
+            <h1 className="text-3xl font-extrabold text-slate-900 leading-tight tracking-tight">
+              Members Overview
+            </h1>
+            {loading && totalMembers == null ? (
+              <div className="h-4 w-48 mt-1 rounded bg-slate-200 animate-pulse" />
+            ) : (
+              <p className="text-base text-slate-500">{subtitle}</p>
+            )}
+          </div>
+        </div>
+
+        {totalMembers != null && (
+          <div className="flex items-center gap-4 bg-white rounded-2xl border border-slate-100 shadow-sm pl-4 pr-8 py-3">
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+              <Users size={22} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary leading-tight">Members overview</h1>
-              <p className="text-xs text-slate-400">
-                {hasAnyFilter ? "Filtered results" : "All registered members"}
-              </p>
+              <p className="text-sm text-slate-500">Total Members</p>
+              <p className="text-3xl font-extrabold text-slate-900 leading-tight">{totalMembers}</p>
             </div>
           </div>
         )}
@@ -189,54 +396,37 @@ const Members = () => {
 
         {/* Panel header row */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal size={15} className="text-slate-400" />
-            <span className="text-sm font-semibold text-slate-700">Filter members</span>
+          <div className="flex items-center gap-3">
+            <SlidersHorizontal size={20} className="text-blue-600" />
+            <span className="text-base font-bold text-slate-900">Filter members</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            {hasAnyFilter && (
-              <button
-                onClick={clearAll}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                           bg-red-50 text-red-500 border border-red-200 hover:bg-red-100 hover:border-red-300 transition-colors"
-              >
-                <X size={11} /> Clear all
-              </button>
-            )}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={clearAll}
+              disabled={!hasAnyFilter && !hasDraftChange}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold
+                         bg-white text-slate-800 border border-slate-200 hover:bg-slate-50 hover:border-slate-300
+                         disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <RotateCcw size={15} /> Reset
+            </button>
             <button
               onClick={applyFilters}
               disabled={!hasDraftChange}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all
                 ${hasDraftChange
-                  ? "bg-primary text-white hover:opacity-90 shadow-sm hover:shadow"
-                  : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 shadow-md shadow-blue-500/30"
+                  : "bg-blue-500/70 text-white cursor-not-allowed"
                 }`}
             >
-              Apply filters
+              <Filter size={15} /> Apply filters
             </button>
           </div>
         </div>
 
-        {/* Row 1 — Name · Email · Mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-          {FILTER_FIELDS.slice(0, 3).map(({ key, label, icon, placeholder }) => (
-            <div key={key}>
-              <FieldLabel>{label}</FieldLabel>
-              <IconInput
-                icon={icon}
-                value={draft[key]}
-                onChange={setDraftField(key)}
-                placeholder={placeholder}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Row 2 — Country · State · City */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"
-             onKeyDown={handleKeyDown}>
-          {FILTER_FIELDS.slice(3).map(({ key, label, icon, placeholder }) => (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-5 gap-y-4" onKeyDown={handleKeyDown}>
+          {FILTER_FIELDS.map(({ key, label, icon, placeholder }) => (
             <div key={key}>
               <FieldLabel>{label}</FieldLabel>
               <IconInput
@@ -282,85 +472,15 @@ const Members = () => {
       {/* Members grid */}
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 9 }).map((_, i) => <SkeletonCard key={i} />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : members.length === 0 ? (
           <EmptyState message="No members match your filters." />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {members.map((member) => (
-              <div
-                key={member.userId}
-                className="group relative overflow-hidden rounded-2xl bg-white border border-slate-100
-                           shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-slate-200 transition-all duration-300 p-5"
-              >
-                {/* Top accent */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-80 group-hover:opacity-100 transition-opacity" />
-
-                {/* Profile */}
-                <div className="flex items-center gap-4">
-                  {member.profileImage ? (
-                    <img
-                      src={member.profileImage}
-                      alt={member.name}
-                      className="w-14 h-14 rounded-2xl object-cover border-2 border-primary/20 group-hover:border-primary/40 transition-colors"
-                    />
-                  ) : (
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary
-                                    text-white flex items-center justify-center font-bold text-lg shadow-sm">
-                      {member.profileName || member.name?.charAt(0) || "M"}
-                    </div>
-                  )}
-
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900 truncate text-base group-hover:text-primary transition-colors">
-                      {member.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate">{member.emailId}</p>
-                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
-                      <FaPhone className="inline-block text-slate-300" size={10} />
-                      {member.mobileNumber || "NA"}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-3 mt-5">
-                  <div className="bg-blue-50/70 rounded-xl p-3 text-center border border-blue-100/50">
-                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Groups</p>
-                    <p className="font-bold text-blue-600 text-lg">
-                      {member.participateGroup || 0}
-                    </p>
-                  </div>
-                  <div className="bg-red-50/70 rounded-xl p-3 text-center border border-red-100/50">
-                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Pending</p>
-                    <p className="font-bold text-red-600 text-sm">
-                      {member.pendingDueAmount?.toLocaleString() || "0"}
-                    </p>
-                  </div>
-                  <div className="bg-green-50/70 rounded-xl p-3 text-center border border-green-100/50">
-                    <p className="text-[11px] text-gray-500 mb-1 font-medium">Paid</p>
-                    <p className="font-bold text-green-600 text-sm">
-                      {member.completedDueAmount?.toLocaleString() || "0"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-5 pt-4 border-t border-gray-100" />
-                <p className="text-xs text-gray-500 mt-1 flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-red-500 flex-shrink-0" />
-                  <span className="truncate">
-                    {[
-                      member.city,
-                      member.state,
-                      member.country,
-                    ]
-                      .filter(Boolean)
-                      .join(", ") || "Location Not Available"}
-                  </span>
-                </p>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {members.map((member, index) => (
+              <MemberCard key={member.userId} member={member} index={index} />
             ))}
           </div>
         )}
@@ -372,27 +492,27 @@ const Members = () => {
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
-            className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-1 font-medium transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm flex items-center gap-1.5 font-semibold border transition-colors ${
               page === 1
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary-hover shadow-sm"
+                ? "bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed"
+                : "bg-blue-600 border-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/30"
             }`}
           >
-            <FaChevronLeft size={12} /> Prev
+            <ChevronLeft size={16} /> Prev
           </button>
-          <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-md text-sm font-medium text-slate-600 shadow-sm">
+          <span className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 shadow-sm">
             Page {page} of {totalPages}
           </span>
           <button
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}
-            className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-1 font-medium transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm flex items-center gap-1.5 font-semibold border transition-colors ${
               page === totalPages
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-primary text-white hover:bg-primary-hover shadow-sm"
+                ? "bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed"
+                : "bg-blue-600 border-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/30"
             }`}
           >
-            Next <FaChevronRight size={12} />
+            Next <ChevronRight size={16} />
           </button>
         </div>
       )}

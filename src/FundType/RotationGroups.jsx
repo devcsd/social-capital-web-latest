@@ -119,14 +119,6 @@ export default function RotationOverview() {
     fetchAuctionGroup();
   }, [fetchAuctionGroup]);
 
-  useEffect(() => {
-    console.log("Groups : ", Groups);
-  }, [Groups]);
-
-  useEffect(() => {
-    console.log("Groups : ", Groups);
-  }, [Groups]);
-
   const total = filteredGroups.length;
   const startIndex = (currentPage - 1) * PAGE_SIZE;
 

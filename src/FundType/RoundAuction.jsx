@@ -35,7 +35,7 @@ import {
 const currencyOptions = [
   { code: "INR", symbol: "₹" },
   { code: "USD", symbol: "$" },
-  { code: "AUD", symbol: "A$" },
+  { code: "AUD", symbol: "$" },
   { code: "CNY", symbol: "¥" },
   { code: "GBP", symbol: "£" },
 ];
@@ -1049,9 +1049,9 @@ const CustomDot = (props) => {
                                 {item.userName}
                               </p>
 
-                              <p className="text-[11px] text-slate-400">
+                              {/* <p className="text-[11px] text-slate-400">
                                 ID: {item.userId?.slice(0, 8)}
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         </td>

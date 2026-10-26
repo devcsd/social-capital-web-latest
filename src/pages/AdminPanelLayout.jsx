@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import { matchPath } from "react-router-dom";
 import { SiCashapp } from "react-icons/si";
-import localforage from "localforage";
 import { PiSpinnerBallDuotone } from "react-icons/pi";
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { FaListCheck } from "react-icons/fa6";
@@ -128,15 +127,6 @@ const LayoutDrawer = ({ children }) => {
 
     setSelectedMenu(pathKeyMap[matchedKey]);
   }, [location.pathname]);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await localforage.getItem("user");
-      console.log("User data:", user);
-    };
-
-    getUser();
-  });
 
   useEffect(() => {
     const handleResize = () => {

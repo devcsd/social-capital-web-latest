@@ -46,11 +46,6 @@ export default function ContactPopup() {
       document.body.style.overflow = originalOverflow;
     };
   }, [open]);
-
-  // useEffect(() => {
-  //   console.log("The Reasons ", reasons);
-  // }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -100,14 +95,10 @@ export default function ContactPopup() {
       message: form.message,
     };
 
-    console.log("Payload 👉", payload);
-
     try {
       setLoading(true); // ✅ start loading
 
       const response = await SupportEnquiry(payload);
-
-      console.log("API Response 👉", response);
 
       // ✅ Check API success
       if (response?.data?.success === true) {

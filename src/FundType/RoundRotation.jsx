@@ -32,7 +32,7 @@ import {
 const currencyOptions = [
   { code: "INR", symbol: "₹" },
   { code: "USD", symbol: "$" },
-  { code: "AUD", symbol: "A$" },
+  { code: "AUD", symbol: "$" },
   { code: "CNY", symbol: "¥" },
   { code: "GBP", symbol: "£" },
 ];
@@ -171,6 +171,14 @@ export default function RoundRotation() {
   const winnerImage = transactionDetails?.find(
     (t) => t.userName === winnerName && t.userProfileImage,
   )?.userProfileImage;
+  // The API returns the winner's payout inside transactionDetails as a
+  // record with no contribution amount; show it as a payout, listed last.
+  const isPayout = (t) =>
+    t.memberContributeAmount == null && t.userName === winnerName;
+  const sortedTransactions = [
+    ...(transactionDetails ?? []).filter((t) => !isPayout(t)),
+    ...(transactionDetails ?? []).filter(isPayout),
+  ];
   const contributionTotal =
     (completeContribution ?? 0) + (pendingContribution ?? 0) || totalMember || 0;
   const contributionPct = contributionTotal
@@ -503,7 +511,9 @@ export default function RoundRotation() {
             </thead>
 
             <tbody className="divide-y divide-slate-100">
-              {transactionDetails?.map((item, index) => (
+              {sortedTransactions.map((item, index) => {
+                const payout = isPayout(item);
+                return (
                 <tr
                   key={item.id}
                   className={`hover:bg-slate-50/70 transition-colors ${
@@ -528,30 +538,47 @@ export default function RoundRotation() {
                         <p className="text-[14px] font-medium text-slate-800">
                           {item.userName}
                         </p>
+                        {payout && (
+                          <p className="text-[11px] text-violet-600">
+                            Round winner
+                          </p>
+                        )}
                       </div>
                     </div>
                   </td>
 
                   <td className="px-4 py-2.5 text-[14px] font-medium text-slate-800 tabular-nums">
-                    {currencySymbol} {item.memberContributeAmount ?? 0}
+                    {payout ? (
+                      <span className="text-violet-700">
+                        {currencySymbol} {settlementAmount ?? 0}
+                      </span>
+                    ) : (
+                      <>
+                        {currencySymbol} {item.memberContributeAmount ?? 0}
+                      </>
+                    )}
                   </td>
 
                   <td className="px-4 py-2.5">
                     <span
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[12px] font-medium ${
-                        item.status === "Received"
+                        payout
+                          ? "bg-violet-50 text-violet-700"
+                          : item.status === "Received"
                           ? "bg-emerald-50 text-emerald-700"
                           : item.status === "Pending"
                             ? "bg-amber-50 text-amber-700"
                             : "bg-blue-50 text-blue-700"
                       }`}
                     >
-                      {item.status === "Received" ? (
+                      {payout ? (
+                        <LuGift className="text-violet-600" size={14} />
+                      ) : item.status === "Received" ? (
                         <LuCircleCheck className="text-emerald-600" size={14} />
                       ) : item.status === "Pending" ? (
                         <LuClock3 size={14} />
                       ) : null}
-                      {item.status}
+                      {payout ? "Paid out" : item.status}
                     </span>
                   </td>
 
@@ -559,7 +586,8 @@ export default function RoundRotation() {
                     {new Date(item.transactionDate).toLocaleString()}
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
 

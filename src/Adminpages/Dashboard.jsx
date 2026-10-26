@@ -238,7 +238,6 @@ export default function Dashboard() {
   const fetchData = useCallback(async (filters = {}) => {
     setLoading(true);
     setError(null);
-    console.log(filters, "filters");
 
     try {
       const response = await getDashboardData(filters);
@@ -255,12 +254,8 @@ export default function Dashboard() {
   const filterData = useCallback(async (filters) => {
     setLoading(true);
     setError(null);
-    console.log(filters, "filters");
     try {
       const response = await getDashboardData(filters);
-
-      console.log("filter data", response.data.data);
-
       setDashboard(response?.data?.data ?? null);
     } catch (err) {
       console.error(err);

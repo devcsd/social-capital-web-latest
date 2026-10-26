@@ -318,7 +318,6 @@ const GroupSettings = () => {
       const res = await getMasterTypes();
       // Support both axios-style ({ data }) and raw-json apiService returns.
       const json = res?.data ?? res;
-      console.log("GroupSettings: loaded masterTypes", json?.data || json);
 
       if (!json?.success) {
         throw new Error(json?.message || "Failed to load master settings");

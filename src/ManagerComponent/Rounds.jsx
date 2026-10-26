@@ -11,13 +11,14 @@ import {
   Layers,
   RefreshCw,
   Trophy,
+  Users,
 } from "lucide-react";
 import { currencyMeta } from "../utils/currencyMeta";
 import ReactCountryFlag from "react-country-flag";
 import EmptyState from "../AdminComponent/EmptyState";
+import GroupMembersDrawer from "../AdminComponent/GroupMembersDrawer";
 import { getGroupByID } from "../api/api";
 import { formatCurrency } from "../utils/formatCurrency";
-import { getInitials } from "../utils/getInitials";
 import { useNavigate, useParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 
@@ -230,6 +231,7 @@ export default function FundManagerGroupRound() {
   const [rounds, SetRounds] = useState([]);
   const [group, setGroup] = useState(null);
   const [chartData, setChartData] = useState([]);
+  const [membersOpen, setMembersOpen] = useState(false);
 
   const chartJsData = {
     labels: chartData.map((item) => item.label),
@@ -289,7 +291,7 @@ export default function FundManagerGroupRound() {
       const Data = response.data.data;
       setGroup(Data);
       SetRounds(Data.rounds || []);
-      setManagerID(group.groupData.fund_manager_id);
+      setManagerID(Data.groupData?.fund_manager_id);
     } catch (error) {
       console.error("Error fetching group:", error);
     } finally {
@@ -298,7 +300,6 @@ export default function FundManagerGroupRound() {
   }, [groupID]);
 
   useEffect(() => {
-    console.log(groupID);
     fetchFundManagerGroupsRound();
   }, [fetchFundManagerGroupsRound]);
 
@@ -317,12 +318,6 @@ export default function FundManagerGroupRound() {
       }));
 
     setChartData(formattedChartData);
-  }, [rounds]);
-
-  useEffect(() => {
-    console.log("====", rounds);
-    console.log("group", group);
-    console.log("ManagerID", managerId);
   }, [rounds]);
 
   useEffect(() => {
@@ -361,30 +356,44 @@ export default function FundManagerGroupRound() {
               </p>
             </div>
 
-            {group?.groupType && (
-              <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-100 shadow-sm px-3 py-2 shrink-0">
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    typeIsAuction ? "bg-purple-50" : "bg-sc-blue-100"
-                  }`}
-                >
-                  <TypeIcon
-                    size={16}
-                    className={typeIsAuction ? "text-purple-600" : "text-primary"}
-                  />
-                </div>
-                <span className="text-sm font-semibold text-sc-ink-900">
-                  {group.groupType}
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => setMembersOpen(true)}
+                className="flex items-center gap-2 bg-white rounded-xl border border-slate-100 shadow-sm px-3 py-2 text-sm font-semibold text-primary hover:bg-sc-blue-100/60 transition-colors"
+              >
+                <Users size={16} />
+                View Members
+                <span className="text-slate-500 font-medium">
+                  {group?.joinedMember ?? 0}/{group?.totalMember ?? 0}
                 </span>
-                {currencyMeta?.[group?.currencyLabel]?.flag && (
-                  <ReactCountryFlag
-                    svg
-                    countryCode={currencyMeta[group.currencyLabel].flag}
-                    style={{ width: "1.7em", height: "1.25em", borderRadius: 2 }}
-                  />
-                )}
-              </div>
-            )}
+              </button>
+
+              {group?.groupType && (
+                <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-100 shadow-sm px-3 py-2 shrink-0">
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      typeIsAuction ? "bg-purple-50" : "bg-sc-blue-100"
+                    }`}
+                  >
+                    <TypeIcon
+                      size={16}
+                      className={typeIsAuction ? "text-purple-600" : "text-primary"}
+                    />
+                  </div>
+                  <span className="text-sm font-semibold text-sc-ink-900">
+                    {group.groupType}
+                  </span>
+                  {currencyMeta?.[group?.currencyLabel]?.flag && (
+                    <ReactCountryFlag
+                      svg
+                      countryCode={currencyMeta[group.currencyLabel].flag}
+                      style={{ width: "1.7em", height: "1.25em", borderRadius: 2 }}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Stats */}
@@ -439,8 +448,6 @@ export default function FundManagerGroupRound() {
             ))
         )}
       </div>
-      {console.log("Round data", rounds)}
-
       {loading ? (
         <div className="h-[300px] mt-5 w-full rounded-2xl bg-slate-200 animate-pulse" />
       ) : rounds.length ? (
@@ -471,6 +478,12 @@ export default function FundManagerGroupRound() {
           </div>
         </div>
       ) : null}
+
+      <GroupMembersDrawer
+        open={membersOpen}
+        onClose={() => setMembersOpen(false)}
+        group={group}
+      />
     </div>
   );
 }

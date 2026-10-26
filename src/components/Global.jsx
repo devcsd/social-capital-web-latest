@@ -30,7 +30,7 @@ const countries = [
   {
     code: "AU",
     name: "Australia",
-    currency: "A$",
+    currency: "$",
     avatars: ["B", "I", "Q"],
   },
 ];

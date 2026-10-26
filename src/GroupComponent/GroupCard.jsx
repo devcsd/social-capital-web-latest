@@ -54,7 +54,6 @@ export const GroupCard = ({ group, onClick, accentIndex = 0 }) => {
 
   const handleSettingsSave = async (settings) => {
     // TODO: Replace with your actual API call
-    console.log("Saving settings:", settings);
     // Example API call:
     // await updateGroupSettings(settings.groupId, settings);
   };

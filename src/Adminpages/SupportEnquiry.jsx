@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Table } from "antd";
 import {
   Calendar,
@@ -170,7 +171,6 @@ export default function SupportEnquiry() {
         });
       } else {
         const res = await getSignUpEnquiries();
-        console.log("response", res);
 
         const enquiries = res?.data?.data ?? [];
 
@@ -220,11 +220,9 @@ export default function SupportEnquiry() {
 
   const handleResolve = async (id) => {
     try {
-      console.log("Selected ID : ", id);
       setResolvingId(id); // disable button
 
       const res = await updateContactEnquiries(id);
-      console.log(res, "responseeee");
       toast.success(
         res?.data?.message || "The Enquiry has been Successfully Resolved",
       );
@@ -349,8 +347,8 @@ export default function SupportEnquiry() {
         />
       </div>
 
-      {confirmOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-sc-ink-900/50 backdrop-blur-sm p-4">
+      {confirmOpen && createPortal(
+        <div className="fixed inset-0 z-[1001] flex items-center justify-center bg-sc-ink-900/50 backdrop-blur-sm p-4">
           {/* Backdrop click to close (optional) */}
           <div
             className="absolute inset-0"
@@ -398,12 +396,13 @@ export default function SupportEnquiry() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
       {/* Details drawer */}
-      {selected && (
-        <div className="fixed inset-0 z-50 flex justify-end">
+      {selected && createPortal(
+        <div className="fixed inset-0 z-[1000] flex justify-end">
           <div
             className="absolute inset-0 bg-sc-ink-900/30 backdrop-blur-[2px]"
             onClick={() => setSelected(null)}
@@ -574,7 +573,8 @@ export default function SupportEnquiry() {
               )}
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
